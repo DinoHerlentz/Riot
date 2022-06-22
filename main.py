@@ -2608,7 +2608,7 @@ async def suggest(ctx, *, suggestion):
     em = nextcord.Embed(title="Suggestions", description=f"**{author}** send a suggestions\n\nMessage :\n\n`{suggestion}`")
     em.timestamp = datetime.datetime.utcnow()
 
-    await ctx.reply("Successfully send the suggestions.", mention_author=False)
+    await ctx.reply("Your suggestions has been sent. (Any troll message will be ignored, and you might be blocked)", mention_author=False)
     await channel.send(embed=em)
 
 
@@ -2624,7 +2624,7 @@ async def report(ctx, *, message):
     em = nextcord.Embed(title="Report", description=f"**{author}** send a report message\n\nMessage :\n\n`{message}`", color=nextcord.Color.red())
     em.timestamp = datetime.datetime.utcnow()
     
-    await ctx.reply("Successfully send the report.", mention_author=False)
+    await ctx.reply("Your report message has been sent. (Any false report will be ignored, and you might be blocked)", mention_author=False)
     await channel.send(embed=em)
 
 
