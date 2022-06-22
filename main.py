@@ -1270,45 +1270,29 @@ async def emojify(interaction: Interaction, *, text):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def handsome(ctx, member: nextcord.Member=None):
-    if member == None:
-        em = nextcord.Embed(title="Handsome Parameter", description=f"You are {random.randrange(100)}% handsome.")
-        await ctx.reply(embed=em, mention_author=False)
-    else:
-        em2 = nextcord.Embed(title="Handsome Parameter", description=f"You are {random.randrange(100)}% handsome.")
-        await ctx.send(embed=em2)
+async def handsome(ctx):
+    em = nextcord.Embed(title="Handsome Parameter", description=f"Notice : You are {random.randrange(100)}% handsome.")
+    await ctx.reply(embed=em, mention_author=False)
 
 
 @client.slash_command(name="handsome", description="Handsome parameter")
-async def handsome(interaction: Interaction, member: nextcord.Member):
-    if member == interaction.user:
-        em = nextcord.Embed(title="Handsome Parameter", description=f"You are {random.randrange(100)}% handsome.")
-        await interaction.send(embed=em)
-    else:
-        em2 = nextcord.Embed(title="Handsome Parameter", description=f"{member.mention} is {random.randrange(100)}% handsome.")
-        await interaction.send(embed=em)
+async def handsome(interaction: Interaction):
+    em = nextcord.Embed(title="Handsome Parameter", description=f"Notice : You are {random.randrange(100)}% handsome.")
+    await interaction.send(embed=em)
 
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def beautiful(ctx, member: nextcord.Member=None):
-    if member == None:
-        em = nextcord.Embed(title="Beautiful Parameter", description=f"You are {random.randrange(100)}% beautiful.")
-        await ctx.reply(embed=em, mention_author=False)
-    else:
-        em2 = nextcord.Embed(title="Beatiful Parameter", description=f"{member.mention} is {random.randrange(100)}% beautiful.")
-        await ctx.send(embed=em)
+async def beautiful(ctx):
+    em = nextcord.Embed(title="Beautiful Parameter", description=f"You are {random.randrange(100)}% beautiful.")
+    await ctx.send(embed=em)
 
 
 @client.slash_command(name="beautiful", description="Beautiful parameter")
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def beautiful(interaction: Interaction, member=nextcord.Member):
-    if member == interaction.user:
-        em = nextcord.Embed(title="Beautiful Parameter", description=f"You are {random.randrange(100)}% beautiful.")
-        await interaction.send(embed=em)
-    else:
-        em2 = nextcord.Embed(title="Beautiful Parameter", description=f"{member.mention} is {random.randrange(100)}% beautiful.")
-        await interaction.send(embed=em2)
+async def beautiful(interaction: Interaction):
+    em = nextcord.Embed(title="Beautiful Parameter", description=f"You are {random.randrange(100)}% beautiful.")
+    await interaction.send(embed=em)
 
 
 # Game Command
