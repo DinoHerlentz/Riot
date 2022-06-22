@@ -73,6 +73,18 @@ async def dogslash(interaction: Interaction):
 
 
 @client.group(invoke_without_command=True)
+async def capybara(ctx):
+    em = nextcord.Embed(title="Capybara (>capybara [command])")
+    em.add_field(name="Commands", value="large, medium, small, original, facts")
+    await ctx.send(embed=em)
+
+
+@client.slash_command(name="capybara", description="Capybara slash command")
+async def capybaraslash(interaction: Interaction):
+    return
+
+
+@client.group(invoke_without_command=True)
 async def anime(ctx):
     em = nextcord.Embed(title="Anime (>anime [command])")
     em.add_field(name="Commands", value="news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe")
@@ -447,9 +459,9 @@ async def help(ctx):
     helpEmbed.add_field(name="Moderation", value="ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
     helpEmbed.add_field(name="Fun", value="memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     helpEmbed.add_field(name="Anime", value="anime")
-    helpEmbed.add_field(name="Images", value="dog, food, rock")
+    helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, Riot, localtime, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, localtime, servericon, id, membercount, emojiinfo")
     
     await ctx.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -463,9 +475,9 @@ async def help(interaction: Interaction):
     helpEmbed.add_field(name="Moderation", value="ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
     helpEmbed.add_field(name="Fun", value="memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     helpEmbed.add_field(name="Anime", value="anime")
-    helpEmbed.add_field(name="Images", value="dog, food, rock")
+    helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, Riot, localtime, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, localtime, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -1987,6 +1999,80 @@ async def image(interaction: Interaction):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def gif(ctx):
 	await ctx.send(random.choice(dogs[ctx.invoked_with]))
+
+
+@capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def large(ctx):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["large"]
+    await ctx.send(image_link)
+
+
+@capybaraslash.subcommand(name="large", description="Large capybara pictures")
+async def large(interaction: Interaction):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["large"]
+    await interaction.send(image_link)
+
+
+@capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def medium(ctx):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["medium"]
+    await ctx.send(image_link)
+
+
+@capybaraslash.subcommand(name="medium", description="Medium capybara pictures")
+async def medium(interaction: Interaction):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["medium"]
+    await interaction.send(image_link)
+
+
+@capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def small(ctx):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["small"]
+    await ctx.send(image_link)
+
+
+@capybaraslash.subcommand(name="small", description="Small capybara pictures")
+async def small(interaction: Interaction):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["large"]
+    await interaction.send(image_link)
+
+
+@capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def original(ctx):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["original"]
+    await ctx.send(image_link)
+
+
+@capybaraslash.subcommand(name="original", description="Original capybara pictures")
+async def original(interaction: Interaction):
+    res = requests.get("https://api.capybara-api.xyz/v1/image/random")
+    image_link = res.json()["image_urls"]["original"]
+    await interaction.send(image_link)
+
+
+@capybara.command()
+async def facts(ctx):
+    res = requests.get("https://api.capybara-api.xyz/v1/facts/random")
+    fact = res.json()["fact"]
+    await ctx.send(fact)
+
+
+@capybaraslash.subcommand(name="facts", description="Get some random facts about capybara")
+async def facts(interaction: Interaction):
+    res = requests.get("https://api.capybara-api.xyz/v1/facts/random")
+    fact = res.json()["facts"]
+    await interaction.send(fact)
 
 
 @client.command()
