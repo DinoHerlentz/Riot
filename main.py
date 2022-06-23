@@ -3078,7 +3078,7 @@ async def dm(ctx, member: nextcord.Member, *, content):
 async def stats(ctx):
     em = nextcord.Embed(title="Riot Bot Statistic")
     em.add_field(name="CPU", value=f"{psutil.cpu_percent()}%", inline=False)
-    em.add_field(name="RAM", value=f"{psutil.virtual_memory()[2]}", inline=False)
+    em.add_field(name="RAM", value=f"{psutil.virtual_memory()[2]}%", inline=False)
     await ctx.send(embed=em)
 
 
