@@ -3073,7 +3073,7 @@ async def dm(ctx, member: nextcord.Member, *, content):
     await ctx.reply("Message has been sent.")
 
 
-@client.command(aliases=["statistic"])
+@client.command(aliases=["statistic", "stat"])
 @commands.is_owner()
 async def stats(ctx):
     em = nextcord.Embed(title="Riot Bot Statistic")
