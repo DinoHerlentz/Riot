@@ -14,16 +14,22 @@ import wavelink
 import animec
 import aiosqlite
 import aiohttp
+import psutil
 from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
-from nextcord.ext import commands, activities, application_checks
+from nextcord.ext import commands, tasks, activities, application_checks
 from nextcord.ext.application_checks import ApplicationNotOwner
 from nextcord.abc import GuildChannel
 from nextcord import Interaction, SlashOption, ChannelType
 from nextcord.abc import GuildChannel
 from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissions, MissingRequiredArgument, BotMissingPermissions, CommandOnCooldown, DisabledCommand, MemberNotFound
 from keep_alive import keep_alive
+
+ts = 0
+tm = 0
+th = 0
+td = 0
 
 
 intents = nextcord.Intents.default()
@@ -99,9 +105,6 @@ async def animeslash(interaction: Interaction):
 # Class
 class NoLyricsFound(commands.CommandError):
     pass
-
-
-class Panel()
 
 
 class EmbedModal(nextcord.ui.Modal):
@@ -442,6 +445,7 @@ async def on_application_command_error(interaction: Interaction, error):
         await interaction.send("This command is restricted for bot owners only.")
 
 
+"""
 @client.event
 async def on_error(event, *args, **kwargs):
     info = await client.application_info()
@@ -451,6 +455,7 @@ async def on_error(event, *args, **kwargs):
     em.add_field(name="Event", value=event)
     em.timestamp = datetime.datetime.utcnow()
     await info.channel.send(embed=em)
+"""
 
 
 # Help Command
@@ -1138,7 +1143,6 @@ async def guess(ctx):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
 async def hug(ctx, member: nextcord.Member=None):
     if member == None:
       await ctx.reply("Question : Who do you want to hug?")
@@ -1987,7 +1991,6 @@ async def cringe(ctx):
 
 # Image Command
 @dog.command(aliases=["img"])
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def image(ctx):
     res = requests.get("https://dog.ceo/api/breeds/image/random")
     image_link = res.json()["message"]
@@ -1995,7 +1998,6 @@ async def image(ctx):
 
 
 @dogslash.subcommand(name="image", description="Get some random cute dog pictures")
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def image(interaction: Interaction):
     res = requests.get("https://dog.ceo/api/breeds/image/random")
     image_link = res.json()["message"]
@@ -2003,13 +2005,16 @@ async def image(interaction: Interaction):
 
 
 @dog.command(name="gif", aliases=["feed", "play", "sleep"])
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def gif(ctx):
 	await ctx.send(random.choice(dogs[ctx.invoked_with]))
 
 
+@dogslash.subcommand(name="gif", description="Get some random cute dog gifs")
+async def gif(interaction: Interaction):
+    await interaction.send(random.choice(dogs[interaction.invoked_with]))
+
+
 @capybara.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def large(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["large"]
@@ -2024,7 +2029,6 @@ async def large(interaction: Interaction):
 
 
 @capybara.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def medium(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["medium"]
@@ -2039,7 +2043,6 @@ async def medium(interaction: Interaction):
 
 
 @capybara.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def small(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["small"]
@@ -2054,7 +2057,6 @@ async def small(interaction: Interaction):
 
 
 @capybara.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def original(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["original"]
@@ -3057,7 +3059,7 @@ async def emojiinfo(ctx, emoji: nextcord.Emoji=None):
     await ctx.send(embed=em)
 
 
-# Secret Command
+# Owner Command
 @client.command()
 @commands.is_owner()
 async def dm(ctx, member: nextcord.Member, *, content):
@@ -3069,6 +3071,15 @@ async def dm(ctx, member: nextcord.Member, *, content):
         await ctx.reply("I've been blocked by that user.")
     
     await ctx.reply("Message has been sent.")
+
+
+@client.command(aliases=["statistic"])
+@commands.is_owner()
+async def stats(ctx):
+    em = nextcord.Embed(title="Riot Bot Statistic")
+    em.add_field(name="CPU", value=f"{psutil.cpu_percent()}%", inline=False)
+    em.add_field(name="RAM", value=f"{psutil.virtual_memory()[2]}", inline=False)
+    await ctx.send(embed=em)
 
 
 @client.command()
