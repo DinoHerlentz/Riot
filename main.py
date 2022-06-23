@@ -1283,27 +1283,27 @@ async def emojify(interaction: Interaction, *, text):
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def handsome(ctx):
-    em = nextcord.Embed(title="Handsome Parameter", description=f"Notice : You are {random.randrange(100)}% handsome.")
+    em = nextcord.Embed(title="Handsome Parameter", description=f"**{random.randrange(100)}%**")
     await ctx.reply(embed=em, mention_author=False)
 
 
 @client.slash_command(name="handsome", description="Handsome parameter")
 async def handsome(interaction: Interaction):
-    em = nextcord.Embed(title="Handsome Parameter", description=f"Notice : You are {random.randrange(100)}% handsome.")
+    em = nextcord.Embed(title="Handsome Parameter", description=f"**{random.randrange(100)}%**")
     await interaction.send(embed=em)
 
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(ctx):
-    em = nextcord.Embed(title="Beautiful Parameter", description=f"You are {random.randrange(100)}% beautiful.")
-    await ctx.send(embed=em)
+    em = nextcord.Embed(title="Beautiful Parameter", description=f"**{random.randrange(100)}%**")
+    await ctx.reply(embed=em, mention_author=False)
 
 
 @client.slash_command(name="beautiful", description="Beautiful parameter")
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(interaction: Interaction):
-    em = nextcord.Embed(title="Beautiful Parameter", description=f"You are {random.randrange(100)}% beautiful.")
+    em = nextcord.Embed(title="Beautiful Parameter", description=f"**{random.randrange(100)}%**")
     await interaction.send(embed=em)
 
 
@@ -2746,8 +2746,7 @@ async def av(ctx, member: nextcord.Member = None):
 
     icon_url = member.avatar.url
 
-    avEmbed = nextcord.Embed(title=f"{member.name}'s Avatar",
-                            color=0x00FAFF)
+    avEmbed = nextcord.Embed()
 
     avEmbed.set_image(url=f"{icon_url}")
 
@@ -2765,8 +2764,7 @@ async def av(interaction: Interaction, member: nextcord.Member=None):
 
     icon_url = member.avatar.url
 
-    avEmbed = nextcord.Embed(title=f"{member.name}'s Avatar",
-                            color=0x00FAFF)
+    avEmbed = nextcord.Embed()
 
     avEmbed.set_image(url=f"{icon_url}")
 
@@ -3147,7 +3145,7 @@ async def creator(ctx):
 
 @client.command(aliases=["born"])
 async def created(ctx):
-    await ctx.reply("I was made on **__Wednesday, 08/18/2021 20:00 WIB GMT Jakarta__**.")
+    await ctx.reply("I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
 
 
 @client.command(aliases=["ver", "__ver__" "__version__"])
