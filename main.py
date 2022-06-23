@@ -1284,12 +1284,14 @@ async def emojify(interaction: Interaction, *, text):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def handsome(ctx):
     em = nextcord.Embed(title="Handsome Parameter", description=f"**{random.randrange(100)}%**")
+    em.timestamp = ctx.message.created_at
     await ctx.reply(embed=em, mention_author=False)
 
 
 @client.slash_command(name="handsome", description="Handsome parameter")
 async def handsome(interaction: Interaction):
     em = nextcord.Embed(title="Handsome Parameter", description=f"**{random.randrange(100)}%**")
+    em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed=em)
 
 
@@ -1297,6 +1299,7 @@ async def handsome(interaction: Interaction):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(ctx):
     em = nextcord.Embed(title="Beautiful Parameter", description=f"**{random.randrange(100)}%**")
+    em.timestamp = ctx.message.created_at
     await ctx.reply(embed=em, mention_author=False)
 
 
@@ -1304,6 +1307,7 @@ async def beautiful(ctx):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(interaction: Interaction):
     em = nextcord.Embed(title="Beautiful Parameter", description=f"**{random.randrange(100)}%**")
+    em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed=em)
 
 
