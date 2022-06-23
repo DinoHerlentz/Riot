@@ -2075,7 +2075,7 @@ async def facts(ctx):
 @capybaraslash.subcommand(name="facts", description="Get some random facts about capybara")
 async def facts(interaction: Interaction):
     res = requests.get("https://api.capybara-api.xyz/v1/facts/random")
-    fact = res.json()["facts"]
+    fact = res.json()["fact"]
     await interaction.send(fact)
 
 
