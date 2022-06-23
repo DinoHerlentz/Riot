@@ -101,6 +101,9 @@ class NoLyricsFound(commands.CommandError):
     pass
 
 
+class Panel()
+
+
 class EmbedModal(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Embed Maker")
