@@ -15,6 +15,7 @@ import animec
 import aiosqlite
 import aiohttp
 import psutil
+from PIL import Image
 from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
@@ -240,14 +241,6 @@ class PetView(nextcord.ui.View):
         self.add_item(Pet())
 
 
-class Link(nextcord.ui.View):
-    def __init__(self):
-        super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url="https://top.gg/bot/877493442954006599", label="Riot Discord Bot"))
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url="https://top.gg/bot/877493442954006599/vote", label="Vote For Riot"))
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url="https://top.gg/bot/877493442954006599/invite", label="Riot Invite"))
-
-
 class Help(nextcord.ui.View):
     def __init__(self):
         super().__init__()
@@ -464,7 +457,7 @@ async def help(ctx):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, localtime, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, servericon, id, membercount, emojiinfo")
     
     await ctx.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -480,7 +473,7 @@ async def help(interaction: Interaction):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, localtime, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -1985,13 +1978,6 @@ async def cringe(ctx):
 
 
 # Image Command
-@dog.command(aliases=["img"])
-async def image(ctx):
-    res = requests.get("https://dog.ceo/api/breeds/image/random")
-    image_link = res.json()["message"]
-    await ctx.send(image_link)
-
-
 @dogslash.subcommand(name="image", description="Get some random cute dog pictures")
 async def image(interaction: Interaction):
     res = requests.get("https://dog.ceo/api/breeds/image/random")
@@ -2958,19 +2944,9 @@ async def poll(ctx, *, question):
 
 @client.command(aliases=["invite", "inv", "vote", "v"])
 async def Riot(ctx):
-    view = Link()
+    view = Help()
     await ctx.send("Here's Riot bot information.", view=view)
     await view.wait()
-
-
-@client.command(aliases=["lt"])
-async def localtime(ctx):
-  await ctx.send(datetime.datetime.utcnow())
-
-
-@client.slash_command(name="localtime", description="Shows your local time")
-async def localtime(interaction: Interaction):
-  await interaction.response.send_message(datetime.datetime.utcnow())
 
 
 @client.command(aliases=["gi", "guildicon"])
