@@ -26,11 +26,6 @@ from nextcord.abc import GuildChannel
 from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissions, MissingRequiredArgument, BotMissingPermissions, CommandOnCooldown, DisabledCommand, MemberNotFound
 from keep_alive import keep_alive
 
-ts = 0
-tm = 0
-th = 0
-td = 0
-
 
 intents = nextcord.Intents.default()
 intents.members = True
