@@ -447,7 +447,7 @@ async def on_error(event, *args, **kwargs):
 
 
 # Help Command
-@client.command(aliases=["?"])
+@client.command(aliases=["?", "halp", "riot"])
 async def help(ctx):
     view = Help()
     
@@ -457,7 +457,7 @@ async def help(ctx):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await ctx.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -473,7 +473,7 @@ async def help(interaction: Interaction):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, riot, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -3010,13 +3010,6 @@ async def poll(ctx, *, question):
 
     await poll_msg.add_reaction("👍")
     await poll_msg.add_reaction("👎")
-
-
-@client.command(aliases=["invite", "inv", "vote", "v"])
-async def Riot(ctx):
-    view = Help()
-    await ctx.send("Here's Riot bot information.", view=view)
-    await view.wait()
 
 
 @client.command(aliases=["gi", "guildicon"])
