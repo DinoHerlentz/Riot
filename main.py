@@ -596,20 +596,16 @@ async def kick(ctx, member: nextcord.Member=None, *, reason=None):
 @commands.has_permissions(administrator=True)
 async def warn(ctx, member: nextcord.Member=None, *, reason=None):
     if member == None:
-      warnEmbed = nextcord.Embed(
-            title="**Warn**",
-            description=
-            "**Command :** >warn\n**Description :** Warn a member\n**Usage :** >warn [user] [reason]\n**Example :** >warn @DINO Last warn for breaking rules!",
-            color=0x00FAFF)
-      await ctx.send(embed=warnEmbed)
+      em = nextcord.Embed(title="Warn", description="**Command :** >warn\n**Description :** Warn a member\n**Usage :** >warn [user] [reason]\n**Example :** >warn @DINO Last warn for being rude")
+      await ctx.send(embed=em)
     
     elif member == ctx.author:
-        warnEm = nextcord.Embed(title="**❌ You can't warn yourself.**", color=nextcord.Color.red())
-        await ctx.reply(embed=warnEm, mention_author=False)
+        em2 = nextcord.Embed(title="**❌ You can't warn yourself.**", color=nextcord.Color.red())
+        await ctx.reply(embed=em2, mention_author=False)
         return
     if member.top_role >= ctx.author.top_role:
-        warnEm2 = nextcord.Embed(title="**❌ You can only moderate members below your role.**", color=nextcord.Color.red())
-        await ctx.reply(embed=warnEm2, mention_author=False)
+        em3 = nextcord.Embed(title="**❌ You can only moderate members below your role.**", color=nextcord.Color.red())
+        await ctx.reply(embed=em3, mention_author=False)
         return
 
     else:
@@ -635,36 +631,28 @@ async def purge(ctx, amount=None, arg: str=None):
 @commands.has_permissions(manage_channels=True)
 async def slowmode(ctx, seconds: int=None):
     if seconds == None:
-        em = nextcord.Embed(
-            title="**Slowmode**",
-            description=
-            "**Command :** >slowmode\n**Description :** Set a slowmode on the channel (sec)\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5",
-            color=0x00FAFF)
+        em = nextcord.Embed(title="**Slowmode**", description="**Command :** >slowmode\n**Description :** Set a slowmode on the channel (sec)\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5")
         await ctx.send(embed=em)
 
     else:
         await ctx.channel.edit(slowmode_delay=seconds)
-        smEm = nextcord.Embed(title=f"Slowmode in this channel has been set to {seconds} seconds.")
-        await ctx.reply(embed=smEm)
+        em2 = nextcord.Embed(title=f"Slowmode in this channel has been set to {seconds} seconds.")
+        await ctx.reply(embed=em2)
 
 
 @client.command()
 @commands.has_permissions(manage_messages=True)
 async def announce(ctx, channel: nextcord.TextChannel=None, *, msg=None):
     if channel == None or msg == None:
-      em = nextcord.Embed(
-            title="**Announce**",
-            description=
-            "**Command :** >announce\n**Description :** Announce a message in specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi @everyone!",
-            color=0x00FAFF)
+      em = nextcord.Embed(title="**Announce**", description="**Command :** >announce\n**Description :** Announce a message in specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
       await ctx.send(embed=em)
     else:
-      await ctx.reply("Successfully send the announcements.")
+      await ctx.reply("Announcement has been sent.")
       
-      announceEmbed = nextcord.Embed(title="New Announcement", description=f"{msg}")
-      announceEmbed.set_footer(text=f"Announcement by {ctx.author}", icon_url=ctx.author.avatar.url)
-      announceEmbed.timestamp = ctx.message.created_at
-      await channel.send(embed=announceEmbed)
+      em2 = nextcord.Embed(title="New Announcement", description=f"{msg}")
+      em2.set_footer(text=f"Announcement from {ctx.author}", icon_url=ctx.author.avatar.url)
+      em2.timestamp = ctx.message.created_at
+      await channel.send(embed=em2)
 
 
 @client.command(aliases=["ar"])
@@ -672,11 +660,7 @@ async def announce(ctx, channel: nextcord.TextChannel=None, *, msg=None):
 @commands.has_permissions(manage_roles=True)
 async def addrole(ctx, role: nextcord.Role=None, *, member: nextcord.Member=None):
     if role == None or member == None:
-        em = nextcord.Embed(
-            title="Add Role",
-            description=
-            "**Command :** >addrole\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO",
-            color=0x00FAFF)
+        em = nextcord.Embed(title="Add Role", description="**Command :** >addrole\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO")
         await ctx.send(embed=em)
     else:
         await member.add_roles(role)
@@ -688,12 +672,8 @@ async def addrole(ctx, role: nextcord.Role=None, *, member: nextcord.Member=None
 @commands.has_permissions(manage_roles=True)
 async def removerole(ctx, role: nextcord.Role=None, *, member: nextcord.Member=None):
     if role == None or member == None:
-        removeroleEm = nextcord.Embed(
-            title="Remove Role",
-            description=
-            "**Command :** >removerole\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @DINO",
-            color=0x00FAFF)
-        await ctx.send(embed=removeroleEm)
+        em = nextcord.Embed(title="Remove Role", description="**Command :** >removerole\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @DINO")
+        await ctx.send(embed=em)
 
     else:
         await member.remove_roles(role)
@@ -718,16 +698,12 @@ async def nick(ctx, member: nextcord.Member=None, *, nickname=None):
 @commands.has_permissions(manage_channels=True)
 async def changetextchannelname(ctx, channel: nextcord.TextChannel=None, *, channel_name=None):
     if channel == None or channel_name == None:
-        em = nextcord.Embed(
-            title="Change Text Channel Name",
-            description=
-            "**Command :** >ctcn\n**Description :** Change the specified text channel name\n**Usage :** >ctcn [channel] [new name]\n**Example :** >ctcn #general 💬general",
-            color=0x00FAFF)
+        em = nextcord.Embed(title="Change Text Channel Name", description="**Command :** >ctcn\n**Description :** Change the specified text channel name\n**Usage :** >ctcn [channel] [new name]\n**Example :** >ctcn #general 💬general")
         await ctx.send(embed=em)
     else:
         await channel.edit(name=channel_name)
-        ctcnEmbed = nextcord.Embed(title="Successfully changed the channel name.")
-        await ctx.reply(embed=ctcnEmbed, mention_author=False)
+        em2 = nextcord.Embed(title="Successfully changed the channel name.")
+        await ctx.reply(embed=em2, mention_author=False)
 
 
 # Fun Command
@@ -924,35 +900,24 @@ async def dice(interaction: Interaction):
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def coinflip(ctx, choice=None):
     if choice == None:
-        em = nextcord.Embed(
-            title="**Coinflip**",
-            description=
-            "**Command :** [>cf, >coin, >flip, >coinflip]\n**Description :** Flip a coin and bet for heads/tails\n**Usage :** >cf [choices]\n**Example :** >cf tails",
-            color=0x00FAFF)
+        em = nextcord.Embed(title="**Coinflip**", description=
+            "**Command :** >coinflip\n**Description :** Flip a coin and bet for heads/tails\n**Usage :** >cf [choices]\n**Example :** >cf tails")
         await ctx.send(embed=em)
     
     answer = choice.lower()
     choices = ["head", "tail"]
     computers_answer = random.choice(choices)
     if answer not in choices:
-        await ctx.reply(
-            "**That is not a valid option. Please use one of these option : head, tail.**"
-        )
+        await ctx.reply("**That is not a valid option. Please use one of these option : head, tail.**")
     else:
         if computers_answer == answer:
-            await ctx.reply(
-                f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{answer}__**."
-            )
+            await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{answer}__**.")
         if computers_answer == "head":
             if answer == "tail":
-                await ctx.reply(
-                    f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**."
-                )
+                await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
         if computers_answer == "tail":
             if answer == "head":
-                await ctx.reply(
-                    f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**."
-                )
+                await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
 
 
 @client.slash_command(name="coinflip", description="Flip a coin. Bet for head/tail")
@@ -961,77 +926,52 @@ async def coinflip(interaction: Interaction, choice):
     choices = ["head", "tail"]
     computers_answer = random.choice(choices)
     if answer not in choices:
-        await interaction.send(
-            "**That is not a valid option. Please use one of these option : head, tail.**")
+        await interaction.send("**That is not a valid option. Please use one of these option : head, tail.**")
     
     else:
         if computers_answer == answer:
-            await interaction.send(
-                f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{answer}__**."
-            )
+            await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{answer}__**.")
         if computers_answer == "head":
             if answer == "tail":
-                await interaction.send(
-                    f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**."
-                )
+                await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
         if computers_answer == "tail":
             if answer == "head":
-                await interaction.send(
-                    f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**."
-                )
+                await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
 
 
 @client.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def rps(ctx, choice=None):
     if choice == None:
-        rpsEmbed = nextcord.Embed(
-            title="**Rock Paper Scissors**",
-            description=
-            "**Command :** >rps\n**Description :** Rock paper scissors with the bot\n**Usage :** >rps [choice]\n**Example :** >rps rock",
-            color=0x00FAFF)
-        await ctx.send(embed=rpsEmbed)
+        em = nextcord.Embed(title="**Rock Paper Scissors**", description="**Command :** >rps\n**Description :** Rock paper scissors with the bot\n**Usage :** >rps [choice]\n**Example :** >rps rock")
+        await ctx.send(embed=em)
     
     answer = choice.lower()
     choices = ["rock", "paper", "scissors"]
     computers_answer = random.choice(choices)
     if answer not in choices:
-        await ctx.reply(
-            "**That is not a valid option. Please use one of these options : rock, paper, scissors.**"
-        )
+        await ctx.reply("**That is not a valid option. Please use one of these options : rock, paper, scissors.**")
     else:
         if computers_answer == answer:
             await ctx.reply(f"Tie! we both picked **__{answer}__**.")
         if computers_answer == "rock":
             if answer == "paper":
-                await ctx.reply(
-                    f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "paper":
             if answer == "rock":
-                await ctx.reply(
-                    f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await ctx.reply(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "scissors":
             if answer == "rock":
-                await ctx.reply(
-                    f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "rock":
             if answer == "scissors":
-                await ctx.reply(
-                    f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await ctx.reply(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "paper":
             if answer == "scissors":
-                await ctx.reply(
-                    f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "scissors":
             if answer == "paper":
-                await ctx.reply(
-                    f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**."
-                )
+                await ctx.reply(f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**.")
 
 
 @client.slash_command(name="rps", description="Play rock paper scissors with the bot")
@@ -1040,42 +980,28 @@ async def rps(interaction: Interaction, choice):
     choices = ["rock", "paper", "scissors"]
     computers_answer = random.choice(choices)
     if answer not in choices:
-        await interaction.send(
-            "**That is not a valid option. Please use one of these options : rock, paper, scissors.**"
-        )
+        await interaction.send("**That is not a valid option. Please use one of these options : rock, paper, scissors.**")
     else:
         if computers_answer == answer:
             await interaction.send(f"Tie! we both picked **__{answer}__**.")
         if computers_answer == "rock":
             if answer == "paper":
-                await interaction.send(
-                    f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "paper":
             if answer == "rock":
-                await interaction.send(
-                    f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await interaction.send(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "scissors":
             if answer == "rock":
-                await interaction.send(
-                    f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "rock":
             if answer == "scissors":
-                await interaction.send(
-                    f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await interaction.send(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "paper":
             if answer == "scissors":
-                await interaction.send(
-                    f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**."
-                )
+                await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
         if computers_answer == "scissors":
             if answer == "paper":
-                await interaction.send(
-                    f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**."
-                )
+                await interaction.send(f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**.")
 
 
 @client.command()
@@ -1085,13 +1011,13 @@ async def rate(ctx, *, argument=None):
         em = nextcord.Embed(title="**Command :** >rate", description="**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart")
         await ctx.send(embed=em)
     else:
-        em2 = nextcord.Embed(description=f"{argument} : **{random.randrange(100)}%**")
+        em2 = nextcord.Embed(title="Rate Parameter", description=f"{argument} : **{random.randrange(100)}%**")
         await ctx.reply(embed=em2, mention_author=False)
 
 
 @client.slash_command(name="rate", description="Ask the bot to rate something")
 async def rate(interaction: Interaction, *, argument):
-    em = nextcord.Embed(description=f"{argument} : **{random.randrange(100)}%**")
+    em = nextcord.Embed(title="Rate Parameter", description=f"{argument} : **{random.randrange(100)}%**")
     await interaction.send(embed=em)
 
 
@@ -1755,7 +1681,7 @@ async def memes(ctx):
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
             anime_memes = await r.json()
 
-            em = nextcord.Embed(color=0x00FAFF)
+            em = nextcord.Embed()
             em.set_image(url=anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = ctx.message.created_at
 
@@ -1768,7 +1694,7 @@ async def memes(interaction: Interaction):
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
             anime_memes = await r.json()
 
-            em = nextcord.Embed(color=0x00FAFF)
+            em = nextcord.Embed()
             em.set_image(url=anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = datetime.datetime.utcnow()
             await interaction.send(embed=em)
@@ -2739,12 +2665,8 @@ async def cleardm(ctx, amount, arg: int = None):
 @cleardm.error
 async def cleardm_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        cmEmbed = nextcord.Embed(
-            title="**Clear DM**",
-            description=
-            "**Command :** >cleardm\n**Description :** Delete bot response/message in your dm\n**Usage :** >cleardm [amount]\n**Example :** >cleardm 727",
-            color=0x00FAFF)
-        await ctx.send(embed=cmEmbed)
+        em = nextcord.Embed(title="**Clear DM**", description="**Command :** >cleardm\n**Description :** Delete bot response/message in your dm\n**Usage :** >cleardm [amount]\n**Example :** >cleardm 727")
+        await ctx.send(embed=em)
 
 @client.command()
 async def suggest(ctx, *, suggestion):
