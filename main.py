@@ -15,7 +15,6 @@ import animec
 import aiosqlite
 import aiohttp
 import psutil
-from PIL import Image
 from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
