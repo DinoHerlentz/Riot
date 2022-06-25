@@ -456,7 +456,7 @@ async def help(ctx):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="weather, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await ctx.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -472,7 +472,7 @@ async def help(interaction: Interaction):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="weather, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -2447,7 +2447,6 @@ async def forum(interaction: Interaction):
 
 
 # Other Command
-"""
 @client.command()
 async def weather(ctx, *, city: str=None):
     if city == None:
@@ -2456,65 +2455,63 @@ async def weather(ctx, *, city: str=None):
 
     api_key = os.environ["WEATHER_API_KEY"]
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid=" + api_key + "&q=" + city_name
+    complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
     x = res.json()
 
     if x["cod"] != "404":
-        async with ctx.typing():
-            y = x["main"]
-            current_temperature = y["temp"]
-            current_temperature_celcius = str(round(current_temperature - 273.15))
-            current_pressure = y["pressure"]
-            current_humidity = y["humidity"]
-            z = x["weather"]
-            weather_description = z[0]["description"]
+        y = x["main"]
+        current_temperature = y["temp"]
+        current_temperature_celcius = str(round(current_temperature - 273.15))
+        current_pressure = y["pressure"]
+        current_humidity = y["humidity"]
+        z = x["weather"]
+        weather_description = z[0]["description"]
     
-            em = nextcord.Embed(title=f"{city} Weather Information")
-            em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
-            em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
-            em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
-            em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
-            em.add_field(name="Humidity (%)", value=f"{current_humidity}", inline=False)
-            em.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
-            em.timestamp = ctx.message.created_at
+        em = nextcord.Embed(title=f"{city} Weather Information")
+        em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
+        em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
+        em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
+        em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
+        em.add_field(name="Humidity (%)", value=f"{current_humidity}", inline=False)
+        em.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
+        em.timestamp = ctx.message.created_at
     
-            await ctx.send(embed=em)
+        await ctx.send(embed=em)
     else:
         await ctx.send(f"No City Found - {city}")
 
 
 @client.slash_command(name="weather", description="Shows weather information of a city")
 async def weather(interaction: Interaction, *, city: str):
+
     api_key = os.environ["WEATHER_API_KEY"]
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid=" + api_key + "&q=" + city_name
+    complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
     x = res.json()
 
     if x["cod"] != "404":
-        async with interaction.channel.typing():
-            y = x["main"]
-            current_temperature = y["temp"]
-            current_temperature_celcius = str(round(current_temperature - 273.15))
-            current_pressure = y["pressure"]
-            current_humidity = y["humidity"]
-            z = x["weather"]
-            weather_description = z[0]["description"]
+        y = x["main"]
+        current_temperature = y["temp"]
+        current_temperature_celcius = str(round(current_temperature - 273.15))
+        current_pressure = y["pressure"]
+        current_humidity = y["humidity"]
+        z = x["weather"]
+        weather_description = z[0]["description"]
     
-            em = nextcord.Embed(title=f"{city} Weather Information")
-            em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
-            em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
-            em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
-            em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
-            em.add_field(name="Humidity (%)", value=f"{current_humidity}", inline=False)
-            em.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
-            em.timestamp = datetime.datetime.utcnow()
+        em = nextcord.Embed(title=f"{city} Weather Information")
+        em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
+        em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
+        em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
+        em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
+        em.add_field(name="Humidity (%)", value=f"{current_humidity}", inline=False)
+        em.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
+        em.timestamp = datetime.datetime.utcnow()
     
-            await interaction.send(embed=em)
+        await interaction.send(embed=em)
     else:
         await interaction.send(f"No City Found - {city}")
-"""
 
 
 @client.command(aliases=["covid"])
