@@ -2468,7 +2468,7 @@ async def weather(ctx, *, city: str=None):
         z = x["weather"]
         weather_description = z[0]["description"]
     
-        em = nextcord.Embed(title=f"{city} Weather Information")
+        em = nextcord.Embed(title=f"{city.title()} Weather Information")
         em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
         em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
         em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
@@ -2500,7 +2500,7 @@ async def weather(interaction: Interaction, *, city: str):
         z = x["weather"]
         weather_description = z[0]["description"]
     
-        em = nextcord.Embed(title=f"{city} Weather Information")
+        em = nextcord.Embed(title=f"{city.title()} Weather Information")
         em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
         em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
         em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
@@ -2524,11 +2524,11 @@ async def cv(ctx, *, country):
     found = list(filter(lambda entry: entry["Country"] == country, r.json()["Countries"]))
 
     if len(found) == 0:
-        await ctx.reply(f"Invalid Country - {country}")
+        await ctx.reply(f"Invalid Country - {country.title()}")
 
     data = found[0]
 
-    em = nextcord.Embed(title=f"{country} COVID-19 Statistic")
+    em = nextcord.Embed(title=f"{country.title()} COVID-19 Statistic")
     em.add_field(name="Total Confirmed", value=data["TotalConfirmed"])
     em.add_field(name="Total Deaths", value=data["TotalDeaths"])
     em.add_field(name="New Confirmed", value=data["NewConfirmed"])
@@ -2548,11 +2548,11 @@ async def cv(interaction: Interaction, *, country):
     found = list(filter(lambda entry: entry["Country"] == country, r.json()["Countries"]))
 
     if len(found) == 0:
-        await interaction.reply(f"Invalid Country - {country}")
+        await interaction.reply(f"Invalid Country - {country.title()}")
 
     data = found[0]
 
-    em = nextcord.Embed(title=f"{country} COVID-19 Statistic")
+    em = nextcord.Embed(title=f"{country.title()} COVID-19 Statistic")
     em.add_field(name="Total Confirmed", value=data["TotalConfirmed"])
     em.add_field(name="Total Deaths", value=data["TotalDeaths"])
     em.add_field(name="New Confirmed", value=data["NewConfirmed"])
@@ -2706,9 +2706,7 @@ async def wsay(ctx, *, message=None):
         return
 
     webhook = await ctx.channel.create_webhook(name=author.name)
-    await webhook.send(str(message),
-                       username=author.name,
-                       avatar_url=author.avatar.url)
+    await webhook.send(str(message), username=author.name, avatar_url=author.avatar.url)
     await ctx.message.delete()
 
     webhooks = await ctx.channel.webhooks()
