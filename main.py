@@ -15,6 +15,7 @@ import animec
 import aiosqlite
 import aiohttp
 import psutil
+from imdb import IMDb
 from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
@@ -456,7 +457,7 @@ async def help(ctx):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="weather, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await ctx.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -472,7 +473,7 @@ async def help(interaction: Interaction):
     helpEmbed.add_field(name="Anime", value="anime")
     helpEmbed.add_field(name="Images", value="dog, capybara food, rock")
     helpEmbed.add_field(name="Music", value="play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name="Other", value="weather, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    helpEmbed.add_field(name="Other", value="weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed=helpEmbed, view=view)
     await view.wait()
@@ -2512,6 +2513,62 @@ async def weather(interaction: Interaction, *, city: str):
         await interaction.send(embed=em)
     else:
         await interaction.send(f"No City Found - {city}")
+
+
+@client.command(aliases=["imdb"])
+async def movie(ctx, *, movie_name):
+    moviesDB = IMDb()
+    try:
+        movies = moviesDB.search_movie(movie_name)
+    except:
+        await ctx.reply(f"No Movie Found - {movie_name.title()}", mention_author=False)
+
+    id = movies[0].getID()
+    movie = moviesDB.get_movie(id)
+    title = movie['title']
+    year = movie['year']
+    rating = movie['rating']
+    # directors = movie['directors']
+    casting = movie['cast']
+    # direcStr = " ".join(map(str, directors))
+    actors = ", ".join(map(str, casting))
+
+    em = nextcord.Embed(title=f"{movie_name.title()}")
+    em.add_field(name="Title", value=f"**{movie_name.title()}**", inline=False)
+    em.add_field(name="Year", value=f"**{year}**", inline=False)
+    em.add_field(name="Rating", value=f"**{rating}**", inline=False)
+    # em.add_field(name="Directors", value=f"**{direcStr}**", inline=False)
+    em.add_field(name="Actors", value=f"**{actors}**", inline=False)
+
+    await ctx.send(embed=em)
+
+
+@client.slash_command(name="movie", description="Search for movie name")
+async def movie(interaction: Interaction, *, movie_name):
+    moviesDB = IMDb()
+    try:
+        movies = moviesDB.search_movie(movie_name)
+    except:
+        await interaction.send(f"No Movie Found - {movie_name.title()}")
+
+    id = movies[0].getID()
+    movie = moviesDB.get_movie(id)
+    title = movie['title']
+    year = movie['year']
+    rating = movie['rating']
+    # directors = movie['directors']
+    casting = movie['cast']
+    # direcStr = " ".join(map(str, directors))
+    actors = ", ".join(map(str, casting))
+
+    em = nextcord.Embed(title=f"{movie_name.title()}")
+    em.add_field(name="Title", value=f"**{movie_name.title()}**", inline=False)
+    em.add_field(name="Year", value=f"**{year}**", inline=False)
+    em.add_field(name="Rating", value=f"**{rating}**", inline=False)
+    # em.add_field(name="Directors", value=f"**{direcStr}**", inline=False)
+    em.add_field(name="Actors", value=f"**{actors}**", inline=False)
+
+    await interaction.send(embed=em)
 
 
 @client.command(aliases=["covid"])
