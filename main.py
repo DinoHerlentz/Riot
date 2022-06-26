@@ -2470,7 +2470,7 @@ async def weather(ctx, *, city: str=None):
         weather_description = z[0]["description"]
     
         em = nextcord.Embed(title=f"{city.title()} Weather Information")
-        em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
+        em.add_field(name="Weather Description", value=f"**{weather_description.title()}**", inline=False)
         em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
         em.add_field(name="Temperature (K)", value=f"**{current_temperature} K**", inline=False)
         em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
@@ -2502,7 +2502,7 @@ async def weather(interaction: Interaction, *, city: str):
         weather_description = z[0]["description"]
     
         em = nextcord.Embed(title=f"{city.title()} Weather Information")
-        em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
+        em.add_field(name="Weather Description", value=f"**{weather_description.title()}**", inline=False)
         em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
         em.add_field(name="Temperature (K)", value=f"**{current_temperature} K**", inline=False)
         em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
