@@ -2472,7 +2472,7 @@ async def weather(ctx, *, city: str=None):
         em = nextcord.Embed(title=f"{city.title()} Weather Information")
         em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
         em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
-        em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
+        em.add_field(name="Temperature (K)", value=f"**{current_temperature} K**", inline=False)
         em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
         em.add_field(name="Humidity (%)", value=f"{current_humidity}", inline=False)
         em.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
@@ -2495,7 +2495,7 @@ async def weather(interaction: Interaction, *, city: str):
     if x["cod"] != "404":
         y = x["main"]
         current_temperature = y["temp"]
-        current_temperature_celcius = str(round(current_temperature - 273.15))
+        current_temperature_celcius = str(round(current_temperature - 273))
         current_pressure = y["pressure"]
         current_humidity = y["humidity"]
         z = x["weather"]
@@ -2504,7 +2504,7 @@ async def weather(interaction: Interaction, *, city: str):
         em = nextcord.Embed(title=f"{city.title()} Weather Information")
         em.add_field(name="Weather Description", value=f"**{weather_description}**", inline=False)
         em.add_field(name="Temperature (C)", value=f"**{current_temperature_celcius}°C**", inline=False)
-        em.add_field(name="Temperature (K)", value=f"**{current_temperature}°K**", inline=False)
+        em.add_field(name="Temperature (K)", value=f"**{current_temperature} K**", inline=False)
         em.add_field(name="Atmospheric Pressure (hPa)", value=f"**{current_pressure}**", inline=False)
         em.add_field(name="Humidity (%)", value=f"{current_humidity}", inline=False)
         em.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
