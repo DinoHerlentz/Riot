@@ -2968,18 +2968,15 @@ async def poll(ctx, *, question):
 
     icon_url = ctx.author.avatar.url
 
-    pollEmbed = nextcord.Embed(title=f"New Poll",
-                              description=f"{question}",
-                              color=0x0FAFF)
+    em = nextcord.Embed(title=f"New Poll", description=f"{question}")
 
-    pollEmbed.set_footer(text=f"Poll by {ctx.author}",
-                         icon_url=ctx.author.avatar.url)
+    em.set_footer(text=f"Poll by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-    pollEmbed.timestamp = ctx.message.created_at
+    em.timestamp = ctx.message.created_at
 
     # await ctx.message.delete()
 
-    poll_msg = await ctx.send(embed=pollEmbed)
+    poll_msg = await ctx.send(embed=em)
 
     await poll_msg.add_reaction("👍")
     await poll_msg.add_reaction("👎")
