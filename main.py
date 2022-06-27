@@ -2516,7 +2516,12 @@ async def weather(interaction: Interaction, *, city: str):
 
 
 @client.command(aliases=["imdb"])
-async def movie(ctx, *, movie_name):
+async def movie(ctx, *, movie_name=None):
+    if movie_name == None:
+        em = nextcord.Embed(title="Movie", description="**Command :** >movie\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)")
+        em.timestamp = ctx.message.created_at
+        await ctx.send(embed=em)
+    
     moviesDB = IMDb()
     try:
         movies = moviesDB.search_movie(movie_name)
@@ -2533,14 +2538,14 @@ async def movie(ctx, *, movie_name):
     # direcStr = " ".join(map(str, directors))
     actors = ", ".join(map(str, casting))
 
-    em = nextcord.Embed(title=f"{movie_name.title()}")
-    em.add_field(name="Title", value=f"**{movie_name.title()}**", inline=False)
-    em.add_field(name="Year", value=f"**{year}**", inline=False)
-    em.add_field(name="Rating", value=f"**{rating}**", inline=False)
-    # em.add_field(name="Directors", value=f"**{direcStr}**", inline=False)
-    em.add_field(name="Actors", value=f"**{actors}**", inline=False)
+    em2 = nextcord.Embed(title=f"{movie_name.title()}")
+    em2.add_field(name="Title", value=f"**{movie_name.title()}**", inline=False)
+    em2.add_field(name="Year", value=f"**{year}**", inline=False)
+    em2.add_field(name="Rating", value=f"**{rating}**", inline=False)
+    # em2.add_field(name="Directors", value=f"**{direcStr}**", inline=False)
+    em2.add_field(name="Actors", value=f"**{actors}**", inline=False)
 
-    await ctx.send(embed=em)
+    await ctx.send(embed=em2)
 
 
 @client.slash_command(name="movie", description="Search for movie name")
