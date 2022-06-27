@@ -2519,7 +2519,6 @@ async def weather(interaction: Interaction, *, city: str):
 async def movie(ctx, *, movie_name=None):
     if movie_name == None:
         em = nextcord.Embed(title="Movie", description="**Command :** >movie\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)")
-        em.timestamp = ctx.message.created_at
         await ctx.send(embed=em)
     
     moviesDB = IMDb()
