@@ -20,7 +20,7 @@ from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
 from nextcord.ext import commands, tasks, activities, application_checks
-from nextcord.ext.application_checks import ApplicationNotOwner
+from nextcord.ext.application_checks import ApplicationNotOwner, ApplicationMissingPermissions
 from nextcord.abc import GuildChannel
 from nextcord import Interaction, SlashOption, ChannelType
 from nextcord.abc import GuildChannel
@@ -44,6 +44,7 @@ snipe_message_author = None
 def clean_code(content):
     if content.startswith("```") and content.endswith("```"):
         return "\n".join(content.split("\n")[1:])[:-3]
+    
     else:
         return content
 
@@ -208,31 +209,43 @@ class Pet(nextcord.ui.Select):
 
     async def callback(self, interaction: Interaction):
         if self.values[0] == "Dog":
-            await interaction.send("You bought Dog.", ephemeral=True)
+            await interaction.send("You bought Dog.", ephemeral = True)
+        
         elif self.values[0] == "Puppy":
-            await interaction.send("You bought Puppy. Can't wait too see the bigger puppy.", ephemeral=True)
+            await interaction.send("You bought Puppy. Can't wait too see the bigger puppy.", ephemeral = True)
+        
         elif self.values[0] == "Cat":
-            await interaction.send("You bought Cat. Hope it doesn't steal your fish, if you have any.", ephemeral=True)
+            await interaction.send("You bought Cat. Hope it doesn't steal your fish, if you have any.", ephemeral = True)
+        
         elif self.values[0] == "Hamster":
-            await interaction.send("You bought Hamster. Wise choice.", ephemeral=True)
+            await interaction.send("You bought Hamster. Wise choice.", ephemeral = True)
+        
         elif self.values[0] == "Bird":
-            await interaction.send("You bought Bird. This bird might be your morning alarm.", ephemeral=True)
+            await interaction.send("You bought Bird. This bird might be your morning alarm.", ephemeral = True)
+        
         elif self.values[0] == "Snake":
-            await interaction.send("You bought Snake. Hope it doesn't kill you.", ephemeral=True)
+            await interaction.send("You bought Snake. Hope it doesn't kill you.", ephemeral = True)
+        
         elif self.values[0] == "Dragon":
-            await interaction.send("You bought Dragon. What food will you give to this dragon?", ephemeral=True)
+            await interaction.send("You bought Dragon. What food will you give to this dragon?", ephemeral = True)
+        
         elif self.values[0] == "Chameleon":
-            await interaction.send("You bought Chameleon. Hope you don't lost it.", ephemeral=True)
+            await interaction.send("You bought Chameleon. Hope you don't lost it.", ephemeral = True)
+        
         elif self.values[0] == "Iguana":
-            await interaction.send("You bought Iguana. I think this is the most beautiful iguana in the world.", ephemeral=True)
+            await interaction.send("You bought Iguana. I think this is the most beautiful iguana in the world.", ephemeral = True)
+        
         elif self.values[0] == "Piranha":
-            await interaction.send("You bought Piranha. Hope it doesn't bite you.", ephemeral=True)
+            await interaction.send("You bought Piranha. Hope it doesn't bite you.", ephemeral = True)
+        
         elif self.values[0] == "Dolphin":
-            await interaction.send("You bought Dolphin. Is this dolphin fit in your aquarium?", ephemeral=True)
+            await interaction.send("You bought Dolphin. Is this dolphin fit in your aquarium?", ephemeral = True)
+        
         elif self.values[0] == "Panda":
-            await interaction.send("You bought Panda. He eats a lot", ephemeral=True)
+            await interaction.send("You bought Panda. He eats a lot", ephemeral = True)
+        
         elif self.values[0] == "Capybara":
-            await interaction.send("You bought Capybara. Wait, is this a Marmut?", ephemeral=True)
+            await interaction.send("You bought Capybara. Wait, is this a Marmut?", ephemeral = True)
 
 
 class PetView(nextcord.ui.View):
@@ -344,6 +357,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
     try:
         ctx = player.ctx
         vc: player = ctx.voice_client
+    
     except nextcord.HTTPException:
         interaction = player.interaction
         vc: player = interaction.guild.voice_client
@@ -357,11 +371,13 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
     try:
         next_song = vc.queue.get()
         await vc.play(next_song)
+    
     except wavelink.errors.QueueEmpty:
         pass
 
     try:
         await ctx.send(f"Now playing -> `{next_song.title}`")
+    
     except nextcord.HTTPException:
         await interaction.send(f"Now playing -> `{next_song.title}`")
 
@@ -407,22 +423,29 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         em = nextcord.Embed(title = "Invalid Command", description = "Type `>help` to see available commands")
         await ctx.send(embed = em)
+    
     elif isinstance(error, commands.MissingRequiredArgument):
         pass
+    
     elif isinstance(error, commands.MissingPermissions):
         pass
+    
     elif isinstance(error, commands.BadArgument):
         pass
+    
     elif isinstance(error, commands.BotMissingPermissions):
         botDel = await ctx.reply("Bot missing required permissions")
         await asyncio.sleep(3)
         await botDel.delete()
+    
     elif isinstance(error, commands.CommandOnCooldown):
         cdDel = await ctx.reply("This command is still on cooldown, try again in {:.2f}s".format(error.retry_after))
         await asyncio.sleep(3)
         await cdDel.delete()
+    
     elif isinstance(error, commands.DisabledCommand):
-      await ctx.reply("This command is disabled.")
+      await ctx.reply("This command is disabled.", mention_author = False)
+    
     elif isinstance(error, commands.MemberNotFound):
         pass
 
@@ -430,7 +453,10 @@ async def on_command_error(ctx, error):
 @client.event
 async def on_application_command_error(interaction: Interaction, error):
     if isinstance(error, application_checks.ApplicationNotOwner):
-        await interaction.send("This command is restricted for bot owners only.")
+        await interaction.send("This command is restricted for bot owners only.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationMissingPermissions):
+        await interaction.send("Missing required permission.", ephemeral = True)
 
 
 """
@@ -451,15 +477,15 @@ async def on_error(event, *args, **kwargs):
 async def help(ctx):
     view = Help()
     
-    helpEmbed = nextcord.Embed(title = "**Commands (>)**")
-    helpEmbed.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
-    helpEmbed.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
-    helpEmbed.add_field(name = "Anime", value = "anime")
-    helpEmbed.add_field(name = "Images", value = "dog, capybara food, rock")
-    helpEmbed.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name = "Other", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em = nextcord.Embed(title = "**Commands (>)**")
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
+    em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
+    em.add_field(name = "Anime", value = "anime")
+    em.add_field(name = "Images", value = "dog, capybara food, rock")
+    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
+    em.add_field(name = "Other", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
-    await ctx.send(embed = helpEmbed, view = view)
+    await ctx.send(embed = em, view = view)
     await view.wait()
 
 
@@ -467,15 +493,15 @@ async def help(ctx):
 async def help(interaction: Interaction):
     view = Help()
     
-    helpEmbed = nextcord.Embed(title = "**Commands (>)**")
-    helpEmbed.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
-    helpEmbed.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
-    helpEmbed.add_field(name = "Anime", value = "anime")
-    helpEmbed.add_field(name = "Images", value = "dog, capybara food, rock")
-    helpEmbed.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    helpEmbed.add_field(name = "Other", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em = nextcord.Embed(title = "**Commands (>)**")
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
+    em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
+    em.add_field(name = "Anime", value = "anime")
+    em.add_field(name = "Images", value = "dog, capybara food, rock")
+    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
+    em.add_field(name = "Other", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
-    await interaction.send(embed = helpEmbed, view = view)
+    await interaction.send(embed = em, view = view)
     await view.wait()
 
 
@@ -504,6 +530,23 @@ async def ban(ctx, member: nextcord.Member = None, *, reason = None):
         await ctx.send(embed = em5)
 
 
+@client.slash_command(name = "ban", description = "Ban a member")
+@application_checks.has_permissions(ban_members = True)
+async def ban(interaction: Interaction, member: nextcord.Member, *, reason):
+    if member.id == interaction.user.id:
+        await interaction.send("**❌ You can't ban yourself.**", ephemeral = True)
+
+    elif member.top_role >= interaction.user.top_role:
+        await interaction.send("❌ You can only moderate members below your role.", ephemeral = True)
+
+    else:
+        em = nextcord.Embed(title = "Ban", description = f"You've been banned from **{interaction.guild.name}**\nReason : {reason}", color = nextcord.Color.red())
+        await member.send(embed = em)
+
+        em2 = nextcord.Embed(title = "Ban", description = f"{interaction.user.mention} has banned {member.mention}\nReason : {reason}", color = nextcord.Color.red())
+        await interaction.send(embed = em2)
+
+
 @client.command(aliases = ["uba", "u"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(ban_members = True)
@@ -525,12 +568,28 @@ async def unban(ctx, member = None, *, reason = None):
             await ctx.send(embed = em2)
 
 
+@client.slash_command(name = "unban", description = "Unban a member")
+@application_checks.has_permissions(ban_members = True)
+async def unban(interaction: Interaction, member, *, reason):
+    banned_users = await interaction.guild.bans()
+    member_name, member_discriminator = member.split("#")
+
+    for ban_entry in banned_users:
+        user = ban_entry.user
+
+        if (user.name, user.discriminator) == (member_name, member_discriminator):
+            await interaction.guild.unban(user)
+
+            em = nextcord.Embed(title = "Unban", description = f"{interaction.user.mention} has unbanned {member}\nReason : {reason}", color = nextcord.Color.red())
+            await interaction.send(embed = em)
+
+
 @client.command(aliases = ["mute", "tm"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
 async def timeout(ctx, member: nextcord.Member = None, time = None, *, reason = None):
     if member == None or time == None:
-        em = nextcord.Embed(title = "Timeout", description = "**Command :** >timeout\n**Description :** Timeout a member so they can't chat/speak/react to message\n**Usage :** >timeout [member] [duration] [reason]\n**Example :** >timeout @DINO 10m Annoying")
+        em = nextcord.Embed(title = "Timeout", description = "**Command :** >timeout\n**Description :** Timeout a member so they can't chat/speak/react to a message\n**Usage :** >timeout [member] [duration] [reason]\n**Example :** >timeout @DINO 10m Annoying")
         await ctx.send(embed = em)
 
     if member == ctx.author:
@@ -552,6 +611,26 @@ async def timeout(ctx, member: nextcord.Member = None, time = None, *, reason = 
         await member.send(embed = em5)
 
 
+@client.slash_command(name = "timeout", description = "Timeout a member so they can't chat/speak/react to a message")
+@application_checks.has_permissions(moderate_members = True)
+async def timeout(interaction: Interaction, member: nextcord.Member, time, *, reason):
+    if member == interaction.user:
+        await interaction.send("❌ You can't mute yourself.", ephemeral = True)
+
+    elif member.top_role >= interaction.user.top_role:
+        await interaction.send("❌ You can only moderate members below your role.", ephemeral = True)
+
+    else:
+        time = humanfriendly.parse_timespan(time)
+        await member.edit(timeout = nextcord.utils.utcnow() + datetime.timedelta(seconds = time))
+
+        em = nextcord.Embed(title = "Timeout", description = f"{interaction.user.mention} has use timeout on {member.mention}\nReason : {reason}", color = nextcord.Color.red())
+        await interaction.send(embed = em)
+
+        em2 = nextcord.Embed(title = "Timeout", description = f"You've been muted in {interaction.guild.name}\nReason : {reason}", color = nextcord.Color.red())
+        await member.send(embed = em2)
+
+
 @client.command(aliases = ["unmute", "ut", "rt"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
@@ -569,8 +648,23 @@ async def removetimeout(ctx, member: nextcord.Member = None, *, reason = None):
         em3 = nextcord.Embed(title = "Timeout Remove", description = f"{ctx.author.mention} has removed {member.mention} timeout\nReason : {reason}", color = nextcord.Color.red())
         await ctx.send(embed = em3)
 
-        em4 = nextcord.Embed(title = "Unmute", description = f"You've been unmuted in {ctx.guild.name}\nReason : {reason}", color = nextcord.Color.red())
+        em4 = nextcord.Embed(title = "Timeout Remove", description = f"You've been unmuted in {ctx.guild.name}\nReason : {reason}", color = nextcord.Color.red())
         await member.send(embed = em4)
+
+
+@client.slash_command(name = "removetimeout", description = "Remove timeout from a member")
+@application_checks.has_permissions(moderate_members = True)
+async def removetimeout(interaction: Interaction, member: nextcord.Member, *, reason):
+    if member.top_role >= interaction.user.top_role:
+        await interaction.send("❌ You can only moderate members below your role.", ephemeral = True)
+
+    else:
+        await member.edit(timeout = None)
+        em = nextcord.Embed(title = "Timeout Remove", description = f"{interaction.user.mention} has removed {member.mention} timeout\nReason : {reason}", color = nextcord.Color.red())
+        await interaction.send(embed = em)
+
+        em2 = nextcord.Embed(title = "Unmute", description = f"You've been unmuted in {interaction.guild.name}\nReason : {reason}", color = nextcord.Color.red())
+        await member.send(embed = em2)
 
 
 @client.command(aliases = ["k"])
@@ -597,6 +691,23 @@ async def kick(ctx, member: nextcord.Member = None, *, reason = None):
         await member.send(embed = em5)
 
 
+@client.slash_command(name = "kick", description = "Kick a member")
+@application_checks.has_permissions(kick_members = True)
+async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
+    if member == interaction.user:
+        await interaction.send("**❌ You can't kick yourself.**", ephemeral = True)
+
+    elif member.top_role >= interaction.user.top_role:
+        await interaction.send("**❌ You can only moderate members below your role.**", ephemeral = True)
+
+    else:
+        em = nextcord.Embed(title = "Kick", description = f"{interaction.user.mention} has kicked {member.mention}\nReason : {reason}", color = nextcord.Color.red())
+        await interaction.send(embed = em)
+        
+        em2 = nextcord.Embed(title = "Kick", description = f"You've been kicked from **{interaction.guild.name}**\nReason : {reason}", color = nextcord.Color.red())
+        await member.send(embed = em2)
+
+
 @client.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(administrator = True)
@@ -621,6 +732,23 @@ async def warn(ctx, member: nextcord.Member = None, *, reason = None):
         await member.send(embed = em5)
 
 
+@client.slash_command(name = "warn", description = "Warn a member")
+@application_checks.has_permissions(administrator = True)
+async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
+    if member == interaction.user:
+        await interaction.send("**❌ You can't warn yourself.**", ephemeral = True)
+
+    elif member.top_role >= interaction.user.top_role:
+        await interaction.send("**❌ You can only moderate members below your role.**", ephemeral = True)
+
+    else:
+        em = nextcord.Embed(title = "**Warn**", description = f"{interaction.user.mention} has warned {member.mention}\nReason : {reason}", color = nextcord.Color.red())
+        await interaction.send(embed = em)
+
+        em2 = nextcord.Embed(title = "Warn", description = f"You've been warned in {interaction.guild.name}\nReason : {reason}", color = nextcord.Color.red())
+        await member.send(embed = em2)
+
+
 @client.command(aliasaes = ["clear", "cls"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
@@ -643,19 +771,27 @@ async def slowmode(ctx, seconds: int = None):
     else:
         await ctx.channel.edit(slowmode_delay = seconds)
         em2 = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.")
-        await ctx.reply(embed = em2)
+        await ctx.reply(embed = em2, mention_author = False)
+
+
+@client.slash_command(name = "slowmode", description = "Add a slowmode to a current channel")
+@application_checks.has_permissions(manage_channels = True)
+async def slowmode(interaction: Interaction, seconds: int):
+    await interaction.channel.edit(slowmode_delay = seconds)
+    em = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.")
+    await interaction.send(embed = em)
 
 
 @client.command()
 @commands.has_permissions(manage_messages = True)
-async def announce(ctx, channel: nextcord.TextChannel = None, *, msg = None):
-    if channel == None or msg == None:
+async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None):
+    if channel == None or message == None:
       em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message in specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
       await ctx.send(embed = em)
     else:
-      await ctx.reply("Announcement has been sent.")
+      await ctx.reply("Announcement has been sent.", mention_author = False)
       
-      em2 = nextcord.Embed(title = "New Announcement", description = f"{msg}")
+      em2 = nextcord.Embed(title = "New Announcement", description = f"{message}")
       em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
       em2.timestamp = ctx.message.created_at
       await channel.send(embed = em2)
