@@ -473,7 +473,7 @@ async def on_error(event, *args, **kwargs):
 
 
 # Help Command
-@client.command(aliasaes = ["?", "halp", "riot"])
+@client.command(aliases = ["?", "halp", "riot"])
 async def help(ctx):
     view = Help()
     
@@ -749,18 +749,19 @@ async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
         await member.send(embed = em2)
 
 
-@client.command(aliasaes = ["clear", "cls"])
+@client.command(aliases = ["clear", "cls"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
 async def purge(ctx, amount = None, arg: str = None):
     if amount == None:
         em = nextcord.Embed(title = "**Purge**", description = "**Command :** >purge\n**Description :** Delete the amount of messages from a channel\n**Usage :** >purge [amount]\n**Example :** >purge 100")
         await ctx.send(embed = em)
+    
     await ctx.message.delete()
     await ctx.channel.purge(limit = int(amount))
 
 
-@client.command(aliasaes = ["sm"])
+@client.command(aliases = ["sm"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int = None):
@@ -797,7 +798,7 @@ async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None)
       await channel.send(embed = em2)
 
 
-@client.command(aliasaes = ["ar"])
+@client.command(aliases = ["ar"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
 async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
@@ -809,7 +810,7 @@ async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = 
         await ctx.send(f"Successfully added {role.mention} to {member.mention}")
 
 
-@client.command(aliasaes = ["rr"])
+@client.command(aliases = ["rr"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
 async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
@@ -822,7 +823,7 @@ async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member
         await ctx.send(f"Successfully removed {role.mention} from {member.mention}")
 
 
-@client.command(aliasaes = ["cn"])
+@client.command(aliases = ["cn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_nicknames = True)
 async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
@@ -835,7 +836,7 @@ async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
         await ctx.reply(f"Successfully changed {member.mention} nicknames to {nickname}")
 
 
-@client.command(aliasaes = ["ctcn"])
+@client.command(aliases = ["ctcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_channels = True)
 async def changetextchannelname(ctx, channel: nextcord.TextChannel = None, *, channel_name = None):
@@ -849,7 +850,7 @@ async def changetextchannelname(ctx, channel: nextcord.TextChannel = None, *, ch
 
 
 # Fun Command
-@client.command(aliasaes = ["meme"])
+@client.command(aliases = ["meme"])
 async def memes(ctx):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
@@ -917,7 +918,7 @@ async def dadjoke(interaction: Interaction):
 """
 
 
-@client.command(aliasaes = ["8ball"])
+@client.command(aliases = ["8ball"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def eightball(ctx, *, question = None):
     responses = [
@@ -963,7 +964,7 @@ async def eightball(interaction: Interaction, *, question):
     await interaction.send(embed = em)
 
 
-@client.command(aliasaes = ["covidtest", "swabtest", "pcr"])
+@client.command(aliases = ["covidtest", "swabtest", "pcr"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def cvtest(ctx, member: nextcord.Member = None):
     covidResponses = ["positive", "negative"]
@@ -1013,7 +1014,7 @@ async def temperature(interaction: Interaction, member: nextcord.Member):
   await interaction.edit_original_message(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
 
 
-@client.command(aliasaes = ["rolldice", "roll"])
+@client.command(aliases = ["rolldice", "roll"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def dice(ctx):
     message = await ctx.reply(f"{ctx.author.mention} rolled a dice and gets...")
@@ -1028,7 +1029,7 @@ async def dice(interaction: Interaction):
     await interaction.edit_original_message(content = f"{interaction.user.mention} rolled a dice and gets **{random.randint(1, 6)}** :game_die:")
 
 
-@client.command(aliasaes = ["flip", "cf", "coin"])
+@client.command(aliases = ["flip", "cf", "coin"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def coinflip(ctx, choice = None):
     if choice == None:
@@ -1394,7 +1395,7 @@ async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(cha
     await interaction.send(embed = em, view = SketchGame(invite_link))
 
 
-@game.command(aliasaes = ["fishing", "fish"])
+@game.command(aliases = ["fishing", "fish"])
 async def fishington(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1456,7 +1457,7 @@ async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(chan
     await interaction.send(embed = em, view = ChessGame(invite_link))
 
 
-@game.command(aliasaes = ["checker"])
+@game.command(aliases = ["checker"])
 async def checkers(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1642,7 +1643,7 @@ async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(ch
     await interaction.send(embed = em, view = YouTubeGame(invite_link))
 
 
-@game.command(aliasaes = ["ll", "letter"])
+@game.command(aliases = ["ll", "letter"])
 async def letterleague(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1673,7 +1674,7 @@ async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOpti
     await interaction.send(embed = em, view = LetterLeagueGame(invite_link))
 
 
-@game.command(aliasaes = ["ws"])
+@game.command(aliases = ["ws"])
 async def wordsnacks(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1705,7 +1706,7 @@ async def wordsnacks(interaction, channel: GuildChannel=SlashOption(channel_type
 
 
 # Anime Command
-@anime.command(aliasaes = ["n"])
+@anime.command(aliases = ["n"])
 async def news(ctx, amount: int=5):
     aninews = animec.Aninews(amount)
     links = aninews.links
@@ -1777,7 +1778,7 @@ async def search(interaction: Interaction, *, anime):
     await interaction.send(embed = em)
 
 
-@anime.command(aliasaes = ["chara"])
+@anime.command(aliases = ["chara"])
 async def character(ctx, *, query):
     try:
         char = animec.Charsearch(query)
@@ -1805,7 +1806,7 @@ async def character(interaction: Interaction, *, name):
     await interaction.send(embed = em)
 
 
-@anime.command(aliasaes = ["meme"])
+@anime.command(aliases = ["meme"])
 async def memes(ctx):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
@@ -1830,7 +1831,7 @@ async def memes(interaction: Interaction):
             await interaction.send(embed = em)
 
 
-@anime.command(aliasaes = ["wa"])
+@anime.command(aliases = ["wa"])
 async def waifu(ctx):
     res = requests.get("https://api.waifu.pics/sfw/waifu")
     image_link = res.json()["url"]
@@ -1858,7 +1859,7 @@ async def shinobu(ctx):
     await ctx.send(image_link)
 
 
-@anime.command(aliasaes = ["megumi"])
+@anime.command(aliases = ["megumi"])
 async def megumin(ctx):
     res = requests.get("https://api.waifu.pics/sfw/megumin")
     image_link = res.json()["url"]
@@ -2041,7 +2042,7 @@ async def image(interaction: Interaction):
     await interaction.send(image_link)
 
 
-@dog.command(name = "gif", aliasaes = ["feed", "play", "sleep"])
+@dog.command(name = "gif", aliases = ["feed", "play", "sleep"])
 async def gif(ctx):
 	await ctx.send(random.choice(dogs[ctx.invoked_with]))
 
@@ -2135,7 +2136,7 @@ async def food(interaction: Interaction):
     await interaction.send(image_link)
 
 
-@client.command(aliasaes = ["rok"])
+@client.command(aliases = ["rok"])
 async def rock(ctx: commands.Context):
     async with aiohttp.ClientSession() as ses:
         async with ses.get("https://mrconos.pythonanywhere.com/rock/random") as api:
@@ -2172,7 +2173,7 @@ async def rock(Interaction: commands.Context):
 
 
 # Music Command
-@client.command(aliasaes = ["p"])
+@client.command(aliases = ["p"])
 async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
 	if not ctx.voice_client:
 		vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
@@ -2215,7 +2216,7 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
     setattr(vc, "loop", False)
 
 
-@client.command(aliasaes = ["spotify", "sp", "spotifyplay"])
+@client.command(aliases = ["spotify", "sp", "spotifyplay"])
 async def splay(ctx: commands.Context, *, query: str):
     if not ctx.voice_client:
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
@@ -2327,7 +2328,7 @@ async def resume(interaction: Interaction):
     await interaction.send("Successfully resumed the music.")
 
 
-@client.command(aliasaes = ["s"])
+@client.command(aliases = ["s"])
 async def stop(ctx: commands.Context):
 	if not ctx.voice_client:
 		await ctx.reply("I'm not in a voice channel.")
@@ -2353,7 +2354,7 @@ async def stop(interaction: Interaction):
     await interaction.send("Successfully stop the current music.")
 
 
-@client.command(aliasaes = ["dc"])
+@client.command(aliases = ["dc"])
 @commands.has_permissions(administrator = True)
 async def disconnect(ctx: commands.Context):
 	if not getattr(ctx.author.voice, "channel", None):
@@ -2418,7 +2419,7 @@ async def loop(interaction: Interaction):
         await interaction.send("Music loop has been disabled.")
 
 
-@client.command(aliasaes = ["q"])
+@client.command(aliases = ["q"])
 async def queue(ctx: commands.Context):
     if not ctx.voice_client:
         await ctx.reply("I'm not in a voice channel.")
@@ -2464,7 +2465,7 @@ async def queue(interaction: Interaction):
         await interaction.send(embed = em)
 
 
-@client.command(aliasaes = ["vol"])
+@client.command(aliases = ["vol"])
 async def volume(ctx: commands.Context, volume: int):
     if not ctx.voice_client:
         await ctx.reply(f"I'm not in a voice channel.")
@@ -2500,7 +2501,7 @@ async def volume(interaction: Interaction, volume: int):
     await interaction.send(f"Music volume has been set to `{volume}%`")
 
 
-@client.command(aliasaes = ["np", "cp", "currentplay"])
+@client.command(aliases = ["np", "cp", "currentplay"])
 async def nowplaying(ctx: commands.Context):
     if not ctx.voice_client:
         await ctx.reply("I'm not in the voice channel.")
@@ -2537,7 +2538,7 @@ async def nowplaying(interaction: Interaction):
         await interaction.send(embed = em)
 
 
-@client.command(aliasaes = ["l"])
+@client.command(aliases = ["l"])
 async def lyrics(ctx: commands.Context):
     if not ctx.voice_client:
         await ctx.reply("I'm not in the voice channel.")
@@ -2645,7 +2646,7 @@ async def weather(interaction: Interaction, *, city: str):
         await interaction.send(f"No City Found - {city}")
 
 
-@client.command(aliasaes = ["imdb"])
+@client.command(aliases = ["imdb"])
 async def movie(ctx, *, movie_name = None):
     if movie_name == None:
         em = nextcord.Embed(title = "Movie", description = "**Command :** >movie\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)")
@@ -2705,7 +2706,7 @@ async def movie(interaction: Interaction, *, movie_name):
     await interaction.send(embed = em)
 
 
-@client.command(aliasaes = ["covid"])
+@client.command(aliases = ["covid"])
 async def cv(ctx, *, country):
     r = requests.get("https://api.covid19api.com/summary")
 
@@ -2841,7 +2842,7 @@ async def quote(interaction: Interaction):
     await interaction.send(quote)
 
 
-@client.command(aliasaes = ["cm"])
+@client.command(aliases = ["cm"])
 async def cleardm(ctx, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
     async for message in dmchannel.history(limit = int(amount)):
@@ -2905,7 +2906,7 @@ async def wsay(ctx, *, message = None):
         await webhook.delete()
 
 
-@client.command(aliasaes = ["avatar"])
+@client.command(aliases = ["avatar"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def av(ctx, member: nextcord.Member = None):
     if member == None:
@@ -2936,7 +2937,7 @@ async def av(interaction: Interaction, member: nextcord.Member = None):
     await interaction.send(embed = em)
 
 
-@client.command(aliasaes = ["whois", "w", "ui", "info"])
+@client.command(aliases = ["whois", "w", "ui", "info"])
 async def userinfo(ctx, member: nextcord.Member = None):
     if member == None:
         member = ctx.author
@@ -2986,7 +2987,7 @@ async def userinfo(interaction: Interaction, member: nextcord.Member = None):
     await interaction.send(embed = embed)
 
 
-@client.command(aliasaes = ["si"])
+@client.command(aliases = ["si"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def serverinfo(ctx):
     role_count = len(ctx.guild.roles)
@@ -3090,7 +3091,7 @@ async def poll(ctx, *, argument):
     await poll_msg.add_reaction("👎")
 
 
-@client.command(aliasaes = ["gi", "guildicon"])
+@client.command(aliases = ["gi", "guildicon"])
 async def servericon(ctx):
   icon = ctx.guild.icon
 
@@ -3123,7 +3124,7 @@ async def id(interaction: Interaction, member: nextcord.Member):
     await interaction.send(member.id)
 
 
-@client.command(aliasaes = ["mc"])
+@client.command(aliases = ["mc"])
 async def membercount(ctx):
     em = nextcord.Embed(title = f"{ctx.guild.name}'s Total Members", description = ctx.guild.member_count)
     em.timestamp = ctx.message.created_at
@@ -3137,7 +3138,7 @@ async def membercount(interaction: Interaction):
     await interaction.send(embed = em)
 
 
-@client.command(aliasaes = ["ei"])
+@client.command(aliases = ["ei"])
 async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
     if emoji == None:
         await ctx.reply("Please insert the emoji.")
@@ -3183,7 +3184,7 @@ async def dm(ctx, member: nextcord.Member, *, content):
     await ctx.reply("Message has been sent.")
 
 
-@client.command(aliasaes = ["statistic", "stat"])
+@client.command(aliases = ["statistic", "stat"])
 @commands.is_owner()
 async def stats(ctx):
     em = nextcord.Embed(title = "Riot Bot Statistic")
@@ -3199,7 +3200,7 @@ async def activity(ctx, *, activity):
     await ctx.reply(f"My activity has been set to **{activity}**")
 
 
-@client.command(aliasaes = ["ln"])
+@client.command(aliases = ["ln"])
 @commands.is_owner()
 async def leaveservername(ctx, *, guild_name):
   guildName = nextcord.utils.get(client.guilds, name = guild_name)
@@ -3211,7 +3212,7 @@ async def leaveservername(ctx, *, guild_name):
     await ctx.reply(f"Successfully leave {guild_name}")
 
 
-@client.command(aliasaes = ["lid"])
+@client.command(aliases = ["lid"])
 @commands.is_owner()
 async def leaveserverid(ctx, *, guild_id):
   guildID = nextcord.utils.get(client.guilds, name = guild_id)
@@ -3223,7 +3224,7 @@ async def leaveserverid(ctx, *, guild_id):
     await ctx.reply(f"Successfully leave {guild_id}")
 
 
-@client.command(aliasaes = ["message"])
+@client.command(aliases = ["message"])
 @commands.is_owner()
 async def msg(ctx, channel: nextcord.TextChannel, *, msg):
     # await ctx.reply("Successfully send the message.")
@@ -3266,44 +3267,44 @@ async def act(ctx, member: nextcord.Member, *, message = None):
         await webhook.delete()
 
 
-@client.command(aliasaes = ["owner"])
+@client.command(aliases = ["owner"])
 async def creator(ctx):
     await ctx.reply("DINO#9914")
 
 
-@client.command(aliasaes = ["born"])
+@client.command(aliases = ["born"])
 async def created(ctx):
     await ctx.reply("I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
 
 
-@client.command(aliasaes = ["ver", "__ver__" "__version__"])
+@client.command(aliases = ["ver", "__ver__" "__version__"])
 @commands.is_owner()
 async def version(ctx):
     await ctx.send(nextcord.__version__)
 
 
-@client.command(aliasaes = ["checkguildid"])
+@client.command(aliases = ["checkguildid"])
 @commands.is_owner()
 async def gid(ctx):
     async for guild in client.fetch_guilds():
         await ctx.send(guild.id)
 
 
-@client.command(aliasaes = ["checkguild"])
+@client.command(aliases = ["checkguild"])
 @commands.is_owner()
 async def cg(ctx):
     async for guild in client.fetch_guilds():
         await ctx.send(guild.name)
 
 
-@client.command(aliasaes = ["checkguildlist"])
+@client.command(aliases = ["checkguildlist"])
 @commands.is_owner()
 async def cgl(ctx):
     guilds = await client.fetch_guilds().flatten()
     await ctx.send(guilds)
 
 
-@client.command(aliasaes = ["ci"])
+@client.command(aliases = ["ci"])
 @commands.is_owner()
 async def createinvite(ctx, guildid: int):
     try:
@@ -3343,7 +3344,7 @@ async def left(ctx):
         await ctx.reply("I'm not in a voice channel.")
 
 
-@client.command(aliasaes = ["e"])
+@client.command(aliases = ["e"])
 @commands.is_owner()
 async def eval(ctx, *, code):
     code = clean_code(code)
