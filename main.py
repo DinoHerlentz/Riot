@@ -20,7 +20,7 @@ from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
 from nextcord.ext import commands, tasks, activities, application_checks
-from nextcord.ext.application_checks import ApplicationNotOwner, ApplicationMissingPermissions
+from nextcord.ext.application_checks import ApplicationNotOwner, ApplicationMissingPermissions, ApplicationMissingRole, ApplicationMissingAnyRole, ApplicationBotMissingPermissions, ApplicationBotMissingRole, ApplicationBotMissingAnyRole, ApplicationNSFWChannelRequired, ApplicationNoPrivateMessage, ApplicationPrivateMessageOnly
 from nextcord.abc import GuildChannel
 from nextcord import Interaction, SlashOption, ChannelType
 from nextcord.abc import GuildChannel
@@ -457,6 +457,30 @@ async def on_application_command_error(interaction: Interaction, error):
 
     elif isinstance(error, application_checks.ApplicationMissingPermissions):
         await interaction.send("Missing required permission.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationMissingRole):
+        await interaction.send("Missing role.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationMissingAnyRole):
+        await interaction.send("Missing any role.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationBotMissingPermissions):
+        await interaction.send("Bot missing permissions.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationBotMissingRole):
+        await interaction.send("Bot missing role.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationBotMissingAnyRole):
+        await interaction.send("Bot missing any role.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationNSFWChannelRequired):
+        await interaction.send("NSFW channel required.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationNoPrivateMessage):
+        await interaction.send("No private message.", ephemeral = True)
+
+    elif isinstance(error, application_checks.ApplicationPrivateMessageOnly):
+        await interaction.send("Private message only", ephemeral = True)
 
 
 """
