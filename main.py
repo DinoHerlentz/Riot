@@ -511,7 +511,7 @@ async def help(interaction: Interaction):
 @commands.has_permissions(ban_members = True)
 async def ban(ctx, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Ban", description = "**Command :** >ban\n**Description :** Ban a member\n**Usage :** >ban [user] [reason]\n**Example :** >ban @DINO rude!")
+        em = nextcord.Embed(title = "Ban", description = "**Command :** >ban\n**Description :** Ban a member\n**Usage :** >ban [user] [reason]\n**Example :** >ban @Riot rude!")
         await ctx.send(embed = em)
 
     elif member.id == ctx.author.id:
@@ -552,7 +552,7 @@ async def ban(interaction: Interaction, member: nextcord.Member, *, reason):
 @commands.has_permissions(ban_members = True)
 async def unban(ctx, member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Unban", description = "**Command :** >unban\n**Description :** Unban a member\n**Usage :** >uba [member (with discriminator)] [reason]\n**Example :** >uba DINO#9914 Appealed")
+        em = nextcord.Embed(title = "Unban", description = "**Command :** >unban\n**Description :** Unban a member\n**Usage :** >uba [member (with discriminator)] [reason]\n**Example :** >uba Wumpus#0001 Appealed")
         await ctx.send(embed = em)
 
     banned_users = await ctx.guild.bans()
@@ -589,7 +589,7 @@ async def unban(interaction: Interaction, member, *, reason):
 @commands.has_permissions(moderate_members = True)
 async def timeout(ctx, member: nextcord.Member = None, time = None, *, reason = None):
     if member == None or time == None:
-        em = nextcord.Embed(title = "Timeout", description = "**Command :** >timeout\n**Description :** Timeout a member so they can't chat/speak/react to a message\n**Usage :** >timeout [member] [duration] [reason]\n**Example :** >timeout @DINO 10m Annoying")
+        em = nextcord.Embed(title = "Timeout", description = "**Command :** >timeout\n**Description :** Timeout a member so they can't chat/speak/react to a message\n**Usage :** >timeout [member] [duration] [reason]\n**Example :** >timeout @Riot 10m Annoying")
         await ctx.send(embed = em)
 
     if member == ctx.author:
@@ -636,7 +636,7 @@ async def timeout(interaction: Interaction, member: nextcord.Member, time, *, re
 @commands.has_permissions(moderate_members = True)
 async def removetimeout(ctx, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Remove Timeout", description = "**Command :** >removetimeout\n**Description :** Remove timeout from a member\n**Usage :** >removetimeout [user] [reason]\n**Example :** >unmute @DINO Appealed")
+        em = nextcord.Embed(title = "Remove Timeout", description = "**Command :** >removetimeout\n**Description :** Remove timeout from a member\n**Usage :** >removetimeout [user] [reason]\n**Example :** >unmute @Riot Appealed")
         await ctx.send(embed = em)
 
     if member.top_role >= ctx.author.top_role:
@@ -672,7 +672,7 @@ async def removetimeout(interaction: Interaction, member: nextcord.Member, *, re
 @commands.has_permissions(kick_members = True)
 async def kick(ctx, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "**Kick**", description = "**Command :** >kick\n**Description :** Kick a member\n**Usage :** >kick [member] [reason]\n**Example :** >kick @DINO Annoying")
+        em = nextcord.Embed(title = "**Kick**", description = "**Command :** >kick\n**Description :** Kick a member\n**Usage :** >kick [member] [reason]\n**Example :** >kick @Riot Annoying")
         await ctx.send(embed = em)
 
     if member == ctx.author:
@@ -713,7 +713,7 @@ async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
 @commands.has_permissions(administrator = True)
 async def warn(ctx, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Warn", description = "**Command :** >warn\n**Description :** Warn a member\n**Usage :** >warn [user] [reason]\n**Example :** >warn @DINO Last warn for being rude")
+        em = nextcord.Embed(title = "Warn", description = "**Command :** >warn\n**Description :** Warn a member\n**Usage :** >warn [user] [reason]\n**Example :** >warn @Riot Last warn for being rude")
         await ctx.send(embed = em)
 
     elif member == ctx.author:
@@ -803,7 +803,7 @@ async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None)
 @commands.has_permissions(manage_roles = True)
 async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
-        em = nextcord.Embed(title = "Add Role", description = "**Command :** >addrole\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO")
+        em = nextcord.Embed(title = "Add Role", description = "**Command :** >addrole\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @Riot")
         await ctx.send(embed = em)
     else:
         await member.add_roles(role)
@@ -815,7 +815,7 @@ async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = 
 @commands.has_permissions(manage_roles = True)
 async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
-        em = nextcord.Embed(title = "Remove Role", description = "**Command :** >removerole\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @DINO")
+        em = nextcord.Embed(title = "Remove Role", description = "**Command :** >removerole\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @Riot")
         await ctx.send(embed = em)
 
     else:
@@ -828,7 +828,7 @@ async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member
 @commands.has_permissions(manage_nicknames = True)
 async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
     if member == None or nickname == None:
-        em = nextcord.Embed(title = "Nick", description = "**Command :** >nick\n**Description :** Change a nickname of a specified user (Note : My role/your role must be higher than the member's role)\n**Usage :** >nick [user] [new nickname]\n**Example  :** >nick @DINO Weebs")
+        em = nextcord.Embed(title = "Nick", description = "**Command :** >nick\n**Description :** Change a nickname of a specified user (Note : My role/your role must be higher than the member's role)\n**Usage :** >nick [user] [new nickname]\n**Example  :** >nick @Riot Weebs")
         await ctx.send(embed = em)
 
     else:
