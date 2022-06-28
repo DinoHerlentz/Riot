@@ -480,7 +480,7 @@ async def on_application_command_error(interaction: Interaction, error):
         await interaction.send("No private message.", ephemeral = True)
 
     elif isinstance(error, application_checks.ApplicationPrivateMessageOnly):
-        await interaction.send("Private message only", ephemeral = True)
+        await interaction.send("Private message only.", ephemeral = True)
 
 
 """
