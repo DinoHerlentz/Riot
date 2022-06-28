@@ -1,4 +1,5 @@
 import nextcord
+import cooldowns
 import io
 import contextlib
 import os
@@ -19,6 +20,7 @@ from imdb import IMDb
 from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
+from cooldowns import CallableOnCooldown
 from nextcord.ext import commands, tasks, activities, application_checks
 from nextcord.ext.application_checks import ApplicationNotOwner, ApplicationMissingPermissions, ApplicationMissingRole, ApplicationMissingAnyRole, ApplicationBotMissingPermissions, ApplicationBotMissingRole, ApplicationBotMissingAnyRole, ApplicationNSFWChannelRequired, ApplicationNoPrivateMessage, ApplicationPrivateMessageOnly
 from nextcord.abc import GuildChannel
@@ -439,7 +441,7 @@ async def on_command_error(ctx, error):
         await botDel.delete()
     
     elif isinstance(error, commands.CommandOnCooldown):
-        cdDel = await ctx.reply("This command is still on cooldown, try again in {:.2f}s".format(error.retry_after))
+        cdDel = await ctx.reply("This command is still on cooldown. Try again in `{:.2f}` seconds.".format(error.retry_after))
         await asyncio.sleep(3)
         await cdDel.delete()
     
@@ -481,6 +483,11 @@ async def on_application_command_error(interaction: Interaction, error):
 
     elif isinstance(error, application_checks.ApplicationPrivateMessageOnly):
         await interaction.send("Private message only.", ephemeral = True)
+
+    error = getattr(error, "original", error)
+
+    if isinstance(error, CallableOnCooldown):
+        await interaction.send(f"This command is still on cooldown. Try again in `{error.retry_after}` seconds.", ephemeral = True)
 
 
 """
@@ -875,6 +882,7 @@ async def changetextchannelname(ctx, channel: nextcord.TextChannel = None, *, ch
 
 # Fun Command
 @client.command(aliases = ["meme"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
@@ -890,6 +898,7 @@ async def memes(ctx):
 
 
 @client.slash_command(name = "memes", description = "Get some random funny memes")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def memes(interaction: Interaction):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
@@ -943,7 +952,7 @@ async def dadjoke(interaction: Interaction):
 
 
 @client.command(aliases = ["8ball"])
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def eightball(ctx, *, question = None):
     responses = [
         "It is certain.", "It is decidetly so.", "Without a doubt",
@@ -968,6 +977,7 @@ async def eightball(ctx, *, question = None):
 
 
 @client.slash_command(name = "8ball", description = "Ask anything to the bot")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def eightball(interaction: Interaction, *, question):
     responses = [
         "It is certain.", "It is decidetly so.", "Without a doubt",
@@ -989,7 +999,7 @@ async def eightball(interaction: Interaction, *, question):
 
 
 @client.command(aliases = ["covidtest", "swabtest", "pcr"])
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def cvtest(ctx, member: nextcord.Member = None):
     covidResponses = ["positive", "negative"]
 
@@ -1008,6 +1018,7 @@ async def cvtest(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "cvtest", description = "Do a swab test")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def cvtest(interaction: Interaction, member: nextcord.Member):
   cvRes = ["positive", "negative"]
 
@@ -1019,7 +1030,7 @@ async def cvtest(interaction: Interaction, member: nextcord.Member):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def temperature(ctx, member: nextcord.Member = None):
     if member == None:
       message = await ctx.reply("Analyzing your body temperature...")
@@ -1032,6 +1043,7 @@ async def temperature(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "temperature", description = "Check your body temperature")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def temperature(interaction: Interaction, member: nextcord.Member):
   original_message = await interaction.response.send_message(f"Analyzing {member.mention}'s body temperature...")
   await asyncio.sleep(3)
@@ -1039,7 +1051,7 @@ async def temperature(interaction: Interaction, member: nextcord.Member):
 
 
 @client.command(aliases = ["rolldice", "roll"])
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def dice(ctx):
     message = await ctx.reply(f"{ctx.author.mention} rolled a dice and gets...")
     await asyncio.sleep(3)
@@ -1047,6 +1059,7 @@ async def dice(ctx):
 
 
 @client.slash_command(name = "dice", description = "Roll a dice")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def dice(interaction: Interaction):
     original_message = await interaction.response.send_message(f"{interaction.user.mention} rolled a dice and gets...")
     await asyncio.sleep(3)
@@ -1054,7 +1067,7 @@ async def dice(interaction: Interaction):
 
 
 @client.command(aliases = ["flip", "cf", "coin"])
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def coinflip(ctx, choice = None):
     if choice == None:
         em = nextcord.Embed(title = "**Coinflip**", description = "**Command :** >coinflip\n**Description :** Flip a coin and bet for heads/tails\n**Usage :** >cf [choices]\n**Example :** >cf tails")
@@ -1077,6 +1090,7 @@ async def coinflip(ctx, choice = None):
 
 
 @client.slash_command(name = "coinflip", description = "Flip a coin. Bet for head/tail")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def coinflip(interaction: Interaction, choice):
     answer = choice.lower()
     choices = ["head", "tail"]
@@ -1096,7 +1110,7 @@ async def coinflip(interaction: Interaction, choice):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def rps(ctx, choice = None):
     if choice == None:
         em = nextcord.Embed(title = "**Rock Paper Scissors**", description = "**Command :** >rps\n**Description :** Rock paper scissors with the bot\n**Usage :** >rps [choice]\n**Example :** >rps rock")
@@ -1131,6 +1145,7 @@ async def rps(ctx, choice = None):
 
 
 @client.slash_command(name = "rps", description = "Play rock paper scissors with the bot")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def rps(interaction: Interaction, choice):
     answer = choice.lower()
     choices = ["rock", "paper", "scissors"]
@@ -1161,7 +1176,7 @@ async def rps(interaction: Interaction, choice):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def rate(ctx, *, argument=None):
     if argument == None:
         em = nextcord.Embed(title = "**Command :** >rate", description = "**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart")
@@ -1172,6 +1187,7 @@ async def rate(ctx, *, argument=None):
 
 
 @client.slash_command(name = "rate", description = "Ask the bot to rate something")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def rate(interaction: Interaction, *, argument):
     em = nextcord.Embed(title = "Rate Parameter", description = f"{argument} : **{random.randrange(100)}%**")
     await interaction.send(embed = em)
@@ -1179,6 +1195,7 @@ async def rate(interaction: Interaction, *, argument):
 
 """
 @client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def guess(ctx):
     number = random.randint(1, 100)
     # print(number)
@@ -1212,6 +1229,7 @@ async def guess(ctx):
 
 
 @client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def hug(ctx, member: nextcord.Member = None):
     if member == None:
       await ctx.reply("Question : Who do you want to hug?")
@@ -1223,6 +1241,7 @@ async def hug(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "hug", description = "Hug someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def hug(interaction: Interaction, member: nextcord.Member):
     if member == interaction.user:
         await interaction.send("**You can't hug yourself.**")
@@ -1232,7 +1251,7 @@ async def hug(interaction: Interaction, member: nextcord.Member):
 
 """
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def kiss(ctx, member: nextcord.Member = None):
     if member == None:
         pass
@@ -1243,6 +1262,7 @@ async def kiss(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "kiss", description = "Kiss someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def kiss(interaction: Interaction, member: nextcord.Member):
     if member == interaction.user:
         await interaction.send("You can't kiss yourself")
@@ -1252,7 +1272,7 @@ async def kiss(interaction: Interaction, member: nextcord.Member):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def slap(ctx, member: nextcord.Member = None):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
@@ -1266,6 +1286,7 @@ async def slap(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "slap", description = "Slap someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def slap(interaction: Interaction, member: nextcord.Member):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
@@ -1277,7 +1298,7 @@ async def slap(interaction: Interaction, member: nextcord.Member):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def say(ctx, *, text = None):
     if text == None:
       sayEm = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello")
@@ -1287,6 +1308,7 @@ async def say(ctx, *, text = None):
 
 
 @client.slash_command(name = "say", description = "Ask the bot to say something")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def say(interaction: Interaction, *, text = None):
     if text == None:
       sayEm = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello")
@@ -1306,7 +1328,7 @@ async def ping(interaction: Interaction):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def emojify(ctx, *, text):
     emojis = []
     for s in text.lower():
@@ -1332,6 +1354,7 @@ async def emojify(ctx, *, text):
 
 
 @client.slash_command(name = "emojify", description = "Make the bot say something with emoji words")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def emojify(interaction: Interaction, *, text):
     emojis = []
     for s in text.lower():
@@ -1365,6 +1388,7 @@ async def handsome(ctx):
 
 
 @client.slash_command(name = "handsome", description = "Handsome parameter")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def handsome(interaction: Interaction):
     em = nextcord.Embed(title = "Handsome Parameter", description = f"**{random.randrange(100)}%**")
     em.timestamp = datetime.datetime.utcnow()
@@ -1380,6 +1404,7 @@ async def beautiful(ctx):
 
 
 @client.slash_command(name = "beautiful", description = "Beautiful parameter")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(interaction: Interaction):
     em = nextcord.Embed(title = "Beautiful Parameter", description = f"**{random.randrange(100)}%**")
@@ -1389,6 +1414,7 @@ async def beautiful(interaction: Interaction):
 
 # Game Command
 @game.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def sketch(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         return await ctx.send("Please select a voice channel.")
@@ -1406,6 +1432,7 @@ async def sketch(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "sketch", description = "Start sketch game in a voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.sketch)
@@ -1420,6 +1447,7 @@ async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(cha
 
 
 @game.command(aliases = ["fishing", "fish"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def fishington(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1437,6 +1465,7 @@ async def fishington(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "fishington", description = "Start fishington.io game in a voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def fishington(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.fishington)
@@ -1451,6 +1480,7 @@ async def fishington(interaction: Interaction, channel: GuildChannel=SlashOption
 
 
 @game.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def chess(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1468,6 +1498,7 @@ async def chess(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "chess", description = "Start a chess game in voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.chess)
@@ -1482,6 +1513,7 @@ async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(chan
 
 
 @game.command(aliases = ["checker"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def checkers(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1499,6 +1531,7 @@ async def checkers(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "checkers", description = "Start a checkers game in voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def checkers(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.checker)
@@ -1513,6 +1546,7 @@ async def checkers(interaction: Interaction, channel: GuildChannel=SlashOption(c
 
 
 @game.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def betrayal(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1530,6 +1564,7 @@ async def betrayal(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "betrayal", description = "Start a betrayal.io game in voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def betrayal(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.betrayal)
@@ -1544,6 +1579,7 @@ async def betrayal(interaction: Interaction, channel: GuildChannel=SlashOption(c
 
 
 @game.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def spellcast(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1561,6 +1597,7 @@ async def spellcast(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "spellcast", description = "Start spellcast game in voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def spellcast(interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.spellcast)
@@ -1575,6 +1612,7 @@ async def spellcast(interaction, channel: GuildChannel=SlashOption(channel_types
 
 
 @game.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def poker(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1592,6 +1630,7 @@ async def poker(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "poker", description = "Start poker game in voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def poker(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.poker)
@@ -1606,6 +1645,7 @@ async def poker(interaction: Interaction, channel: GuildChannel=SlashOption(chan
 
 
 @game.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def blazing(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1623,6 +1663,7 @@ async def blazing(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "blazing", description = "Start blazing game in voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def blazing(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.blazing)
@@ -1637,6 +1678,7 @@ async def blazing(interaction: Interaction, channel: GuildChannel=SlashOption(ch
 
 
 @game.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def youtube(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1654,6 +1696,7 @@ async def youtube(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "youtube", description = "Watch youtube together with your friends")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.youtube)
@@ -1668,6 +1711,7 @@ async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(ch
 
 
 @game.command(aliases = ["ll", "letter"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def letterleague(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1685,6 +1729,7 @@ async def letterleague(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "letterleague", description = "Start letter league game in voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.letter_league)
@@ -1699,6 +1744,7 @@ async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOpti
 
 
 @game.command(aliases = ["ws"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def wordsnacks(ctx, channel: nextcord.VoiceChannel=None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
@@ -1716,6 +1762,7 @@ async def wordsnacks(ctx, channel: nextcord.VoiceChannel=None):
 
 
 @client.slash_command(name = "wordsnacks", description = "Start word snacks game in a voice channel")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def wordsnacks(interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.word_snacks)
@@ -1731,6 +1778,7 @@ async def wordsnacks(interaction, channel: GuildChannel=SlashOption(channel_type
 
 # Anime Command
 @anime.command(aliases = ["n"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def news(ctx, amount: int=5):
     aninews = animec.Aninews(amount)
     links = aninews.links
@@ -1747,6 +1795,7 @@ async def news(ctx, amount: int=5):
 
 
 @animeslash.subcommand(name = "news", description = "Get some latest anime news")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def news(interaction: Interaction, amount: int=5):
     aninews = animec.Aninews(amount)
     links = aninews.links
@@ -1763,6 +1812,7 @@ async def news(interaction: Interaction, amount: int=5):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def search(ctx, *, query):
     try:
         anime = animec.Anime(query)
@@ -1783,6 +1833,7 @@ async def search(ctx, *, query):
 
 
 @animeslash.subcommand(name = "search", description = "Search for anime")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def search(interaction: Interaction, *, anime):
     try:
         animeName = animec.Anime(anime)
@@ -1803,6 +1854,7 @@ async def search(interaction: Interaction, *, anime):
 
 
 @anime.command(aliases = ["chara"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def character(ctx, *, query):
     try:
         char = animec.Charsearch(query)
@@ -1817,6 +1869,7 @@ async def character(ctx, *, query):
 
 
 @animeslash.subcommand(name = "character", description = "Search for anime character")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def character(interaction: Interaction, *, name):
     try:
         char = animec.Charsearch(name)
@@ -1831,6 +1884,7 @@ async def character(interaction: Interaction, *, name):
 
 
 @anime.command(aliases = ["meme"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
@@ -1844,6 +1898,7 @@ async def memes(ctx):
 
 
 @animeslash.subcommand(name = "memes", description = "Get some random funny anime memes")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def memes(interaction: Interaction):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
@@ -1856,6 +1911,7 @@ async def memes(interaction: Interaction):
 
 
 @anime.command(aliases = ["wa"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def waifu(ctx):
     res = requests.get("https://api.waifu.pics/sfw/waifu")
     image_link = res.json()["url"]
@@ -1863,6 +1919,7 @@ async def waifu(ctx):
 
 
 @animeslash.subcommand(name = "waifu", description = "Get some random anime waifu pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def waifu(interaction: Interaction):
     res = requests.get("https://api.waifu.pics/sfw/waifu")
     image_link = res.json()["url"]
@@ -1870,6 +1927,7 @@ async def waifu(interaction: Interaction):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def neko(ctx):
     res = requests.get("https://api.waifu.pics/sfw/neko")
     image_link = res.json()["url"]
@@ -1877,6 +1935,7 @@ async def neko(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def shinobu(ctx):
     res = requests.get("https://api.waifu.pics/sfw/shinobu")
     image_link = res.json()["url"]
@@ -1884,6 +1943,7 @@ async def shinobu(ctx):
 
 
 @anime.command(aliases = ["megumi"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def megumin(ctx):
     res = requests.get("https://api.waifu.pics/sfw/megumin")
     image_link = res.json()["url"]
@@ -1891,6 +1951,7 @@ async def megumin(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def cuddle(ctx):
     res = requests.get("https://api.waifu.pics/sfw/cuddle")
     image_link = res.json()["url"]
@@ -1898,6 +1959,7 @@ async def cuddle(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def cry(ctx):
     res = requests.get("https://api.waifu.pics/sfw/cry")
     image_link = res.json()["url"]
@@ -1905,6 +1967,7 @@ async def cry(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def awoo(ctx):
     res = requests.get("https://api.waifu.pics/sfw/awoo")
     image_link = res.json()["url"]
@@ -1912,6 +1975,7 @@ async def awoo(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def kiss(ctx):
     res = requests.get("https://api.waifu.pics/sfw/kiss")
     image_link = res.json()["url"]
@@ -1919,6 +1983,7 @@ async def kiss(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def lick(ctx):
     res = requests.get("https://api.waifu.pics/sfw/lick")
     image_link = res.json()["url"]
@@ -1926,6 +1991,7 @@ async def lick(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def pat(ctx):
     res = requests.get("https://api.waifu.pics/sfw/pat")
     image_link = res.json()["url"]
@@ -1933,6 +1999,7 @@ async def pat(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def smug(ctx):
     res = requests.get("https://api.waifu.pics/sfw/smug")
     image_link = res.json()["url"]
@@ -1940,6 +2007,7 @@ async def smug(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def bonk(ctx):
     res = requests.get("https://api.waifu.pics/sfw/bonk")
     image_link = res.json()["url"]
@@ -1947,6 +2015,7 @@ async def bonk(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def yeet(ctx):
     res = requests.get("https://api.waifu.pics/sfw/yeet")
     image_link = res.json()["url"]
@@ -1954,6 +2023,7 @@ async def yeet(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def blush(ctx):
     res = requests.get("https://api.waifu.pics/sfw/blush")
     image_link = res.json()["url"]
@@ -1961,6 +2031,7 @@ async def blush(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def smile(ctx):
     res = requests.get("https://api.waifu.pics/sfw/smile")
     image_link = res.json()["url"]
@@ -1968,6 +2039,7 @@ async def smile(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def wave(ctx):
     res = requests.get("https://api.waifu.pics/sfw/wave")
     image_link = res.json()["url"]
@@ -1975,6 +2047,7 @@ async def wave(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def highfive(ctx):
     res = requests.get("https://api.waifu.pics/sfw/highfive")
     image_link = res.json()["url"]
@@ -1982,6 +2055,7 @@ async def highfive(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def handhold(ctx):
     res = requests.get("https://api.waifu.pics/sfw/handhold")
     image_link = res.json()["url"]
@@ -1989,6 +2063,7 @@ async def handhold(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def nom(ctx):
     res = requests.get("https://api.waifu.pics/sfw/nom")
     image_link = res.json()["url"]
@@ -1996,6 +2071,7 @@ async def nom(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def bite(ctx):
     res = requests.get("https://api.waifu.pics/sfw/bite")
     image_link = res.json()["url"]
@@ -2003,6 +2079,7 @@ async def bite(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def glomp(ctx):
     res = requests.get("https://api.waifu.pics/sfw/glomp")
     image_link = res.json()["url"]
@@ -2010,6 +2087,7 @@ async def glomp(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def slap(ctx):
     res = requests.get("https://api.waifu.pics/sfw/slap")
     image_link = res.json()["url"]
@@ -2017,6 +2095,7 @@ async def slap(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def kick(ctx):
     res = requests.get("https://api.waifu.pics/sfw/k")
     image_link = res.json()["url"]
@@ -2024,6 +2103,7 @@ async def kick(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def happy(ctx):
     res = requests.get("https://api.waifu.pics/sfw/happy")
     image_link = res.json()["url"]
@@ -2031,6 +2111,7 @@ async def happy(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def wink(ctx):
     res = requests.get("https://api.waifu.pics/sfw/wink")
     image_link = res.json()["url"]
@@ -2038,6 +2119,7 @@ async def wink(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def poke(ctx):
     res = requests.get("https://api.waifu.pics/sfw/poke")
     image_link = res.json()["url"]
@@ -2045,6 +2127,7 @@ async def poke(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def dance(ctx):
     res = requests.get("https://api.waifu.pics/sfw/dance")
     image_link = res.json()["url"]
@@ -2052,6 +2135,7 @@ async def dance(ctx):
 
 
 @anime.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def cringe(ctx):
     res = requests.get("https://api.waifu.pics/sfw/cringe")
     image_link = res.json()["url"]
@@ -2060,6 +2144,7 @@ async def cringe(ctx):
 
 # Image Command
 @dogslash.subcommand(name = "image", description = "Get some random cute dog pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def image(interaction: Interaction):
     res = requests.get("https://dog.ceo/api/breeds/image/random")
     image_link = res.json()["message"]
@@ -2067,16 +2152,19 @@ async def image(interaction: Interaction):
 
 
 @dog.command(name = "gif", aliases = ["feed", "play", "sleep"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def gif(ctx):
 	await ctx.send(random.choice(dogs[ctx.invoked_with]))
 
 
 @dogslash.subcommand(name = "gif", description = "Get some random cute dog gifs")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def gif(interaction: Interaction):
     await interaction.send(random.choice(dogs[interaction.invoked_with]))
 
 
 @capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def large(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["large"]
@@ -2084,6 +2172,7 @@ async def large(ctx):
 
 
 @capybaraslash.subcommand(name = "large", description = "Large capybara pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def large(interaction: Interaction):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["large"]
@@ -2091,6 +2180,7 @@ async def large(interaction: Interaction):
 
 
 @capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def medium(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["medium"]
@@ -2098,6 +2188,7 @@ async def medium(ctx):
 
 
 @capybaraslash.subcommand(name = "medium", description = "Medium capybara pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def medium(interaction: Interaction):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["medium"]
@@ -2105,6 +2196,7 @@ async def medium(interaction: Interaction):
 
 
 @capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def small(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["small"]
@@ -2112,6 +2204,7 @@ async def small(ctx):
 
 
 @capybaraslash.subcommand(name = "small", description = "Small capybara pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def small(interaction: Interaction):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["large"]
@@ -2119,6 +2212,7 @@ async def small(interaction: Interaction):
 
 
 @capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def original(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["original"]
@@ -2126,6 +2220,7 @@ async def original(ctx):
 
 
 @capybaraslash.subcommand(name = "original", description = "Original capybara pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def original(interaction: Interaction):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["original"]
@@ -2133,6 +2228,7 @@ async def original(interaction: Interaction):
 
 
 @capybara.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def facts(ctx):
     res = requests.get("https://api.capybara-api.xyz/v1/facts/random")
     fact = res.json()["fact"]
@@ -2140,6 +2236,7 @@ async def facts(ctx):
 
 
 @capybaraslash.subcommand(name = "facts", description = "Get some random facts about capybara")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def facts(interaction: Interaction):
     res = requests.get("https://api.capybara-api.xyz/v1/facts/random")
     fact = res.json()["fact"]
@@ -2147,6 +2244,7 @@ async def facts(interaction: Interaction):
 
 
 @client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def food(ctx):
     res = requests.get("https://foodish-api.herokuapp.com/api/")
     image_link = res.json()["image"]
@@ -2154,6 +2252,7 @@ async def food(ctx):
 
 
 @client.slash_command(name = "food", description = "Get some random delicious food")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def food(interaction: Interaction):
     res = requests.get("https://foodish-api.herokuapp.com/api/")
     image_link = res.json()["image"]
@@ -2161,6 +2260,7 @@ async def food(interaction: Interaction):
 
 
 @client.command(aliases = ["rok"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def rock(ctx: commands.Context):
     async with aiohttp.ClientSession() as ses:
         async with ses.get("https://mrconos.pythonanywhere.com/rock/random") as api:
@@ -2179,6 +2279,7 @@ async def rock(ctx: commands.Context):
 
 
 @client.slash_command(name = "rock", description = "Get some random funny rock pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def rock(Interaction: commands.Context):
     async with aiohttp.ClientSession() as ses:
         async with ses.get("https://mrconos.pythonanywhere.com/rock/random") as api:
@@ -2604,6 +2705,7 @@ async def forum(interaction: Interaction):
 
 # Other Command
 @client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def weather(ctx, *, city: str = None):
     if city == None:
         em = nextcord.Embed(title = "Weather", description = "**Command :** >weather\n**Description :** Shows weather information of a city\n**Usage :** >weather [city]\n**Example :** >weather Jakarta")
@@ -2639,8 +2741,8 @@ async def weather(ctx, *, city: str = None):
 
 
 @client.slash_command(name = "weather", description = "Shows weather information of a city")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def weather(interaction: Interaction, *, city: str):
-
     api_key = os.environ["WEATHER_API_KEY"]
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "appid=" + api_key + "&q=" + city
@@ -2671,6 +2773,7 @@ async def weather(interaction: Interaction, *, city: str):
 
 
 @client.command(aliases = ["imdb"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def movie(ctx, *, movie_name = None):
     if movie_name == None:
         em = nextcord.Embed(title = "Movie", description = "**Command :** >movie\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)")
@@ -2703,6 +2806,7 @@ async def movie(ctx, *, movie_name = None):
 
 
 @client.slash_command(name = "movie", description = "Search for movie name")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def movie(interaction: Interaction, *, movie_name):
     moviesDB = IMDb()
     try:
@@ -2731,6 +2835,7 @@ async def movie(interaction: Interaction, *, movie_name):
 
 
 @client.command(aliases = ["covid"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def cv(ctx, *, country):
     r = requests.get("https://api.covid19api.com/summary")
 
@@ -2755,6 +2860,7 @@ async def cv(ctx, *, country):
 
 
 @client.slash_command(name = "cv", description = "Get some country COVID-19 informations")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def cv(interaction: Interaction, *, country):
     r = requests.get("https://api.covid19api.com/summary")
 
@@ -2779,6 +2885,7 @@ async def cv(interaction: Interaction, *, country):
 
 
 @client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def afk(ctx, *, reason = None):
     if reason == None:
         reason = "AFK"
@@ -2800,6 +2907,7 @@ async def afk(ctx, *, reason = None):
 
 
 @client.slash_command(name = "afk", description = "Go AFK")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def afk(interaction: Interaction, *, reason = None):
     if reason == None:
         reason = "AFK"
@@ -2851,6 +2959,7 @@ async def embed(interaction: Interaction):
 
 
 @client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def quote(ctx):
     res = requests.get("https://zenquotes.io/api/random")
     json_data = json.loads(res.text)
@@ -2859,6 +2968,7 @@ async def quote(ctx):
 
 
 @client.slash_command(name = "quote", description = "Get some random inspirating quote")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def quote(interaction: Interaction):
     res = requests.get("https://zenquotes.io/api/random")
     json_data = json.loads(res.text)
@@ -2881,6 +2991,7 @@ async def cleardm_error(ctx, error):
         await ctx.send(embed = em)
 
 @client.command()
+@commands.cooldown(1, 3600, commands.BucketType.user)
 async def suggest(ctx, *, suggestion):
     author = ctx.author
     channel = client.get_channel(976437035504128011)
@@ -2893,6 +3004,7 @@ async def suggest(ctx, *, suggestion):
 
 
 @client.slash_command(name = "suggest", description = "Send suggestions")
+@cooldowns.cooldown(1, 3600, bucket = cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
     await interaction.response.send_modal(SuggestModal())
 
@@ -2914,7 +3026,7 @@ async def report(interaction: Interaction):
 
 
 @client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def wsay(ctx, *, message = None):
     author = ctx.author
     if message == None:
@@ -2931,7 +3043,7 @@ async def wsay(ctx, *, message = None):
 
 
 @client.command(aliases = ["avatar"])
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def av(ctx, member: nextcord.Member = None):
     if member == None:
         member = ctx.author
@@ -2947,6 +3059,7 @@ async def av(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "avatar", description = "Shows user avatar")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def av(interaction: Interaction, member: nextcord.Member = None):
     if member == None:
         member = interaction.user
@@ -2962,6 +3075,7 @@ async def av(interaction: Interaction, member: nextcord.Member = None):
 
 
 @client.command(aliases = ["whois", "w", "ui", "info"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def userinfo(ctx, member: nextcord.Member = None):
     if member == None:
         member = ctx.author
@@ -2987,6 +3101,7 @@ async def userinfo(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "userinfo", description = "Shows some information of user")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def userinfo(interaction: Interaction, member: nextcord.Member = None):
     if member == None:
         member = interaction.user
@@ -3012,7 +3127,7 @@ async def userinfo(interaction: Interaction, member: nextcord.Member = None):
 
 
 @client.command(aliases = ["si"])
-@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def serverinfo(ctx):
     role_count = len(ctx.guild.roles)
     list_of_bots = [bot.mention for bot in ctx.guild.members if bot.bot]
@@ -3028,6 +3143,7 @@ async def serverinfo(ctx):
 
 
 @client.slash_command(name = "serverinfo", description = "Get some informations about current server")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def serverinfo(interaction: Interaction):
     role_count = len(interaction.guild.roles)
     list_of_bots = [bot.mention for bot in interaction.guild.members if bot.bot]
@@ -3073,6 +3189,7 @@ async def timer(ctx, seconds=None):
 
 
 @client.slash_command(name = "timer", description = "Set a timer")
+@cooldowns.cooldown(1, 10, bucket = cooldowns.SlashBucket.author)
 async def timer(interaction: Interaction, seconds):
     try:
         secondint = int(seconds)
@@ -3096,7 +3213,7 @@ async def timer(interaction: Interaction, seconds):
 
 
 @client.command()
-@commands.cooldown(1, 10, commands.BucketType.user)
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def poll(ctx, *, argument):
 
     icon_url = ctx.author.avatar.url
@@ -3116,6 +3233,7 @@ async def poll(ctx, *, argument):
 
 
 @client.command(aliases = ["gi", "guildicon"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def servericon(ctx):
   icon = ctx.guild.icon
 
@@ -3126,6 +3244,7 @@ async def servericon(ctx):
 
 
 @client.slash_command(name = "servericon", description = "Shows server avatar")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def servericon(interaction: Interaction):
   icon = interaction.guild.icon
 
@@ -3136,6 +3255,7 @@ async def servericon(interaction: Interaction):
 
 
 @client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def id(ctx, member: nextcord.Member = None):
     if member == None:
         await ctx.reply(ctx.author.id, mention_author = False)
@@ -3144,11 +3264,13 @@ async def id(ctx, member: nextcord.Member = None):
 
 
 @client.slash_command(name = "id", description = "Get user ID")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def id(interaction: Interaction, member: nextcord.Member):
     await interaction.send(member.id)
 
 
 @client.command(aliases = ["mc"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def membercount(ctx):
     em = nextcord.Embed(title = f"{ctx.guild.name}'s Total Members", description = ctx.guild.member_count)
     em.timestamp = ctx.message.created_at
@@ -3156,6 +3278,7 @@ async def membercount(ctx):
 
 
 @client.slash_command(name = "membercount", description = "Get the member count of the current server")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def membercount(interaction: Interaction):
     em = nextcord.Embed(title = f"{interaction.guild.name}'s Total Members", description = interaction.guild.member_count)
     em.timestamp = datetime.datetime.utcnow()
@@ -3163,6 +3286,7 @@ async def membercount(interaction: Interaction):
 
 
 @client.command(aliases = ["ei"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
     if emoji == None:
         await ctx.reply("Please insert the emoji.")
