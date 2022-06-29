@@ -514,7 +514,7 @@ async def help(ctx):
     em.add_field(name = "Anime", value = "anime")
     em.add_field(name = "Images", value = "dog, capybara food, rock")
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    em.add_field(name = "Other", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -530,7 +530,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "Anime", value = "anime")
     em.add_field(name = "Images", value = "dog, capybara food, rock")
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    em.add_field(name = "Other", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2703,7 +2703,7 @@ async def forum(interaction: Interaction):
 """
 
 
-# Other Command
+# Miscellaneous Command
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def weather(ctx, *, city: str = None):
