@@ -562,6 +562,7 @@ async def ban(ctx, member: nextcord.Member = None, *, reason = None):
 
 
 @client.slash_command(name = "ban", description = "Ban a member")
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(ban_members = True)
 async def ban(interaction: Interaction, member: nextcord.Member, *, reason):
     if member.id == interaction.user.id:
@@ -600,6 +601,7 @@ async def unban(ctx, member = None, *, reason = None):
 
 
 @client.slash_command(name = "unban", description = "Unban a member")
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(ban_members = True)
 async def unban(interaction: Interaction, member, *, reason):
     banned_users = await interaction.guild.bans()
@@ -643,6 +645,7 @@ async def timeout(ctx, member: nextcord.Member = None, time = None, *, reason = 
 
 
 @client.slash_command(name = "timeout", description = "Timeout a member so they can't chat/speak/react to a message")
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(moderate_members = True)
 async def timeout(interaction: Interaction, member: nextcord.Member, time, *, reason):
     if member == interaction.user:
@@ -684,6 +687,7 @@ async def removetimeout(ctx, member: nextcord.Member = None, *, reason = None):
 
 
 @client.slash_command(name = "removetimeout", description = "Remove timeout from a member")
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(moderate_members = True)
 async def removetimeout(interaction: Interaction, member: nextcord.Member, *, reason):
     if member.top_role >= interaction.user.top_role:
@@ -723,6 +727,7 @@ async def kick(ctx, member: nextcord.Member = None, *, reason = None):
 
 
 @client.slash_command(name = "kick", description = "Kick a member")
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(kick_members = True)
 async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
     if member == interaction.user:
@@ -764,6 +769,7 @@ async def warn(ctx, member: nextcord.Member = None, *, reason = None):
 
 
 @client.slash_command(name = "warn", description = "Warn a member")
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(administrator = True)
 async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
     if member == interaction.user:
@@ -807,6 +813,7 @@ async def slowmode(ctx, seconds: int = None):
 
 
 @client.slash_command(name = "slowmode", description = "Add a slowmode to a current channel")
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_channels = True)
 async def slowmode(interaction: Interaction, seconds: int):
     await interaction.channel.edit(slowmode_delay = seconds)
@@ -815,6 +822,7 @@ async def slowmode(interaction: Interaction, seconds: int):
 
 
 @client.command()
+@commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
 async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None):
     if channel == None or message == None:
@@ -3400,7 +3408,6 @@ async def toggle(ctx, *, command):
 
 @client.command()
 @commands.is_owner()
-@commands.cooldown(1, 5, commands.BucketType.user)
 async def act(ctx, member: nextcord.Member, *, message = None):
     if message == None:
         await ctx.reply("Please provide a message")
