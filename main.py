@@ -3352,7 +3352,7 @@ async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
 # Owner Command
 @client.command()
 @commands.is_owner()
-async def dm(ctx, member: nextcord.Member, *, content):
+async def dm(ctx, member: nextcord.User, *, content):
     user = await member.create_dm()
 
     try:
