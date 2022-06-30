@@ -2169,6 +2169,14 @@ async def cringe(ctx):
 
 
 # Image Command
+@dog.command(name = "image")
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def image(ctx):
+    res = requests.get("https://dog.ceo/api/breeds/image/random")
+    image_link = res.json()["message"]
+    await ctx.send(image_link)
+
+
 @dogslash.subcommand(name = "image", description = "Get some random cute dog pictures")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def image(interaction: Interaction):
@@ -2181,12 +2189,6 @@ async def image(interaction: Interaction):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def gif(ctx):
 	await ctx.send(random.choice(dogs[ctx.invoked_with]))
-
-
-@dogslash.subcommand(name = "gif", description = "Get some random cute dog gifs")
-@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def gif(interaction: Interaction):
-    await interaction.send(random.choice(dogs[interaction.invoked_with]))
 
 
 @capybara.command()
