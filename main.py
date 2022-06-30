@@ -38,6 +38,7 @@ dogs = json.load(open("dog_gifs.json"))
 hugs = json.load(open("hugs.json"))
 kiss = json.load(open("kiss.json"))
 lyrics_url = "https://some-random-api.ml/lyrics?title = "
+server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
 
@@ -110,10 +111,10 @@ class EmbedModal(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Embed Maker")
 
-        self.emTitle = nextcord.ui.TextInput(label="Embed Title", min_length=2, max_length=124, required=True, placeholder="Enter Embed Title")
+        self.emTitle = nextcord.ui.TextInput(label = "Embed Title", min_length = 2, max_length = 124, required = True, placeholder = "Enter Embed Title")
         self.add_item(self.emTitle)
 
-        self.emDesc = nextcord.ui.TextInput(label="Embed Description", min_length=5, max_length=4000, required=True, placeholder="Enter Embed Description", style=nextcord.TextInputStyle.paragraph)
+        self.emDesc = nextcord.ui.TextInput(label = "Embed Description", min_length = 5, max_length = 4000, required = True, placeholder = "Enter Embed Description", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emDesc)
 
     async def callback(self, interaction: Interaction) -> None:
@@ -125,28 +126,28 @@ class EmbedModal(nextcord.ui.Modal):
         return await interaction.response.send_message(embed = em)
 
 
-class SuggestModal(nextcord.ui.Modal):
+class Suggest(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Suggestion Forum")
 
-        self.emSug = nextcord.ui.TextInput(label="Suggestions", min_length=10, max_length=4000, required=True, placeholder = "Put your suggestions here", style=nextcord.TextInputStyle.paragraph)
+        self.emSug = nextcord.ui.TextInput(label = "Suggestions", min_length = 10, max_length = 4000, required = True, placeholder = "Put your suggestions here", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emSug)
 
     async def callback(self, interaction: Interaction) -> None:
-        channel = client.get_channel(976502829546086440)
+        channel = client.get_channel(976437035504128011)
         author = interaction.user
         sug = self.emSug.value
 
-        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** send a suggestions\n\nMessage :\n\n`{sug}`")
+        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n`{sug}`")
         em.timestamp = datetime.datetime.utcnow()
-        return await interaction.response.send_message(embed = em)
+        return await channel.send(embed = em)
 
 
-class ReportModal(nextcord.ui.Modal):
+class Report(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Report Forum")
 
-        self.emMsg = nextcord.ui.TextInput(label="Report", min_length=10, max_length=4000, required=True, placeholder = "Put your report message here", style=nextcord.TextInputStyle.paragraph)
+        self.emMsg = nextcord.ui.TextInput(label = "Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emMsg)
 
     async def callback(self, interaction: Interaction) -> None:
@@ -154,9 +155,26 @@ class ReportModal(nextcord.ui.Modal):
         author = interaction.user
         msg = self.emMsg.value
 
-        em = nextcord.Embed(title = "Report", description = f"**{author}** send a report message\n\nMessage :\n\n`{msg}`", color = nextcord.Color.red())
+        em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n`{msg}`", color = nextcord.Color.red())
         em.timestamp = datetime.datetime.utcnow()
-        return await interaction.response.send_message(embed = em)
+        return await channel.send(embed = em)
+
+
+class ServerReport(nextcord.ui.Modal):
+    def __init__(self):
+        super().__init__("Server Report Forum")
+
+        self.emMsg = nextcord.ui.TextInput(label = "Server Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
+        self.add_item(self.emMsg)
+
+    async def callback(self, interaction: Interaction) -> None:
+        channel = client.get_channel(887712157196771378)
+        author = interaction.user
+        msg = self.emMsg.value
+
+        em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n`{msg}`", color = nextcord.Color.red())
+        em.timestamp = datetime.datetime.utcnow()
+        return await channel.send(embed = em)
 
 
 """
@@ -164,13 +182,13 @@ class Forum(nextcord.ui.Modal):
 	def __init__(self):
 		super().__init__("Server Mod Forum")
 
-		self.Name = nextcord.ui.TextInput(label="Name", min_length=10, max_length=100, required=True, placeholder="Enter your name")
+		self.Name = nextcord.ui.TextInput(label = "Name", min_length = 10, max_length = 100, required = True, placeholder = "Enter your name")
 		self.add_item(self.Name)
 
-		self.Age = nextcord.ui.TextInput(label="Age", min_length=2, max_length=3, required=True, placeholder="Enter your age")
+		self.Age = nextcord.ui.TextInput(label = "Age", min_length = 2, max_length = 3, required = True, placeholder = "Enter your age")
 		self.add_item(self.Age)
 
-		self.Email = nextcord.ui.TextInput(label="Email", min_length=10, max_length=100, required=True, placeholder="email@gmail.com")
+		self.Email = nextcord.ui.TextInput(label = "Email", min_length = 10, max_length = 100, required = True, placeholder = "email@gmail.com")
 		self.add_item(self.Email)
 	
 	async def callback(self, interaction: Interaction) -> None:
@@ -194,20 +212,20 @@ class Forum(nextcord.ui.Modal):
 class Pet(nextcord.ui.Select):
     def __init__(self):
         options = [
-            nextcord.SelectOption(label="Dog", description = "Dog is cute"),
-            nextcord.SelectOption(label="Puppy", description = "Puppy is also cute"),
-            nextcord.SelectOption(label="Cat", description = "Cat is cute tho"),
-            nextcord.SelectOption(label="Hamster", description = "Kinda expensive, but cute"),
-            nextcord.SelectOption(label="Bird", description = "Chirp"),
-            nextcord.SelectOption(label="Snake", description = "Kinda risky, but they are cool"),
-            nextcord.SelectOption(label="Dragon", description = "Are dragons real?"),
-            nextcord.SelectOption(label="Chameleon", description = "Where is the chameleon?"),
-            nextcord.SelectOption(label="Iguana", description = "I love iguana"),
-            nextcord.SelectOption(label="Piranha", description = "I don't think you gonna buy this piranha"),
-            nextcord.SelectOption(label="Dolphin", description = "Where you gonna put this doplhin?"),
-            nextcord.SelectOption(label="Panda", description = "Big boy panda")
+            nextcord.SelectOption(label = "Dog", description = "Dog is cute"),
+            nextcord.SelectOption(label = "Puppy", description = "Puppy is also cute"),
+            nextcord.SelectOption(label = "Cat", description = "Cat is cute tho"),
+            nextcord.SelectOption(label = "Hamster", description = "Kinda expensive, but cute"),
+            nextcord.SelectOption(label = "Bird", description = "Chirp"),
+            nextcord.SelectOption(label = "Snake", description = "Kinda risky, but they are cool"),
+            nextcord.SelectOption(label = "Dragon", description = "Are dragons real?"),
+            nextcord.SelectOption(label = "Chameleon", description = "Where is the chameleon?"),
+            nextcord.SelectOption(label = "Iguana", description = "I love iguana"),
+            nextcord.SelectOption(label = "Piranha", description = "I don't think you gonna buy this piranha"),
+            nextcord.SelectOption(label = "Dolphin", description = "Where you gonna put this doplhin?"),
+            nextcord.SelectOption(label = "Panda", description = "Big boy panda")
         ]
-        super().__init__(placeholder="Buy a pet", min_values=1, max_values=1, options=options)
+        super().__init__(placeholder = "Buy a pet", min_values=1, max_values=1, options=options)
 
     async def callback(self, interaction: Interaction):
         if self.values[0] == "Dog":
@@ -259,75 +277,75 @@ class PetView(nextcord.ui.View):
 class Help(nextcord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599", label="Riot Discord Bot"))
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/vote", label="Vote For Riot"))
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/invite", label="Riot Invite"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599", label = "Riot Discord Bot"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/vote", label = "Vote For Riot"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/invite", label = "Riot Invite"))
 
 
 class SketchGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class FishingGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class ChessGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class CheckerGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class BetrayalGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class SpellcastGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class PokerGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class BlazingGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class YouTubeGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class LetterLeagueGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class WordSnacksGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style=nextcord.ButtonStyle.link, url = f"{link}", label="Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 # Event Decorator
@@ -3014,7 +3032,7 @@ async def suggest(ctx, *, suggestion):
 @client.slash_command(name = "suggest", description = "Send suggestions")
 @cooldowns.cooldown(1, 3600, bucket = cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
-    await interaction.response.send_modal(SuggestModal())
+    await interaction.response.send_modal(Suggest())
 
 @client.command()
 async def report(ctx, *, message):
@@ -3030,7 +3048,12 @@ async def report(ctx, *, message):
 
 @client.slash_command(name = "report", description = "Report an issue")
 async def report(interaction: Interaction):
-    await interaction.response.send_modal(ReportModal())
+    await interaction.response.send_modal(Report())
+
+
+@client.slash_command(name = "serverreport", description = "Report an issue from this server", guild_ids = [server_id])
+async def serverreport(interaction: Interaction):
+    await interaction.response.send_modal(ServerReport())
 
 
 @client.command()
