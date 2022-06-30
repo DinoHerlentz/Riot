@@ -2760,7 +2760,7 @@ async def weather(interaction: Interaction, *, city: str):
     if x["cod"] != "404":
         y = x["main"]
         current_temperature = y["temp"]
-        current_temperature_celcius = str(round(current_temperature - 273))
+        current_temperature_celcius = str(round(current_temperature - 273.15))
         current_pressure = y["pressure"]
         current_humidity = y["humidity"]
         z = x["weather"]
