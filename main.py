@@ -112,7 +112,7 @@ class NoLyricsFound(commands.CommandError):
     pass
 
 
-class EmbedModal(nextcord.ui.Modal):
+class Embed(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Embed Maker")
 
@@ -3011,7 +3011,7 @@ async def snipe(interaction: Interaction):
 
 @client.slash_command(name = "embed", description = "Create an embed")
 async def embed(interaction: Interaction):
-    await interaction.response.send_modal(EmbedModal())
+    await interaction.response.send_modal(Embed())
 
 
 @client.command()
