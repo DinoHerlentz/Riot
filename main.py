@@ -62,7 +62,7 @@ def is_me():
 # Group Command
 @client.group(invoke_without_command = True)
 async def game(ctx):
-    em = nextcord.Embed(title = "Game (>game [game])", color = 0x000000)
+    em = nextcord.Embed(title = "Game (>game [game])")
     em.add_field(name = "Game", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks")
     
     await ctx.send(embed = em)
@@ -70,7 +70,7 @@ async def game(ctx):
 
 @client.group(invoke_without_command = True)
 async def dog(ctx):
-    em = nextcord.Embed(title = "Dog (>dog [command])", color = 0x000000)
+    em = nextcord.Embed(title = "Dog (>dog [command])")
     em.add_field(name = "Commands", value = "image, gif, feed, play, sleep")
     
     await ctx.send(embed = em)
@@ -83,7 +83,7 @@ async def dogslash(interaction: Interaction):
 
 @client.group(invoke_without_command = True)
 async def capybara(ctx):
-    em = nextcord.Embed(title = "Capybara (>capybara [command])", color = 0x000000)
+    em = nextcord.Embed(title = "Capybara (>capybara [command])")
     em.add_field(name = "Commands", value = "large, medium, small, original, facts")
     
     await ctx.send(embed = em)
@@ -96,7 +96,7 @@ async def capybaraslash(interaction: Interaction):
 
 @client.group(invoke_without_command = True)
 async def anime(ctx):
-    em = nextcord.Embed(title = "Anime (>anime [command])", color = 0x000000)
+    em = nextcord.Embed(title = "Anime (>anime [command])")
     em.add_field(name = "Commands", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe")
     
     await ctx.send(embed = em)
@@ -126,7 +126,7 @@ class EmbedModal(nextcord.ui.Modal):
         title = self.emTitle.value
         desc = self.emDesc.value
 
-        em = nextcord.Embed(title = title, description = desc, color = 0x000000)
+        em = nextcord.Embed(title = title, description = desc)
         em.timestamp = datetime.datetime.utcnow()
         
         return await interaction.response.send_message(embed = em)
@@ -144,7 +144,7 @@ class Suggest(nextcord.ui.Modal):
         author = interaction.user
         sug = self.emSug.value
 
-        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n`{sug}`", color = 0x000000)
+        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n`{sug}`")
         em.timestamp = datetime.datetime.utcnow()
         
         return await channel.send(embed = em)
@@ -208,7 +208,7 @@ class Forum(nextcord.ui.Modal):
 		age = self.Age.value
 		email = self.Email.value
 
-		em = nextcord.Embed(title = f"Server Mod Forum - {author}", color = 0x000000)
+		em = nextcord.Embed(title = f"Server Mod Forum - {author}")
 		em.add_field(name = "Name", value = name)
 		em.add_field(name = "Age", value = age)
 		em.add_field(name = "Email", value = email)
@@ -455,7 +455,7 @@ async def on_message_delete(message):
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        em = nextcord.Embed(title = "Invalid Command", description = "Type `>help` to see available commands", color = 0x000000)
+        em = nextcord.Embed(title = "Invalid Command", description = "Type `>help` to see available commands")
         await ctx.send(embed = em)
     
     elif isinstance(error, commands.MissingRequiredArgument):
@@ -540,7 +540,7 @@ async def on_error(event, *args, **kwargs):
 async def help(ctx):
     view = Help()
     
-    em = nextcord.Embed(title = "**Commands (>)**", color = 0x000000)
+    em = nextcord.Embed(title = "**Commands (>)**")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     em.add_field(name = "Anime", value = "anime")
@@ -556,7 +556,7 @@ async def help(ctx):
 async def help(interaction: Interaction):
     view = Help()
     
-    em = nextcord.Embed(title = "**Commands (>)**", color = 0x000000)
+    em = nextcord.Embed(title = "**Commands (>)**")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     em.add_field(name = "Anime", value = "anime")
@@ -831,7 +831,7 @@ async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
 @commands.has_permissions(manage_messages = True)
 async def purge(ctx, amount = None, arg: str = None):
     if amount == None:
-        em = nextcord.Embed(title = "**Purge**", description = "**Command :** >purge\n**Description :** Delete the amount of messages from a channel\n**Usage :** >purge [amount]\n**Example :** >purge 10", color = 0x000000)
+        em = nextcord.Embed(title = "**Purge**", description = "**Command :** >purge\n**Description :** Delete the amount of messages from a channel\n**Usage :** >purge [amount]\n**Example :** >purge 10")
         await ctx.send(embed = em)
     
     await ctx.message.delete()
@@ -843,7 +843,7 @@ async def purge(ctx, amount = None, arg: str = None):
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int = None):
     if seconds == None:
-        em = nextcord.Embed(title = "**Slowmode**", description = "**Command :** >slowmode\n**Description :** Set a slowmode on the channel (sec)\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5", color = 0x000000)
+        em = nextcord.Embed(title = "**Slowmode**", description = "**Command :** >slowmode\n**Description :** Set a slowmode on the channel (sec)\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5")
         await ctx.send(embed = em)
 
     else:
@@ -866,7 +866,7 @@ async def slowmode(interaction: Interaction, seconds: int):
 @commands.has_permissions(manage_messages = True)
 async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None):
     if channel == None or message == None:
-      em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message in specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!", color = 0x000000)
+      em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message in specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
       await ctx.send(embed = em)
     else:
       await ctx.reply("Announcement has been sent.", mention_author = False)
@@ -882,7 +882,7 @@ async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None)
 @commands.has_permissions(manage_roles = True)
 async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
-        em = nextcord.Embed(title = "Add Role", description = "**Command :** >addrole\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO", color = 0x000000)
+        em = nextcord.Embed(title = "Add Role", description = "**Command :** >addrole\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO")
         await ctx.send(embed = em)
     else:
         await member.add_roles(role)
@@ -895,7 +895,7 @@ async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = 
 @commands.has_permissions(manage_roles = True)
 async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
-        em = nextcord.Embed(title = "Remove Role", description = "**Command :** >removerole\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @DINO", color = 0x000000)
+        em = nextcord.Embed(title = "Remove Role", description = "**Command :** >removerole\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @DINO")
         await ctx.send(embed = em)
 
     else:
@@ -909,7 +909,7 @@ async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member
 @commands.has_permissions(manage_nicknames = True)
 async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
     if member == None or nickname == None:
-        em = nextcord.Embed(title = "Nick", description = "**Command :** >nick\n**Description :** Change a nickname of a specified user (Note : My role/your role must be higher than the member's role)\n**Usage :** >nick [user] [new nickname]\n**Example  :** >nick @DINO Weebs", color = 0x000000)
+        em = nextcord.Embed(title = "Nick", description = "**Command :** >nick\n**Description :** Change a nickname of a specified user (Note : My role/your role must be higher than the member's role)\n**Usage :** >nick [user] [new nickname]\n**Example  :** >nick @DINO Weebs")
         await ctx.send(embed = em)
 
     else:
@@ -930,7 +930,7 @@ async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
 @commands.has_permissions(manage_channels = True)
 async def changetextchannelname(ctx, channel: nextcord.TextChannel = None, *, channel_name = None):
     if channel == None or channel_name == None:
-        em = nextcord.Embed(title = "Change Text Channel Name", description = "**Command :** >ctcn\n**Description :** Change the specified text channel name\n**Usage :** >ctcn [channel] [new name]\n**Example :** >ctcn #general 💬general", color = 0x000000)
+        em = nextcord.Embed(title = "Change Text Channel Name", description = "**Command :** >ctcn\n**Description :** Change the specified text channel name\n**Usage :** >ctcn [channel] [new name]\n**Example :** >ctcn #general 💬general")
         await ctx.send(embed = em)
     else:
         await channel.edit(name = channel_name)
@@ -948,7 +948,7 @@ async def memes(ctx):
             title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
             url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
             
-            em = nextcord.Embed(title = f"{title}", color = 0x000000)
+            em = nextcord.Embed(title = f"{title}")
             em.set_image(url = f"{url}")
             em.timestamp = ctx.message.created_at
 
@@ -964,7 +964,7 @@ async def memes(interaction: Interaction):
             title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
             url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
             
-            em = nextcord.Embed(title = f"{title}", color = 0x000000)
+            em = nextcord.Embed(title = f"{title}")
             em.set_image(url = f"{url}")
             em.timestamp = datetime.datetime.utcnow()
 
@@ -1027,7 +1027,7 @@ async def eightball(ctx, *, question = None):
     if question == None:
         await ctx.reply("Please provide a question.")
     else:
-        em = nextcord.Embed(title = ":8ball: 8ball :8ball:", color = 0x000000)
+        em = nextcord.Embed(title = ":8ball: 8ball :8ball:")
         em.add_field(name = "Question", value = question, inline = False)
         em.add_field(name = "Answer", value = random.choice(responses), inline = False)
 
@@ -1049,7 +1049,7 @@ async def eightball(interaction: Interaction, *, question):
         "Maybe.", "Never."
     ]
     
-    em = nextcord.Embed(title = ":8ball: 8ball :8ball:", color = 0x000000)
+    em = nextcord.Embed(title = ":8ball: 8ball :8ball:")
     em.add_field(name = "Question", value = question)
     em.add_field(name = "Answer", value = random.choice(responses))
 
@@ -1128,7 +1128,7 @@ async def dice(interaction: Interaction):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def coinflip(ctx, choice = None):
     if choice == None:
-        em = nextcord.Embed(title = "**Coinflip**", description = "**Command :** >coinflip\n**Description :** Flip a coin and bet for heads/tails\n**Usage :** >cf [choices]\n**Example :** >cf tails", color = 0x000000)
+        em = nextcord.Embed(title = "**Coinflip**", description = "**Command :** >coinflip\n**Description :** Flip a coin and bet for heads/tails\n**Usage :** >cf [choices]\n**Example :** >cf tails")
         await ctx.send(embed = em)
     
     answer = choice.lower()
@@ -1171,7 +1171,7 @@ async def coinflip(interaction: Interaction, choice):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rps(ctx, choice = None):
     if choice == None:
-        em = nextcord.Embed(title = "**Rock Paper Scissors**", description = "**Command :** >rps\n**Description :** Rock paper scissors with the bot\n**Usage :** >rps [choice]\n**Example :** >rps rock", color = 0x000000)
+        em = nextcord.Embed(title = "**Rock Paper Scissors**", description = "**Command :** >rps\n**Description :** Rock paper scissors with the bot\n**Usage :** >rps [choice]\n**Example :** >rps rock")
         await ctx.send(embed = em)
     
     answer = choice.lower()
@@ -1237,7 +1237,7 @@ async def rps(interaction: Interaction, choice):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rate(ctx, *, argument=None):
     if argument == None:
-        em = nextcord.Embed(title = "**Command :** >rate", description = "**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart", color = 0x000000)
+        em = nextcord.Embed(title = "**Command :** >rate", description = "**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart")
         await ctx.send(embed = em)
     else:
         em2 = nextcord.Embed(title = "Rate Parameter", description = f"{argument} : **{random.randrange(100)}%**")
@@ -1359,7 +1359,7 @@ async def slap(interaction: Interaction, member: nextcord.Member):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def say(ctx, *, text = None):
     if text == None:
-      sayEm = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello", color = 0x000000)
+      sayEm = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello")
       await ctx.send(embed = sayEm)
     else:
       await ctx.send(f"{text}\n\n**~ {ctx.author}**")
@@ -1478,7 +1478,7 @@ async def sketch(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         return await ctx.send("Please mention a voice channel")
 
-    em = nextcord.Embed(title = "Sketch Game", description = f"{ctx.author.mention} has started Sketch Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Sketch Game", description = f"{ctx.author.mention} has started Sketch Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Sketch Heads has two game modes: Classic and Blitz. Classic mode is a competitive battle against your friends where you take turns choosing a secret word to draw while everyone else competes to guess it as fast as possible! Blitz mode is a chaotic, cooperative race against the clock where you split into two teams, Drawers and Guessers. Drawers share a canvas and rapidly draw words while the Guessers guess as many as possible before the time runs out.\n\nIf you just wanna sketch around, try out Free Draw, where you can draw alone or with friends!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4503731144471/Discord_SketchHeads_Lobby.png")
     
@@ -1493,7 +1493,7 @@ async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(cha
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel")
 
-    em = nextcord.Embed(title = "Sketch Game", description = f"{interaction.user.mention} has started Sketch Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Sketch Game", description = f"{interaction.user.mention} has started Sketch Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Sketch Heads has two game modes: Classic and Blitz. Classic mode is a competitive battle against your friends where you take turns choosing a secret word to draw while everyone else competes to guess it as fast as possible! Blitz mode is a chaotic, cooperative race against the clock where you split into two teams, Drawers and Guessers. Drawers share a canvas and rapidly draw words while the Guessers guess as many as possible before the time runs out.\n\nIf you just wanna sketch around, try out Free Draw, where you can draw alone or with friends!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4503731144471/Discord_SketchHeads_Lobby.png")
     
@@ -1511,7 +1511,7 @@ async def fishington(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Fishington.io", description = f"{ctx.author.mention} has started Fishington Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Fishington.io", description = f"{ctx.author.mention} has started Fishington Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a fishing game")
     em.set_thumbnail(url = "https://media.discordapp.net/attachments/946348312821370944/954022828041183302/images_7.jpeg")
 
@@ -1526,7 +1526,7 @@ async def fishington(interaction: Interaction, channel: GuildChannel=SlashOption
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Fishington.io", description = f"{interaction.user.mention} has started Fishington Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Fishington.io", description = f"{interaction.user.mention} has started Fishington Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a fishing game")
     em.set_thumbnail(url = "https://media.discordapp.net/attachments/946348312821370944/954022828041183302/images_7.jpeg")
 
@@ -1544,7 +1544,7 @@ async def chess(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Chess Game", description = f"{ctx.author.mention} has started Chess Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Chess Game", description = f"{ctx.author.mention} has started Chess Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a chess game")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4404615637015/chess_banner.png")
 
@@ -1559,7 +1559,7 @@ async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(chan
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Chess Game", description = f"{interaction.user.mention} has started Chess Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Chess Game", description = f"{interaction.user.mention} has started Chess Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a chess game")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4404615637015/chess_banner.png")
 
@@ -1577,7 +1577,7 @@ async def checkers(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Checkers Game", description = f"{ctx.author.mention} has started Checker Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Checkers Game", description = f"{ctx.author.mention} has started Checker Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a checkers game")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4413878201879/checkers_splash.png")
 
@@ -1592,7 +1592,7 @@ async def checkers(interaction: Interaction, channel: GuildChannel=SlashOption(c
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Checkers Game", description = f"{interaction.user.mention} has started Checker Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Checkers Game", description = f"{interaction.user.mention} has started Checker Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a checkers game")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4413878201879/checkers_splash.png")
 
@@ -1610,7 +1610,7 @@ async def betrayal(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Betrayal Game", description = f"{ctx.author.mention} has started Betrayal Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Betrayal Game", description = f"{ctx.author.mention} has started Betrayal Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a betrayal game")
     em.set_thumbnail(url = "https://pbs.twimg.com/media/Elcft91X0AATu7a?format=jpg>name = medium")
 
@@ -1625,7 +1625,7 @@ async def betrayal(interaction: Interaction, channel: GuildChannel=SlashOption(c
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Betrayal Game", description = f"{interaction.user.mention} has started Betrayal Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Betrayal Game", description = f"{interaction.user.mention} has started Betrayal Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a betrayal game")
     em.set_thumbnail(url = "https://pbs.twimg.com/media/Elcft91X0AATu7a?format=jpg>name = medium")
 
@@ -1643,7 +1643,7 @@ async def spellcast(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Spellcast Game", description = f"{ctx.author.mention} has started Spellcast Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Spellcast Game", description = f"{ctx.author.mention} has started Spellcast Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a spellcast game")
     em.set_thumbnail(url = "https://cf.geekdo-images.com/_Yp_aBQdr4NE8K9-Lp91pA__itemrep/img/3YWg1fwCRfC9QHRx0BjKkpM6VY4=/fit-in/246x300/filters:strip_icc()/pic600906.jpg")
 
@@ -1658,7 +1658,7 @@ async def spellcast(interaction, channel: GuildChannel=SlashOption(channel_types
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Spellcast Game", description = f"{interaction.user.mention} has started Spellcast Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Spellcast Game", description = f"{interaction.user.mention} has started Spellcast Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a spellcast game")
     em.set_thumbnail(url = "https://cf.geekdo-images.com/_Yp_aBQdr4NE8K9-Lp91pA__itemrep/img/3YWg1fwCRfC9QHRx0BjKkpM6VY4=/fit-in/246x300/filters:strip_icc()/pic600906.jpg")
 
@@ -1676,7 +1676,7 @@ async def poker(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Poker Night Game", description = f"{ctx.author.mention} has started Poker Night Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Poker Night Game", description = f"{ctx.author.mention} has started Poker Night Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "You can play with up to 8 players total per game (you + 7 others), and have up to 17 additional spectators max")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/1500015218941/Screen_Shot_2021-05-06_at_1.46.50_PM.png")
 
@@ -1691,7 +1691,7 @@ async def poker(interaction: Interaction, channel: GuildChannel=SlashOption(chan
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Poker Night Game", description = f"{interaction.user.mention} has started Poker Night Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Poker Night Game", description = f"{interaction.user.mention} has started Poker Night Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "You can play with up to 8 players total per game (you + 7 others), and have up to 17 additional spectators max")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/1500015218941/Screen_Shot_2021-05-06_at_1.46.50_PM.png")
 
@@ -1709,7 +1709,7 @@ async def blazing(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Blazing 8s Game", description = f"{ctx.author.mention} has started Poker Night Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Blazing 8s Game", description = f"{ctx.author.mention} has started Poker Night Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "On your turn, discard a card from your hand with the same suit or number as the previous card. Playing special cards allows you to skip other players, reverse the direction of play, and even swap hands with other players. The first person to discard all their cards wins!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4487235506327/LoadingScreen.jpg")
 
@@ -1724,7 +1724,7 @@ async def blazing(interaction: Interaction, channel: GuildChannel=SlashOption(ch
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Blazing Game", description = f"{interaction.user.mention} has started Blazing 8s Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Blazing Game", description = f"{interaction.user.mention} has started Blazing 8s Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "On your turn, discard a card from your hand with the same suit or number as the previous card. Playing special cards allows you to skip other players, reverse the direction of play, and even swap hands with other players. The first person to discard all their cards wins!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4487235506327/LoadingScreen.jpg")
 
@@ -1742,7 +1742,7 @@ async def youtube(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "YouTube", description = f"{ctx.author.mention} has started YouTube in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "YouTube", description = f"{ctx.author.mention} has started YouTube in {channel.mention}")
     em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
     em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
 
@@ -1757,7 +1757,7 @@ async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(ch
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "YouTube", description = f"{interaction.user.mention} has started YouTube in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "YouTube", description = f"{interaction.user.mention} has started YouTube in {channel.mention}")
     em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
     em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
 
@@ -1775,7 +1775,7 @@ async def letterleague(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Letter League Game", description = f"{ctx.author.mention} has started Letter League Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Letter League Game", description = f"{ctx.author.mention} has started Letter League Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Letter League is a game where you and your friends take turns placing letters on a shared game board to create words in a crossword-style. Spelling words with high earning letters and placing letters on special spaces earn players more points, so get your dictionaries and thesauri ready!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4419631744535/LL_Lobby.png")
 
@@ -1790,7 +1790,7 @@ async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOpti
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Letter League Game", description = f"{interaction.user.mention} has started Letter League Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Letter League Game", description = f"{interaction.user.mention} has started Letter League Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Letter League is a game where you and your friends take turns placing letters on a shared game board to create words in a crossword-style. Spelling words with high earning letters and placing letters on special spaces earn players more points, so get your dictionaries and thesauri ready!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4419631744535/LL_Lobby.png")
 
@@ -1808,7 +1808,7 @@ async def wordsnacks(ctx, channel: nextcord.VoiceChannel=None):
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Word Snacks Game", description = f"{ctx.author.mention} has started Word Snacks Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Word Snacks Game", description = f"{ctx.author.mention} has started Word Snacks Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Word Snacks is a multiplayer word search game, where you and your friends try to make as many words as possible from a few letters. The more words you can spell before your opponents, the higher your score!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4409234925463/word_snack_example.png")
 
@@ -1823,7 +1823,7 @@ async def wordsnacks(interaction, channel: GuildChannel=SlashOption(channel_type
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Word Snacks Game", description = f"{interaction.user.mention} has started Word Snacks Game in {channel.mention}", color = 0x000000)
+    em = nextcord.Embed(title = "Word Snacks Game", description = f"{interaction.user.mention} has started Word Snacks Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Word Snacks is a multiplayer word search game, where you and your friends try to make as many words as possible from a few letters. The more words you can spell before your opponents, the higher your score!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4409234925463/word_snack_example.png")
 
@@ -1839,7 +1839,7 @@ async def news(ctx, amount: int=5):
     titles = aninews.titles
     descriptions = aninews.description
 
-    em = nextcord.Embed(title = "Latest Anime News", color = 0x000000)
+    em = nextcord.Embed(title = "Latest Anime News")
     em.set_thumbnail(url = aninews.images[0])
 
     for i in range(amount):
@@ -1856,7 +1856,7 @@ async def news(interaction: Interaction, amount: int=5):
     titles = aninews.titles
     descriptions = aninews.description
 
-    em = nextcord.Embed(title = "Latest Anime News", color = 0x000000)
+    em = nextcord.Embed(title = "Latest Anime News")
     em.set_thumbnail(url = aninews.images[0])
 
     for i in range(amount):
@@ -1873,7 +1873,7 @@ async def search(ctx, *, query):
     except:
         await ctx.reply(f"No anime found - `{query}`", mention_author = False)
 
-    em = nextcord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:200]}...", color = 0x000000)
+    em = nextcord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:200]}...")
     em.add_field(name = "Episodes", value = str(anime.episodes))
     em.add_field(name = "Rating", value = str(anime.rating))
     em.add_field(name = "Broadcast", value = str(anime.broadcast))
@@ -1894,7 +1894,7 @@ async def search(interaction: Interaction, *, anime):
     except:
         await interaction.send(f"No anime found - `{anime}`", mention_author = False)
 
-    em = nextcord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:200]}...", color = 0x000000)
+    em = nextcord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:200]}...")
     em.add_field(name = "Episodes", value = str(animeName.episodes))
     em.add_field(name = "Rating", value = str(animeName.rating))
     em.add_field(name = "Broadcast", value = str(animeName.broadcast))
@@ -1915,7 +1915,7 @@ async def character(ctx, *, query):
     except:
         await ctx.reply(f"No anime character found - {query}", mention_author = False)
 
-    em = nextcord.Embed(title = char.title, url = char.url, color = 0x000000)
+    em = nextcord.Embed(title = char.title, url = char.url)
     em.set_image(url = char.image_url)
     em.set_footer(text = ", ".join(list(char.references.keys())[:2]))
 
@@ -1930,7 +1930,7 @@ async def character(interaction: Interaction, *, name):
     except:
         await interaction.send(f"No anime character found - {name}")
 
-    em = nextcord.Embed(title = char.title, url = char.url, color = 0x000000)
+    em = nextcord.Embed(title = char.title, url = char.url)
     em.set_image(url = char.image_url)
     em.set_footer(text = ", ".join(list(char.references.keys())[:2]))
 
@@ -2326,7 +2326,7 @@ async def rock(ctx: commands.Context):
             rock_desc = data['desc']
             rock_img = data['image']
 
-            em = nextcord.Embed(title = rock_name, description = rock_desc, color = 0x000000)
+            em = nextcord.Embed(title = rock_name, description = rock_desc)
 
             if not rock_img == None:
                 em.set_image(url = rock_img)
@@ -2345,7 +2345,7 @@ async def rock(Interaction: commands.Context):
             rock_desc = data['desc']
             rock_img = data['image']
 
-            em = nextcord.Embed(title = rock_name, description = rock_desc, color = 0x000000)
+            em = nextcord.Embed(title = rock_name, description = rock_desc)
 
             if not rock_img == None:
                 em.set_image(url = rock_img)
@@ -2612,7 +2612,7 @@ async def queue(ctx: commands.Context):
     if vc.queue.is_empty:
         await ctx.reply("The queue is empty.")
     else:
-        em = nextcord.Embed(title = "Queue", color = 0x000000)
+        em = nextcord.Embed(title = "Queue")
         queue = vc.queue.copy()
         song_count = 0
     
@@ -2635,7 +2635,7 @@ async def queue(interaction: Interaction):
     if vc.queue.is_empty:
         await interaction.send("Queue is empty.")
     else:
-        em = nextcord.Embed(title = "Queue", color = 0x000000)
+        em = nextcord.Embed(title = "Queue")
         queue = vc.queue.copy()
         song_count = 0
 
@@ -2695,7 +2695,7 @@ async def nowplaying(ctx: commands.Context):
     if not vc.is_playing():
         await ctx.reply("There is no current playing music.")
     else:
-        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}", color = 0x000000)
+        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}")
         em.add_field(name = "Duration", value = f"`{str(datetime.timedelta(seconds=vc.track.length))}`")
         em.add_field(name = "Song Info", value = f"Song URL : [Click Here]({str(vc.track.uri)})")
         await ctx.send(embed = em)
@@ -2713,7 +2713,7 @@ async def nowplaying(interaction: Interaction):
     if not vc.is_playing():
         await interaction.send("There is no current playing music.")
     else:
-        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}", color = 0x000000)
+        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}")
         em.add_field(name = "Duration", value = f"`{str(datetime.timedelta(seconds=vc.track.length))}`")
         em.add_field(name = "Song Info", value = f"Song URL : [Click Here]({str(vc.track.uri)})")
         await interaction.send(embed = em)
@@ -2744,7 +2744,7 @@ async def lyrics(ctx: commands.Context):
                 return await ctx.send(f"<{data['links']['genius']}>")
             
             
-            em = nextcord.Embed(title = data['title'], description = data['lyrics'], color = 0x000000)
+            em = nextcord.Embed(title = data['title'], description = data['lyrics'])
             em.set_thumbnail(url = data['thumbnail']['genius'])
             em.set_author(name = data['author'])
             em.timestamp = ctx.message.created_at
@@ -2782,7 +2782,7 @@ async def weather(ctx, *, city: str = None):
         z = x["weather"]
         weather_description = z[0]["description"]
     
-        em = nextcord.Embed(title = f"{city.title()} Weather Information", color = 0x000000)
+        em = nextcord.Embed(title = f"{city.title()} Weather Information")
         em.add_field(name = "Weather Description", value = f"**{weather_description.title()}**", inline = False)
         em.add_field(name = "Temperature (C)", value = f"**{current_temperature_celcius}°C**", inline = False)
         em.add_field(name = "Temperature (K)", value = f"**{current_temperature} K**", inline = False)
@@ -2814,7 +2814,7 @@ async def weather(interaction: Interaction, *, city: str):
         z = x["weather"]
         weather_description = z[0]["description"]
     
-        em = nextcord.Embed(title = f"{city.title()} Weather Information", color = 0x000000)
+        em = nextcord.Embed(title = f"{city.title()} Weather Information")
         em.add_field(name = "Weather Description", value = f"**{weather_description.title()}**", inline = False)
         em.add_field(name = "Temperature (C)", value = f"**{current_temperature_celcius}°C**", inline = False)
         em.add_field(name = "Temperature (K)", value = f"**{current_temperature} K**", inline = False)
@@ -2832,7 +2832,7 @@ async def weather(interaction: Interaction, *, city: str):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def movie(ctx, *, movie_name = None):
     if movie_name == None:
-        em = nextcord.Embed(title = "Movie", description = "**Command :** >movie\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)", color = 0x000000)
+        em = nextcord.Embed(title = "Movie", description = "**Command :** >movie\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)")
         await ctx.send(embed = em)
     
     moviesDB = IMDb()
@@ -2851,7 +2851,7 @@ async def movie(ctx, *, movie_name = None):
     # direcStr = " ".join(map(str, directors))
     actors = ", ".join(map(str, casting))
 
-    em2 = nextcord.Embed(title = f"{movie_name.title()}", color = 0x000000)
+    em2 = nextcord.Embed(title = f"{movie_name.title()}")
     em2.add_field(name = "Title", value = f"**{movie_name.title()}**", inline = False)
     em2.add_field(name = "Year", value = f"**{year}**", inline = False)
     em2.add_field(name = "Rating", value = f"**{rating}**", inline = False)
@@ -2880,7 +2880,7 @@ async def movie(interaction: Interaction, *, movie_name):
     # direcStr = " ".join(map(str, directors))
     actors = ", ".join(map(str, casting))
 
-    em = nextcord.Embed(title = f"{movie_name.title()}", color = 0x000000)
+    em = nextcord.Embed(title = f"{movie_name.title()}")
     em.add_field(name = "Title", value = f"**{movie_name.title()}**", inline = False)
     em.add_field(name = "Year", value = f"**{year}**", inline = False)
     em.add_field(name = "Rating", value = f"**{rating}**", inline = False)
@@ -2905,7 +2905,7 @@ async def cv(ctx, *, country):
 
     data = found[0]
 
-    em = nextcord.Embed(title = f"{country.title()} COVID-19 Statistic", color = 0x000000)
+    em = nextcord.Embed(title = f"{country.title()} COVID-19 Statistic")
     em.add_field(name = "Total Confirmed", value = data["TotalConfirmed"])
     em.add_field(name = "Total Deaths", value = data["TotalDeaths"])
     em.add_field(name = "New Confirmed", value = data["NewConfirmed"])
@@ -2930,7 +2930,7 @@ async def cv(interaction: Interaction, *, country):
 
     data = found[0]
 
-    em = nextcord.Embed(title = f"{country.title()} COVID-19 Statistic", color = 0x000000)
+    em = nextcord.Embed(title = f"{country.title()} COVID-19 Statistic")
     em.add_field(name = "Total Confirmed", value = data["TotalConfirmed"])
     em.add_field(name = "Total Deaths", value = data["TotalDeaths"])
     em.add_field(name = "New Confirmed", value = data["NewConfirmed"])
@@ -2956,7 +2956,7 @@ async def afk(ctx, *, reason = None):
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (ctx.author.id, ctx.guild.id,))
         else:
             await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (ctx.author.id, ctx.guild.id, reason))
-            em = nextcord.Embed(title = "AFK", description = f"{ctx.author.mention}, I set your AFK - `{reason}`", color = 0x000000)
+            em = nextcord.Embed(title = "AFK", description = f"{ctx.author.mention}, I set your AFK - `{reason}`")
             em.timestamp = ctx.message.created_at
             await ctx.send(embed = em)
     await client.db.commit()
@@ -2978,7 +2978,7 @@ async def afk(interaction: Interaction, *, reason = None):
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (interaction.user.id, interaction.guild.id,))
         else:
             await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (interaction.user.id, interaction.user.id, reason))
-            em = nextcord.Embed(title = "AFK", description = f"{interaction.user.mention}, i set your AFK - `{reason}`", color = 0x000000)
+            em = nextcord.Embed(title = "AFK", description = f"{interaction.user.mention}, i set your AFK - `{reason}`")
             em.timestamp = datetime.datetime.utcnow()
     await client.db.commit()
 
@@ -2989,7 +2989,7 @@ async def snipe(ctx):
         await ctx.reply("There's nothing to snipe")
 
     else:
-        em = nextcord.Embed(title = f"Last deleted message in #{ctx.channel.name}", description = f"{snipe_message_content}", color = 0x000000)
+        em = nextcord.Embed(title = f"Last deleted message in #{ctx.channel.name}", description = f"{snipe_message_content}")
         em.set_footer(text = f"Deleted by {ctx.author}", icon_url = ctx.author.avatar.url)
         em.timestamp = ctx.message.created_at
 
@@ -3002,7 +3002,7 @@ async def snipe(interaction: Interaction):
         await interaction.send("There's nothing to snipe")
 
     else:
-        em = nextcord.Embed(title = f"Last deleted message in #{interaction.channel.name}", description = f"{snipe_message_content}", color = 0x000000)
+        em = nextcord.Embed(title = f"Last deleted message in #{interaction.channel.name}", description = f"{snipe_message_content}")
         em.set_footer(text = f"Deleted by {interaction.user}", icon_url = interaction.user.avatar.url)
         em.timestamp = datetime.datetime.utcnow()
 
@@ -3273,7 +3273,7 @@ async def poll(ctx, *, argument):
 
     icon_url = ctx.author.avatar.url
 
-    em = nextcord.Embed(title = f"New Poll", description = f"{argument}", color = 0x000000)
+    em = nextcord.Embed(title = f"New Poll", description = f"{argument}")
 
     em.set_footer(text = f"Poll by {ctx.author}", icon_url = ctx.author.avatar.url)
 
@@ -3327,7 +3327,7 @@ async def id(interaction: Interaction, member: nextcord.Member):
 @client.command(aliases = ["mc"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def membercount(ctx):
-    em = nextcord.Embed(title = f"{ctx.guild.name}'s Total Members", description = ctx.guild.member_count, color = 0x000000)
+    em = nextcord.Embed(title = f"{ctx.guild.name}'s Total Members", description = ctx.guild.member_count)
     em.timestamp = ctx.message.created_at
     await ctx.send(embed = em)
 
@@ -3335,7 +3335,7 @@ async def membercount(ctx):
 @client.slash_command(name = "membercount", description = "Get the member count of the current server")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def membercount(interaction: Interaction):
-    em = nextcord.Embed(title = f"{interaction.guild.name}'s Total Members", description = interaction.guild.member_count, color = 0x000000)
+    em = nextcord.Embed(title = f"{interaction.guild.name}'s Total Members", description = interaction.guild.member_count)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
 
@@ -3357,7 +3357,7 @@ async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
     created_time = emoji.created_at.strftime("%I:%M %p %B %d, %Y")
     can_use_emoji = "Everyone" if not emoji.roles else " ".join(role.name for role in emoji.roles)
 
-    em = nextcord.Embed(title = f"`{emoji.name}` Emoji Informations", color = 0x000000)
+    em = nextcord.Embed(title = f"`{emoji.name}` Emoji Informations")
     em.add_field(name = "Name", value = emoji.name)
     em.add_field(name = "ID", value = emoji.id)
     em.add_field(name = "Emoji Guild Name", value = emoji.guild.name)
@@ -3390,7 +3390,7 @@ async def dm(ctx, member: nextcord.User, *, content):
 @client.command(aliases = ["statistic", "stat"])
 @commands.is_owner()
 async def stats(ctx):
-    em = nextcord.Embed(title = "Riot Bot Statistic", color = 0x000000)
+    em = nextcord.Embed(title = "Riot Bot Statistic")
     em.add_field(name = "CPU", value = f"{psutil.cpu_percent()}%", inline = False)
     em.add_field(name = "RAM", value = f"{psutil.virtual_memory()[2]}%", inline = False)
     await ctx.send(embed = em)
