@@ -2419,7 +2419,7 @@ async def splay(ctx: commands.Context, *, query: str):
             print(err)
     else:
         await vc.queue.put_wait(query)
-        await ctx.send(f"Now playing `{query.title}`")
+        await ctx.send(f"Added `{track.title}` to the queue.")
     
     vc.ctx = ctx
     
@@ -2662,8 +2662,8 @@ async def volume(ctx: commands.Context, volume: int):
     elif volume < 0:
         return await ctx.reply("Minimum volume is 0.")
 
-    return await vc.set_volume(volume)
-    return await ctx.reply(f"Music volume has been set to `{volume}%`")
+    await vc.set_volume(volume)
+    await ctx.reply(f"Music volume has been set to `{volume}%`")
 
 
 @client.slash_command(name = "volume", description = "Change music volume")
@@ -2680,8 +2680,8 @@ async def volume(interaction: Interaction, volume: int):
     elif volume < 0:
         return await interaction.send("Minimum volume is 0.")
 
-    return await vc.set_volume(volume)
-    return await interaction.send(f"Music volume has been set to `{volume}%`")
+    await vc.set_volume(volume)
+    await interaction.send(f"Music volume has been set to `{volume}%`")
 
 
 @client.command(aliases = ["np", "cp", "currentplay"])
