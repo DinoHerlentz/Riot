@@ -407,10 +407,10 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         pass
 
     try:
-        return await ctx.send(f"Now playing -> `{next_song.title}`")
+        await ctx.send(f"Now playing -> `{next_song.title}`")
     
     except nextcord.HTTPException:
-        return await interaction.send(f"Now playing -> `{next_song.title}`")
+        await interaction.send(f"Now playing -> `{next_song.title}`")
 
 
 @client.event
