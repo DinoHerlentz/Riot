@@ -1944,7 +1944,7 @@ async def memes(ctx):
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
             anime_memes = await r.json()
 
-            em = nextcord.Embed(color = 0x000000)
+            em = nextcord.Embed()
             em.set_image(url = anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = ctx.message.created_at
 
@@ -1958,7 +1958,7 @@ async def memes(interaction: Interaction):
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
             anime_memes = await r.json()
 
-            em = nextcord.Embed(color = 0x000000)
+            em = nextcord.Embed()
             em.set_image(url = anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = datetime.datetime.utcnow()
             await interaction.send(embed = em)
@@ -3111,7 +3111,7 @@ async def av(ctx, member: nextcord.Member = None):
 
     icon_url = member.avatar.url
 
-    em = nextcord.Embed(color = 0x000000)
+    em = nextcord.Embed()
     em.set_image(url = f"{icon_url}")
     em.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar.url)
     em.timestamp = ctx.message.created_at
@@ -3124,7 +3124,7 @@ async def av(ctx, member: nextcord.Member = None):
 async def av(interaction: Interaction, member: nextcord.Member):
     icon_url = member.avatar.url
 
-    em = nextcord.Embed(color = 0x000000)
+    em = nextcord.Embed()
     em.set_image(url = f"{icon_url}")
     em.set_footer(text = f"Requested by {interaction.user}", icon_url = interaction.user.avatar.url)
     em.timestamp = datetime.datetime.utcnow()
