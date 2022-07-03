@@ -3077,20 +3077,20 @@ async def afk(ctx, *, reason = None):
             if data[0] == reason:
                 return await ctx.send("You've been AFK with the same reason")
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (ctx.author.id, ctx.guild.id,))
+        
         else:
             await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (ctx.author.id, ctx.guild.id, reason))
             em = nextcord.Embed(title = "AFK", description = f"{ctx.author.mention}, I set your AFK - `{reason}`")
             em.timestamp = ctx.message.created_at
+            
             await ctx.send(embed = em)
+    
     await client.db.commit()
 
 
 @client.slash_command(name = "afk", description = "Go AFK")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def afk(interaction: Interaction, *, reason = None):
-    if reason == None:
-        reason = "AFK"
-    
+async def afk(interaction: Interaction, *, reason):    
     async with client.db.cursor() as cursor:
         await cursor.execute("SELECT reason FROM afk WHERE user = ? AND guild = ?", (interaction.user.id, interaction.guild.id,))
         data = await cursor.fetchone()
@@ -3099,10 +3099,14 @@ async def afk(interaction: Interaction, *, reason = None):
             if data[0] == reason:
                 return await interaction.send("You've been AFK with the same reason")
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (interaction.user.id, interaction.guild.id,))
+        
         else:
-            await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (interaction.user.id, interaction.user.id, reason))
+            await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (interaction.user.id, interaction.guild.id, reason))
             em = nextcord.Embed(title = "AFK", description = f"{interaction.user.mention}, i set your AFK - `{reason}`")
             em.timestamp = datetime.datetime.utcnow()
+            
+            await interaction.send(embed = em)
+    
     await client.db.commit()
 
 
