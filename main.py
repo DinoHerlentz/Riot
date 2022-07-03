@@ -394,14 +394,14 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         vc: player = interaction.guild.voice_client
 
     if vc.loop:
-        return await vc.play(track)
+        await vc.play(track)
 
-    if vc.queue.is_empty:
-        return await vc.disconnect()
+    elif vc.queue.is_empty:
+        await vc.disconnect()
 
     try:
         next_song = vc.queue.get()
-        return await vc.play(next_song)
+        await vc.play(next_song)
     
     except wavelink.errors.QueueEmpty:
         pass
@@ -2364,9 +2364,6 @@ async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
     elif not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
 
-    elif not ctx.author.voice == ctx.ne.voice:
-        await ctx.reply("We must be in the same voice channel.")
-
     else:
         vc: wavelink.Player = ctx.voice_client
 
@@ -2392,9 +2389,6 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
     elif not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
 
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
-    
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
@@ -2417,9 +2411,6 @@ async def splay(ctx: commands.Context, *, query: str):
     
     elif not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
-
-    elif not ctx.author.voice == ctx.me.voice:
-        await ctx.reply("We must be in the same voice channel.")
     
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2455,9 +2446,6 @@ async def splay(interaction: Interaction, *, url: str):
     
     elif not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2494,9 +2482,6 @@ async def pause(ctx: commands.Context):
     elif not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
 
-    elif not ctx.author.voice == ctx.me.voice:
-        await ctx.reply("We must be in the same voice channel.")
-
     else:
         vc: wavelink.Player = ctx.voice_client
 
@@ -2511,9 +2496,6 @@ async def pause(interaction: Interaction):
     
     elif not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2530,9 +2512,6 @@ async def resume(ctx: commands.Context):
     elif not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
 
-    elif not ctx.author.voice == ctx.me.voice:
-        await ctx.reply("We must be in the same voice channel.")
-
     else:
         vc: wavelink.Player = ctx.voice_client
 
@@ -2547,9 +2526,6 @@ async def resume(interaction: Interaction):
     
     elif not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2566,9 +2542,6 @@ async def stop(ctx: commands.Context):
     elif not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
 
-    elif not ctx.author.voice == ctx.me.voice:
-        await ctx.reply("We must be in the same voice channel.")
-
     else:
         vc: wavelink.Player = ctx.voice_client
 
@@ -2583,9 +2556,6 @@ async def stop(interaction: Interaction):
     
     elif not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2600,9 +2570,6 @@ async def disconnect(ctx: commands.Context):
     if not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
 
-    elif not ctx.author.voice == ctx.me.author:
-        await ctx.reply("We must be in the same voice channel")
-
     else:
         vc: wavelink.Player = ctx.voice_client
 
@@ -2615,9 +2582,6 @@ async def disconnect(ctx: commands.Context):
 async def disconnect(interaction: Interaction):
     if not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2633,9 +2597,6 @@ async def loop(ctx: commands.Context):
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
-    
-    elif not ctx.author.voice == ctx.me.voice:
-        return await ctx.reply("We must be in the same voice channel.")
     
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2660,9 +2621,6 @@ async def loop(interaction: Interaction):
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
-    elif not interaction.user.voice == interaction.me.voice:
-        return await interaction.send("We must in the same voice channel.", ephemeral = True)
 
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2688,10 +2646,8 @@ async def queue(ctx: commands.Context):
     elif not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
 
-    elif not ctx.author.voice == ctx.me.voice:
-        await ctx.reply("We must be in the same voice channel.")
-    
-    vc: wavelink.Player = ctx.voice_client
+    else:
+        vc: wavelink.Player = ctx.voice_client
 
     if vc.queue.is_empty:
         await ctx.reply("The queue is empty.")
@@ -2715,9 +2671,6 @@ async def queue(interaction: Interaction):
     
     elif not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2744,9 +2697,6 @@ async def volume(ctx: commands.Context, volume: int):
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
-
-    elif not ctx.author.voice == ctx.me.voice:
-        await ctx.reply("We must be in the same voice channel.")
     
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2768,9 +2718,6 @@ async def volume(interaction: Interaction, volume: int):
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
@@ -2794,9 +2741,6 @@ async def nowplaying(ctx: commands.Context):
     elif not getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel.")
 
-    elif not ctx.author.voice == ctx.me.voice:
-        await ctx.reply("We must be in the same voice channel.")
-
     else:
         vc: wavelink.Player = ctx.voice_client
 
@@ -2817,9 +2761,6 @@ async def nowplaying(interaction: Interaction):
     
     elif not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-
-    elif not interaction.user.voice == interaction.me.voice:
-        await interaction.send("We must be in the same voice channel.", ephemeral = True)
     
     else:
         vc: wavelink.Player = interaction.guild.voice_client
