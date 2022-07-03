@@ -401,16 +401,16 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
 
     try:
         next_song = vc.queue.get()
-        await vc.play(next_song)
+        return await vc.play(next_song)
     
     except wavelink.errors.QueueEmpty:
         pass
 
     try:
-        await ctx.send(f"Now playing -> `{next_song.title}`")
+        return await ctx.send(f"Now playing -> `{next_song.title}`")
     
     except nextcord.HTTPException:
-        await interaction.send(f"Now playing -> `{next_song.title}`")
+        return await interaction.send(f"Now playing -> `{next_song.title}`")
 
 
 @client.event
@@ -2550,7 +2550,7 @@ async def disconnect(ctx: commands.Context):
 
 
 @client.slash_command(name = "disconnect", description = "Disconnect the bot from the voice channel.")
-@commands.has_permissions(administrator = True)
+@application_checks.has_permissions(administrator = True)
 async def disconnect(interaction: Interaction):
     if not getattr(interaction.user.voice, "channel", None):
         await interaction.send("You aren't connected to the voice channel.")
@@ -2565,7 +2565,7 @@ async def disconnect(interaction: Interaction):
 async def loop(ctx: commands.Context):
     if not ctx.voice_client:
         await ctx.reply("I'm not in a voice channel.")
-    elif not getattr(ctx.author.voice, "channel", None):
+    elif getattr(ctx.author.voice, "channel", None):
         await ctx.reply("You aren't connected to the voice channel")
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2651,37 +2651,37 @@ async def queue(interaction: Interaction):
 @client.command(aliases = ["vol"])
 async def volume(ctx: commands.Context, volume: int):
     if not ctx.voice_client:
-        await ctx.reply(f"I'm not in a voice channel.")
+        return await ctx.reply(f"I'm not in a voice channel.")
     elif not getattr(ctx.author.voice, "channel", None):
-        await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.")
     else:
         vc: wavelink.Player = ctx.voice_client
 
     if volume > 100:
-        await ctx.reply("Maximum volume is 100.")
+        return await ctx.reply("Maximum volume is 100.")
     elif volume < 0:
-        await ctx.reply("Minimum volume is 0.")
+        return await ctx.reply("Minimum volume is 0.")
 
-    await vc.set_volume(volume)
-    await ctx.reply(f"Music volume has been set to `{volume}%`")
+    return await vc.set_volume(volume)
+    return await ctx.reply(f"Music volume has been set to `{volume}%`")
 
 
 @client.slash_command(name = "volume", description = "Change music volume")
 async def volume(interaction: Interaction, volume: int):
     if not interaction.guild.voice_client:
-        await interaction.send("I'm not in the voice channel.")
+        return await interaction.send("I'm not in the voice channel.")
     elif not getattr(interaction.user.voice, "channel", None):
-        await interaction.send("You aren't connected to the voice channel.")
+        return await interaction.send("You aren't connected to the voice channel.")
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
     if volume > 100:
-        await interaction.send("Maximum volume is 100.")
+        return await interaction.send("Maximum volume is 100.")
     elif volume < 0:
-        await interaction.send("Minimum volume is 0.")
+        return await interaction.send("Minimum volume is 0.")
 
-    await vc.set_volume(volume)
-    await interaction.send(f"Music volume has been set to `{volume}%`")
+    return await vc.set_volume(volume)
+    return await interaction.send(f"Music volume has been set to `{volume}%`")
 
 
 @client.command(aliases = ["np", "cp", "currentplay"])
@@ -2743,7 +2743,7 @@ async def lyrics(ctx: commands.Context):
 
             
             if len(data['lyrics']) > 2000:
-                return await ctx.send(f"<{data['links']['genius']}>")
+                await ctx.send(f"<{data['links']['genius']}>")
             
             
             em = nextcord.Embed(title = data['title'], description = data['lyrics'])
