@@ -545,7 +545,7 @@ async def help(ctx):
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     em.add_field(name = "Anime", value = "anime")
     em.add_field(name = "Images", value = "dog, capybara food, rock")
-    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
+    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying")
     em.add_field(name = "Application Commands", value = "embed")
     em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
@@ -562,7 +562,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     em.add_field(name = "Anime", value = "anime")
     em.add_field(name = "Images", value = "dog, capybara food, rock")
-    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
+    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying")
     em.add_field(name = "Application Commands", value = "embed")
     em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
@@ -2721,6 +2721,7 @@ async def nowplaying(interaction: Interaction):
         await interaction.send(embed = em)
 
 
+"""
 @client.command(aliases = ["l"])
 async def lyrics(ctx: commands.Context):
     if not ctx.voice_client:
@@ -2752,6 +2753,7 @@ async def lyrics(ctx: commands.Context):
             em.timestamp = ctx.message.created_at
     
             await ctx.send(embed = em)
+"""
 
 
 # Application Commands
