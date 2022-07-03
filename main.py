@@ -546,7 +546,8 @@ async def help(ctx):
     em.add_field(name = "Anime", value = "anime")
     em.add_field(name = "Images", value = "dog, capybara food, rock")
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em.add_field(name = "Application Commands", value = "embed")
+    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -562,7 +563,8 @@ async def help(interaction: Interaction):
     em.add_field(name = "Anime", value = "anime")
     em.add_field(name = "Images", value = "dog, capybara food, rock")
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, embed, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em.add_field(name = "Application Commands", value = "embed")
+    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2752,8 +2754,14 @@ async def lyrics(ctx: commands.Context):
             await ctx.send(embed = em)
 
 
+# Application Commands
+@client.slash_command(name = "embed", description = "Create an embed")
+async def embed(interaction: Interaction):
+    await interaction.response.send_modal(Embed())
+
+
 """
-@client.slash_command(name = "forum", description = "Description")
+@client.slash_command(name = "forum", description = "Forum")
 async def forum(interaction: Interaction):
     await interaction.response.send_modal(Forum())
 """
@@ -3007,11 +3015,6 @@ async def snipe(interaction: Interaction):
         em.timestamp = datetime.datetime.utcnow()
 
         await interaction.send(embed = em)
-
-
-@client.slash_command(name = "embed", description = "Create an embed")
-async def embed(interaction: Interaction):
-    await interaction.response.send_modal(Embed())
 
 
 @client.command()
