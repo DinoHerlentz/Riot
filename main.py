@@ -361,7 +361,7 @@ class WordSnacksGame(nextcord.ui.View):
 # Event Decorator
 @client.event
 async def on_ready():	
-    await client.change_presence(status=nextcord.Status.online, activity=nextcord.Game(">help"))
+    await client.change_presence(status = nextcord.Status.online, activity = nextcord.Game(">help"))
     print("We have logged in as {0.user}".format(client))
 
 	# Music
