@@ -380,7 +380,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await client.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = client, host = "lavalinkinc.ml", port = 443, password = "incognito", https = True, spotify_client = spotify.SpotifyClient(client_id=os.environ['ID'], client_secret=os.environ['SECRET']))
+    await wavelink.NodePool.create_node(bot = client, host = "lavalinkinc.ml", port = 443, password = "incognito", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
 
 
 @client.event
@@ -2405,7 +2405,7 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
 
 
 @client.command(aliases = ["spotify", "sp", "spotifyplay"])
-async def splay(ctx: commands.Context, *, query: str):
+async def splay(ctx: commands.Context, *, url: str):
     if not ctx.voice_client:
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
     
@@ -2417,18 +2417,18 @@ async def splay(ctx: commands.Context, *, query: str):
 
     if vc.queue.is_empty and not vc.is_playing():
         try:
-            decodeURL = spotify.decode_url(query)
-            track = await spotify.SpotifyTrack.search(query=decodeURL['id'], return_first=True)
+            decodeURL = spotify.decode_url(url)
+            track = await spotify.SpotifyTrack.search(query = decodeURL['id'], return_first = True)
             
             await vc.play(track)
             await ctx.send(f"Now playing -> `{track.title}`")
         
         except Exception as err:
-            await ctx.reply("Please insert a spotify song url.")
+            await ctx.reply("Please insert a spotify song URL.")
             print(err)
     
     else:
-        await vc.queue.put_wait(query)
+        await vc.queue.put_wait(track)
         await ctx.send(f"Added `{track.title}` to the queue.")
     
     vc.ctx = ctx
@@ -2453,7 +2453,7 @@ async def splay(interaction: Interaction, *, url: str):
     if vc.queue.is_empty and not vc.is_playing():
         try:
             decodeURL = spotify.decode_url(url)
-            track = await spotify.SpotifyTrack.search(query=decodeURL['id'], return_first=True)
+            track = await spotify.SpotifyTrack.search(query = decodeURL['id'], return_first = True)
             
             await vc.play(track)
             await interaction.send(f"Now playing -> `{track.title}`")
@@ -2733,7 +2733,7 @@ async def volume(interaction: Interaction, volume: int):
     await interaction.send(f"Music volume has been set to `{volume}%`")
 
 
-@client.command(aliases = ["np", "cp", "currentplay"])
+@client.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
 async def nowplaying(ctx: commands.Context):
     if not ctx.voice_client:
         await ctx.reply("I'm not in the voice channel.")
