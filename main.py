@@ -394,10 +394,10 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         vc: player = interaction.guild.voice_client
 
     if vc.loop:
-        await vc.play(track)
+        return await vc.play(track)
 
     elif vc.queue.is_empty:
-        await vc.disconnect()
+        return await vc.disconnect()
 
     try:
         next_song = vc.queue.get()
@@ -407,10 +407,10 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         pass
 
     try:
-        await ctx.send(f"Now playing -> `{next_song.title()}`")
+        await ctx.send(f"Now playing -> `{next_song.title}`")
     
     except nextcord.HTTPException:
-        await interaction.send(f"Now playing -> `{next_song.title()}`")
+        await interaction.send(f"Now playing -> `{next_song.title}`")
 
 
 @client.event
@@ -2369,11 +2369,11 @@ async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
 
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
-        await ctx.send(f"Now playing -> `{query.title()}`")
+        await ctx.send(f"Now playing -> `{query.title}`")
 
     else:
         await vc.queue.put_wait(query)
-        await ctx.send(f"Added `{query.title()}` to the queue.")
+        await ctx.send(f"Added `{query.title}` to the queue.")
 
     vc.ctx = ctx
     setattr(vc, "loop", False)
@@ -2394,11 +2394,11 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
 
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
-        await interaction.send(f"Now playing -> `{query.title()}`")
+        await interaction.send(f"Now playing -> `{query.title}`")
 
     else:
         await vc.queue.put_wait(query)
-        await interaction.send(f"Added `{query.title()}` to the queue.")
+        await interaction.send(f"Added `{query.title}` to the queue.")
 
     vc.interaction = interaction
     setattr(vc, "loop", False)
@@ -2421,7 +2421,7 @@ async def splay(ctx: commands.Context, *, query: str):
             track = await spotify.SpotifyTrack.search(query=decodeURL['id'], return_first=True)
             
             await vc.play(track)
-            await ctx.send(f"Now playing -> `{track.title()}`")
+            await ctx.send(f"Now playing -> `{track.title}`")
         
         except Exception as err:
             await ctx.reply("Please insert a spotify song url.")
@@ -2429,7 +2429,7 @@ async def splay(ctx: commands.Context, *, query: str):
     
     else:
         await vc.queue.put_wait(query)
-        await ctx.send(f"Added `{track.title()}` to the queue.")
+        await ctx.send(f"Added `{track.title}` to the queue.")
     
     vc.ctx = ctx
     
@@ -2456,7 +2456,7 @@ async def splay(interaction: Interaction, *, url: str):
             track = await spotify.SpotifyTrack.search(query=decodeURL['id'], return_first=True)
             
             await vc.play(track)
-            await interaction.send(f"Now playing -> `{track.title()}`")
+            await interaction.send(f"Now playing -> `{track.title}`")
         
         except Exception as err:
             await interaction.send("Please insert a spotify song url.")
@@ -2748,7 +2748,7 @@ async def nowplaying(ctx: commands.Context):
         await ctx.reply("There is no current playing music.")
     
     else:
-        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title()}", description = f"Artist : {vc.track.author}")
+        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}")
         em.add_field(name = "Duration", value = f"`{str(datetime.timedelta(seconds=vc.track.length))}`")
         em.add_field(name = "Song Info", value = f"Song URL : [Click Here]({str(vc.track.uri)})")
         await ctx.send(embed = em)
@@ -2769,7 +2769,7 @@ async def nowplaying(interaction: Interaction):
         await interaction.send("There is no current playing music.")
     
     else:
-        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title()}", description = f"Artist : {vc.track.author}")
+        em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}")
         em.add_field(name = "Duration", value = f"`{str(datetime.timedelta(seconds=vc.track.length))}`")
         em.add_field(name = "Song Info", value = f"Song URL : [Click Here]({str(vc.track.uri)})")
         await interaction.send(embed = em)
