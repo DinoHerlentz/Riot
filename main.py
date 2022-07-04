@@ -280,7 +280,7 @@ class Pet(nextcord.ui.Select):
 
 class PetView(nextcord.ui.View):
     def __init__(self):
-        super().__init__(timeout=None)
+        super().__init__(timeout = None)
         self.add_item(Pet())
 
 
@@ -1248,7 +1248,7 @@ async def rps(interaction: Interaction, choice):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def rate(ctx, *, argument=None):
+async def rate(ctx, *, argument = None):
     if argument == None:
         em = nextcord.Embed(title = "**Command :** >rate", description = "**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart")
         await ctx.send(embed = em)
@@ -1482,7 +1482,7 @@ async def beautiful(interaction: Interaction):
 # Game Command
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def sketch(ctx, channel: nextcord.VoiceChannel=None):
+async def sketch(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         return await ctx.send("Please select a voice channel.")
 
@@ -1515,7 +1515,7 @@ async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(cha
 
 @game.command(aliases = ["fishing", "fish"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def fishington(ctx, channel: nextcord.VoiceChannel=None):
+async def fishington(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1548,7 +1548,7 @@ async def fishington(interaction: Interaction, channel: GuildChannel=SlashOption
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def chess(ctx, channel: nextcord.VoiceChannel=None):
+async def chess(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1581,7 +1581,7 @@ async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(chan
 
 @game.command(aliases = ["checker"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def checkers(ctx, channel: nextcord.VoiceChannel=None):
+async def checkers(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1614,7 +1614,7 @@ async def checkers(interaction: Interaction, channel: GuildChannel=SlashOption(c
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def betrayal(ctx, channel: nextcord.VoiceChannel=None):
+async def betrayal(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1647,7 +1647,7 @@ async def betrayal(interaction: Interaction, channel: GuildChannel=SlashOption(c
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def spellcast(ctx, channel: nextcord.VoiceChannel=None):
+async def spellcast(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1680,7 +1680,7 @@ async def spellcast(interaction, channel: GuildChannel=SlashOption(channel_types
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def poker(ctx, channel: nextcord.VoiceChannel=None):
+async def poker(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1713,7 +1713,7 @@ async def poker(interaction: Interaction, channel: GuildChannel=SlashOption(chan
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def blazing(ctx, channel: nextcord.VoiceChannel=None):
+async def blazing(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1746,7 +1746,7 @@ async def blazing(interaction: Interaction, channel: GuildChannel=SlashOption(ch
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def youtube(ctx, channel: nextcord.VoiceChannel=None):
+async def youtube(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1779,7 +1779,7 @@ async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(ch
 
 @game.command(aliases = ["ll", "letter"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def letterleague(ctx, channel: nextcord.VoiceChannel=None):
+async def letterleague(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1812,7 +1812,7 @@ async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOpti
 
 @game.command(aliases = ["ws"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def wordsnacks(ctx, channel: nextcord.VoiceChannel=None):
+async def wordsnacks(ctx, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -3290,7 +3290,7 @@ async def serverinfo(interaction: Interaction):
 
 @client.command()
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def timer(ctx, seconds=None):
+async def timer(ctx, seconds = None):
     if seconds == None:
         timer_delete = await ctx.send("**Please enter a number of timer countdown (second).**")
         await asyncio.sleep(3)
