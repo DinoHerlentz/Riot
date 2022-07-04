@@ -1072,32 +1072,41 @@ async def eightball(interaction: Interaction, *, question):
 @client.command(aliases = ["covidtest", "swabtest", "pcr"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def cvtest(ctx, member: nextcord.Member = None):
-    covidResponses = ["positive", "negative"]
+    cvRes = ["positive", "negative"]
 
     if member == None:
       message = await ctx.reply(f"Doing the swab test to {ctx.author.mention}...")
       await asyncio.sleep(3)
       await message.edit(content = "The swab test result is...")
       await asyncio.sleep(3)
-      await message.edit(content = f"You are **__{random.choice(covidResponses)}__** COVID-19.")
+      await message.edit(content = f"You are **__{random.choice(cvRes)}__** COVID-19.")
+    
     else:
       message = await ctx.reply(f"Doing the swab test to {member.mention}...")
       await asyncio.sleep(3)
       await message.edit(content = "The swab test result is...")
       await asyncio.sleep(3)
-      await message.edit(content = f"{member.mention} is **__{random.choice(covidResponses)}__** COVID-19.")
+      await message.edit(content = f"{member.mention} is **__{random.choice(cvRes)}__** COVID-19.")
 
 
-@client.slash_command(name = "cvtest", description = "Do a swab test")
+@client.slash_command(name = "covidtest", description = "Do a swab test")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def cvtest(interaction: Interaction, member: nextcord.Member):
-  cvRes = ["positive", "negative"]
+async def cvtest(interaction: Interaction, member: nextcord.Member = None):
+    cvRes = ["positive", "negative"]
 
-  original_message = await interaction.response.send_message(f"Doing the swab test to {member.mention}...")
-  await asyncio.sleep(3)
-  await interaction.edit_original_message(content = "The swab test result is...")
-  await asyncio.sleep(3)
-  await interaction.edit_original_message(content = f"{member.mention} is **__{random.choice(cvRes)}__** COVID-19.")
+    if member == None:
+        original_message = await interaction.send(f"Doing the swab test to {interaction.user.mention}...")
+        await asyncio.sleep(3)
+        await interaction.edit_original_message(content = "The swab test result is...")
+        await asyncio.sleep(3)
+        await interaction.edit_original_message(content = f"You are **__{random.choice(cvRes)}__** COVID-19")
+
+    else:
+        original_message = await interaction.send(f"Doing the swab test to {member.mention}...")
+        await asyncio.sleep(3)
+        await interaction.edit_original_message(content = "The swab test result is...")
+        await asyncio.sleep(3)
+        await interaction.edit_original_message(content = f"{member.mention} is **__{random.choice(cvRes)}__** COVID-19.")
 
 
 @client.command()
@@ -1107,18 +1116,25 @@ async def temperature(ctx, member: nextcord.Member = None):
       message = await ctx.reply("Analyzing your body temperature...")
       await asyncio.sleep(3)
       await message.edit(content = f"Your body temperature is **__{random.randint(1, 40)}°C__**")
+    
     else:
       message = await ctx.reply(f"Analyzing {member.mention}'s body temperature...")
       await asyncio.sleep(3)
       await message.edit(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
 
 
-@client.slash_command(name = "temperature", description = "Check your body temperature")
+@client.slash_command(name = "temperature", description = "Check user body temperature")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def temperature(interaction: Interaction, member: nextcord.Member):
-  original_message = await interaction.response.send_message(f"Analyzing {member.mention}'s body temperature...")
-  await asyncio.sleep(3)
-  await interaction.edit_original_message(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
+async def temperature(interaction: Interaction, member: nextcord.Member = None):
+    if member == None:
+        original_message = await interaction.send("Analyzing your body temperature...")
+        await asyncio.sleep(3)
+        await interaction.edit_original_message(content = f"Your body temperature is **__{random.randint(1, 40)}°C__**")
+
+    else:
+        original_message = await interaction.send(f"Analyzing {member.mention}'s body temperature...")
+        await asyncio.sleep(3)
+        await interaction.edit_original_message(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
 
 
 @client.command(aliases = ["rolldice", "roll"])
@@ -1147,14 +1163,18 @@ async def coinflip(ctx, choice = None):
     answer = choice.lower()
     choices = ["head", "tail"]
     computers_answer = random.choice(choices)
+    
     if answer not in choices:
         await ctx.reply("**That is not a valid option. Please use one of these option : head, tail.**")
+    
     else:
         if computers_answer == answer:
             await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{answer}__**.")
+        
         if computers_answer == "head":
             if answer == "tail":
                 await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
+            
         if computers_answer == "tail":
             if answer == "head":
                 await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
@@ -1166,15 +1186,18 @@ async def coinflip(interaction: Interaction, choice):
     answer = choice.lower()
     choices = ["head", "tail"]
     computers_answer = random.choice(choices)
+    
     if answer not in choices:
         await interaction.send("**That is not a valid option. Please use one of these option : head, tail.**")
     
     else:
         if computers_answer == answer:
             await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{answer}__**.")
+        
         if computers_answer == "head":
             if answer == "tail":
                 await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
+            
         if computers_answer == "tail":
             if answer == "head":
                 await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
@@ -1190,26 +1213,34 @@ async def rps(ctx, choice = None):
     answer = choice.lower()
     choices = ["rock", "paper", "scissors"]
     computers_answer = random.choice(choices)
+    
     if answer not in choices:
         await ctx.reply("**That is not a valid option. Please use one of these options : rock, paper, scissors.**")
+    
     else:
         if computers_answer == answer:
             await ctx.reply(f"Tie! we both picked **__{answer}__**.")
+        
         if computers_answer == "rock":
             if answer == "paper":
                 await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "paper":
             if answer == "rock":
                 await ctx.reply(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "scissors":
             if answer == "rock":
                 await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "rock":
             if answer == "scissors":
                 await ctx.reply(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "paper":
             if answer == "scissors":
                 await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "scissors":
             if answer == "paper":
                 await ctx.reply(f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**.")
@@ -1221,26 +1252,34 @@ async def rps(interaction: Interaction, choice):
     answer = choice.lower()
     choices = ["rock", "paper", "scissors"]
     computers_answer = random.choice(choices)
+    
     if answer not in choices:
         await interaction.send("**That is not a valid option. Please use one of these options : rock, paper, scissors.**")
+    
     else:
         if computers_answer == answer:
             await interaction.send(f"Tie! we both picked **__{answer}__**.")
+        
         if computers_answer == "rock":
             if answer == "paper":
                 await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "paper":
             if answer == "rock":
                 await interaction.send(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "scissors":
             if answer == "rock":
                 await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "rock":
             if answer == "scissors":
                 await interaction.send(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "paper":
             if answer == "scissors":
                 await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
+            
         if computers_answer == "scissors":
             if answer == "paper":
                 await interaction.send(f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**.")
@@ -1252,6 +1291,7 @@ async def rate(ctx, *, argument = None):
     if argument == None:
         em = nextcord.Embed(title = "**Command :** >rate", description = "**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart")
         await ctx.send(embed = em)
+    
     else:
         em2 = nextcord.Embed(title = "Rate Parameter", description = f"{argument} : **{random.randrange(100)}%**")
         await ctx.reply(embed = em2, mention_author = False)
@@ -1307,6 +1347,7 @@ async def hug(ctx, member: nextcord.Member = None):
 
     elif member == ctx.author:
         await ctx.reply("**You can't hug yourself.**")
+    
     else:
         await ctx.send(f"{ctx.author.name} hug {member.name}\n{(random.choice(hugs[ctx.invoked_with]))}")
 
@@ -1314,10 +1355,7 @@ async def hug(ctx, member: nextcord.Member = None):
 @client.slash_command(name = "hug", description = "Hug someone")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def hug(interaction: Interaction, member: nextcord.Member):
-    if member == interaction.user:
-        await interaction.send("**You can't hug yourself.**")
-    else:
-        await interaction.send(f"{interaction.user.name} hug {member.name}\n{(random.choice(hugs[interaction.invoked_with]))}")
+    await interaction.send(f"{interaction.user.name} hug {member.name}\n{(random.choice(hugs[interaction.invoked_with]))}")
 
 
 """
@@ -1350,8 +1388,10 @@ async def slap(ctx, member: nextcord.Member = None):
     
     if member == None:
         await ctx.reply("Question : Who do you want to slap?")
+    
     elif member == ctx.author:
         await ctx.reply("That would be hurt.")
+    
     else:
         await ctx.send(f"{ctx.author.name} slap {member.name}\n{image_link}")
 
@@ -1361,21 +1401,23 @@ async def slap(ctx, member: nextcord.Member = None):
 async def slap(interaction: Interaction, member: nextcord.Member):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
-    
-    if member == interaction.user:
-        await interaction.send("That would be hurt")
-    else:
-        await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
+    await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
 
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def say(ctx, *, text = None):
+async def say(ctx, *, text):
+    funny_text = ["I'm stupid", "i'm stupid", "Im stupid", "im stupid"]
+
     if text == None:
-      sayEm = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello")
-      await ctx.send(embed = sayEm)
+        em = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello")
+        await ctx.send(embed = em)
+
+    elif text in funny_text:
+        await ctx.reply("Yeah you are")
+
     else:
-      await ctx.send(f"{text}\n\n**~ {ctx.author}**")
+        await ctx.send(f"{text}\n\n**~ {ctx.author}**")
 
 
 @client.slash_command(name = "say", description = "Ask the bot to say something")
@@ -1448,35 +1490,59 @@ async def emojify(interaction: Interaction, *, text):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def handsome(ctx):
-    em = nextcord.Embed(title = "Handsome Parameter", description = f"**{random.randrange(100)}%**")
-    em.timestamp = ctx.message.created_at
-    await ctx.reply(embed = em, mention_author = False)
+async def handsome(ctx, member: nextcord.Member = None):
+    if member == None:
+        em = nextcord.Embed(title = "Handsome Parameter", description = f"You are **{random.randrange(100)}%** handsome.")
+        em.timestamp = ctx.message.created_at
+        await ctx.reply(embed = em, mention_author = False)
+
+    else:
+        em2 = nextcord.Embed(title = "Handsome Parameter", description = f"{member.mention} is **{random.randrange(100)}%** handsome.")
+        em2.timestamp = ctx.message.created_at
+        await ctx.reply(embd = em2, mention_author = False)
 
 
 @client.slash_command(name = "handsome", description = "Handsome parameter")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def handsome(interaction: Interaction):
-    em = nextcord.Embed(title = "Handsome Parameter", description = f"**{random.randrange(100)}%**")
-    em.timestamp = datetime.datetime.utcnow()
-    await interaction.send(embed = em)
+async def handsome(interaction: Interaction, member: nextcord.Member = None):
+    if member == None:
+        em = nextcord.Embed(title = "Handsome Parameter", description = f"**{random.randrange(100)}%**")
+        em.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em)
+
+    else:
+        em2 = nextcord.Embed(title = "Handsome Parameter", description = f"{member.mention} is **{random.randrange(100)}%** handsome.")
+        em2.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em)
 
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def beautiful(ctx):
-    em = nextcord.Embed(title = "Beautiful Parameter", description = f"**{random.randrange(100)}%**")
-    em.timestamp = ctx.message.created_at
-    await ctx.reply(embed = em, mention_author = False)
+async def beautiful(ctx, member: nextcord.Member = None):
+    if member == None:
+        em = nextcord.Embed(title = "Beautiful Parameter", description = f"**{random.randrange(100)}%**")
+        em.timestamp = ctx.message.created_at
+        await ctx.reply(embed = em, mention_author = False)
+
+    else:
+        em2 = nextcord.Embed(titel = "Beautiful Parameter", description = f"{member.mention} is **{random.randrange(100)}%** beautiful.")
+        em2.timestamp = ctx.message.created_at
+        await ctx.reply(embed = em2, mention_author = False)
 
 
 @client.slash_command(name = "beautiful", description = "Beautiful parameter")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def beautiful(interaction: Interaction):
-    em = nextcord.Embed(title = "Beautiful Parameter", description = f"**{random.randrange(100)}%**")
-    em.timestamp = datetime.datetime.utcnow()
-    await interaction.send(embed = em)
+async def beautiful(interaction: Interaction, member: nextcord.Member = None):
+    if member == None:
+        em = nextcord.Embed(title = "Beautiful Parameter", description = f"**{random.randrange(100)}%**")
+        em.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em)
+
+    else:
+        em2 = nextcord.Embed(title = "Beautiful Parameter", description = f"{member.mention} is **{random.randrange(100)}%** beautiful.")
+        em2.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em)
 
 
 # Game Command
@@ -3195,7 +3261,10 @@ async def av(ctx, member: nextcord.Member = None):
 
 @client.slash_command(name = "avatar", description = "Shows user avatar")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def av(interaction: Interaction, member: nextcord.Member):
+async def av(interaction: Interaction, member: nextcord.Member = None):
+    if member == None:
+        member = interaction.user
+    
     icon_url = member.avatar.url
 
     em = nextcord.Embed()
@@ -3234,7 +3303,10 @@ async def userinfo(ctx, member: nextcord.Member = None):
 
 @client.slash_command(name = "userinfo", description = "Shows some information of user")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def userinfo(interaction: Interaction, member: nextcord.Member):
+async def userinfo(interaction: Interaction, member: nextcord.Member = None):
+    if member == None:
+        member = interaction.user
+    
     members = sorted(interaction.guild.members, key=lambda m: m.joined_at)
 
     roles = [role for role in member.roles[1:9]]
