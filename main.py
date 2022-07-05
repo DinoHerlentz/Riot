@@ -3593,9 +3593,11 @@ async def toggle(ctx, *, command):
 @client.command()
 @commands.is_owner()
 async def act(ctx, member: nextcord.Member = None, *, message = None):
-    if member == None or message == None:
-        await ctx.reply("Please provide a message")
-        return
+    if member == None:
+        await ctx.reply("Please mention a member.", mention_author = False)
+
+    elif message == None:
+        await ctx.reply("Please provide a message.", mention_author = False)
 
     webhook = await ctx.channel.create_webhook(name = member.name)
     await webhook.send(str(message), username = member.name, avatar_url = member.avatar.url)
