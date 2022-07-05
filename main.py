@@ -3517,8 +3517,9 @@ async def dm(ctx, member: nextcord.User, *, content):
 
     try:
         await user.send(content)
+    
     except nextcord.Forbidden:
-        await ctx.reply("I've been blocked by that user.")
+        await ctx.reply("Couldn't DM that user.")
     
     await ctx.reply("Message has been sent.")
 
