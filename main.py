@@ -1902,7 +1902,7 @@ async def wordsnacks(interaction, channel: GuildChannel=SlashOption(channel_type
 # Anime Command
 @anime.command(aliases = ["n"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def news(ctx, amount: int=5):
+async def news(ctx, amount: int = 5):
     aninews = animec.Aninews(amount)
     links = aninews.links
     titles = aninews.titles
@@ -1919,7 +1919,7 @@ async def news(ctx, amount: int=5):
 
 @animeslash.subcommand(name = "news", description = "Get some latest anime news")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def news(interaction: Interaction, amount: int=5):
+async def news(interaction: Interaction, amount: int = 5):
     aninews = animec.Aninews(amount)
     links = aninews.links
     titles = aninews.titles
@@ -3691,6 +3691,7 @@ async def eval(ctx, *, code):
     try:
         with contextlib.redirect_stdout(str_obj):
             exec(code)
+    
     except Exception as err:
         return await ctx.send(f"```py\n{err.__class__.__name__}: {err}```")
 
@@ -3706,6 +3707,7 @@ async def eval(interaction: Interaction, *, code):
     try:
         with contextlib.redirect_stdout(str_obj):
             exec(code)
+    
     except Exception as err:
         return await interaction.send(f"```py\n{err.__class__.__name__}: {err}```")
 
