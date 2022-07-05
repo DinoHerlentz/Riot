@@ -3527,7 +3527,7 @@ async def dm(ctx, member: nextcord.User, *, content):
 @client.command(aliases = ["statistic", "stat"])
 @commands.is_owner()
 async def stats(ctx):
-    em = nextcord.Embed(title = "Riot Bot Statistic")
+    em = nextcord.Embed(title = "Riot Bot Statistics")
     em.add_field(name = "CPU", value = f"{psutil.cpu_percent()}%", inline = False)
     em.add_field(name = "RAM", value = f"{psutil.virtual_memory()[2]}%", inline = False)
     await ctx.send(embed = em)
@@ -3567,7 +3567,7 @@ async def leaveserverid(ctx, *, guild_id):
 @client.command(aliases = ["message"])
 @commands.is_owner()
 async def msg(ctx, channel: nextcord.TextChannel, *, msg):
-    # await ctx.reply("Successfully send the message.")
+    # await ctx.reply("Successfully sent the message.")
 
     try:
         await channel.send(f"{msg}")
@@ -3592,8 +3592,8 @@ async def toggle(ctx, *, command):
 
 @client.command()
 @commands.is_owner()
-async def act(ctx, member: nextcord.Member, *, message = None):
-    if message == None:
+async def act(ctx, member: nextcord.Member = None, *, message = None):
+    if member == None or message == None:
         await ctx.reply("Please provide a message")
         return
 
