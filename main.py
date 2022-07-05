@@ -398,18 +398,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         return await vc.play(track)
 
     elif vc.queue.is_empty:
-        await asyncio.sleep(60)
         return await vc.disconnect()
-
-        em = nextcord.Embed(title = "Disconnected", description = "Disconnected from the voice channel due to inactivity")
-
-        try:
-            em.timestamp = ctx.message.created_at
-            await ctx.send(embed = em)
-
-        except nextcord.HTTPException:
-            em.timestamp = datetime.datetime.utcnow()
-            await interaction.send(embed = em)
 
     try:
         next_song = vc.queue.get()
