@@ -1918,7 +1918,7 @@ async def news(ctx, amount: int = 5):
     em.set_thumbnail(url = aninews.images[0])
 
     for i in range(amount):
-        em.add_field(name = f"{i+1}) {titles[i]}", value = f"{descriptions[i][:200]}...\n[Read More]({links[i]})", inline = False)
+        em.add_field(name = f"{i + 1}) {titles[i]}", value = f"{descriptions[i][:200]}...\n[Read More]({links[i]})", inline = False)
 
     await ctx.send(embed = em)
 
