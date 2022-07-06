@@ -541,7 +541,7 @@ async def on_error(event, *args, **kwargs):
 async def help(ctx):
     view = Help()
     
-    em = nextcord.Embed(title = "**Commands (>)**")
+    em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     em.add_field(name = "Anime", value = "anime")
@@ -558,7 +558,7 @@ async def help(ctx):
 async def help(interaction: Interaction):
     view = Help()
     
-    em = nextcord.Embed(title = "**Commands (>)**")
+    em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     em.add_field(name = "Anime", value = "anime")
