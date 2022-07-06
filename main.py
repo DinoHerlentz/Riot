@@ -3172,8 +3172,7 @@ async def quote(interaction: Interaction):
 async def cleardm(ctx, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
     async for message in dmchannel.history(limit = int(amount)):
-        if message.author == client.user:
-            await message.delete()
+        await message.delete()
 
 
 @cleardm.error
@@ -3432,23 +3431,25 @@ async def poll(ctx, *, argument):
 @client.command(aliases = ["gi", "guildicon"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def servericon(ctx):
-  icon = ctx.guild.icon
+    icon = ctx.guild.icon
 
-  if icon == None:
-    await ctx.reply("This server has no avatar.")
-  else:
-    await ctx.send(icon)
+    if icon == None:
+        await ctx.reply("This server has no avatar.", mention_author = False)
+
+    else:
+        await ctx.send(icon)
 
 
 @client.slash_command(name = "servericon", description = "Shows server avatar")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def servericon(interaction: Interaction):
-  icon = interaction.guild.icon
+    icon = interaction.guild.icon
 
-  if icon == None:
-    await interaction.response.send_message("This server has no avatar.")
-  else:
-    await interaction.send(icon)
+    if icon == None:
+        await interaction.send("This server has no avatar.", ephemeral = True)
+
+    else:
+        await interaction.send(icon)
 
 
 @client.command()
@@ -3456,6 +3457,7 @@ async def servericon(interaction: Interaction):
 async def id(ctx, member: nextcord.Member = None):
     if member == None:
         await ctx.reply(ctx.author.id, mention_author = False)
+    
     else:
         await ctx.reply(member.id, mention_author = False)
 
@@ -3490,6 +3492,7 @@ async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
 
     try:
         emoji = await emoji.guild.fetch_emoji(emoji.id)
+    
     except nextcord.NotFound:
         await ctx.reply("Couldn't find the emoji")
 
@@ -3549,25 +3552,27 @@ async def activity(ctx, *, activity):
 @client.command(aliases = ["ln"])
 @commands.is_owner()
 async def leaveservername(ctx, *, guild_name):
-  guildName = nextcord.utils.get(client.guilds, name = guild_name)
+    guildName = nextcord.utils.get(client.guilds, name = guild_name)
 
-  if guildName is None:
-    await ctx.reply("No guild with that name found.")
-  else:
-    await guildName.leave()
-    await ctx.reply(f"Successfully leave {guild_name}")
+    if guildName is None:
+        await ctx.reply("No guild with that name found.", mention_author = False)
+
+    else:
+        await guildName.leave()
+        await ctx.reply(f"Successfully leave {guild_name}", mention_author = False)
 
 
 @client.command(aliases = ["lid"])
 @commands.is_owner()
 async def leaveserverid(ctx, *, guild_id):
-  guildID = nextcord.utils.get(client.guilds, name = guild_id)
+    guildID = nextcord.utils.get(client.guilds, name = guild_id)
 
-  if guildID is None:
-    await ctx.reply("No guild with that ID found.")
-  else:
-    await guildID.leave()
-    await ctx.reply(f"Successfully leave {guild_id}")
+    if guildID is None:
+        await ctx.reply("No guild with that ID found.", mention_author = False)
+
+    else:
+        await guildID.leave()
+        await ctx.reply(f"Successfully leave {guild_id}", mention_author = False)
 
 
 @client.command(aliases = ["message"])
@@ -3577,6 +3582,7 @@ async def msg(ctx, channel: nextcord.TextChannel, *, msg):
 
     try:
         await channel.send(f"{msg}")
+    
     except nextcord.Forbidden:
         await ctx.reply("I don't have permissions to send a message in that channel.")
 
@@ -3584,16 +3590,13 @@ async def msg(ctx, channel: nextcord.TextChannel, *, msg):
 @client.command()
 @commands.is_owner()
 async def toggle(ctx, *, command):
-  command = client.get_command(command)
+    command = client.get_command(command)
 
-  if command == None:
-    await ctx.reply("Couldn't find that command.")
-  elif ctx.command == command:
-    await ctx.send("You can't disable this command.")
-  else:
-    command.enabled = not command.enabled
-    ternary = "enabled" if command.enabled else "disabled"
-    await ctx.reply(f"{command.qualified_name} has been {ternary}.")
+    if command == None:
+        await ctx.reply("Couldn't find that command.", mention_author = False)
+
+    elif ctx.command == command:
+        await ctx.reply(f"{command.qualified_name} has been {ternary}.", mention_author = False)
 
 
 @client.command()
@@ -3666,6 +3669,7 @@ async def createinvite(ctx, guildid: int):
             i += 1
         
         await ctx.send(invitelink)
+    
     except Exception:
         await ctx.send("Something wrong")
 
@@ -3677,6 +3681,7 @@ async def join(ctx):
         channel = ctx.message.author.voice.channel
         await channel.connect()
         await ctx.reply("Successfully joined the voice chat.")
+    
     else:
         await ctx.reply("**You are not in a voice channel. You must be in a voice channel to run this command.**")
 
@@ -3687,6 +3692,7 @@ async def left(ctx):
     if (ctx.voice_client):
         await ctx.guild.voice_client.disconnect()
         await ctx.reply("Successfully left the voice channel.")
+    
     else:
         await ctx.reply("I'm not in a voice channel.")
 
