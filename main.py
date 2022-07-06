@@ -537,7 +537,7 @@ async def on_error(event, *args, **kwargs):
 
 
 # Help Command
-@client.command(aliases = ["?", "halp", "riot"])
+@client.command(aliases = [">", "?", "halp", "riot"])
 async def help(ctx):
     view = Help()
     
