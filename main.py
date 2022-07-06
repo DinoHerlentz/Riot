@@ -1397,14 +1397,14 @@ async def slap(interaction: Interaction, member: nextcord.Member):
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def say(ctx, *, text):
-    funny_text = ["I'm stupid", "i'm stupid", "Im stupid", "im stupid"]
+    funny_text = ["I'm stupid", "I'm Stupid", "i'm stupid", "Im stupid", "Im Stupid", "im stupid"]
 
     if text == None:
         em = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello")
         await ctx.send(embed = em)
 
     elif text in funny_text:
-        await ctx.reply("Yeah you are")
+        await ctx.reply("Yeah you are.")
 
     else:
         await ctx.send(f"{text}\n\n**~ {ctx.author}**")
@@ -1412,8 +1412,14 @@ async def say(ctx, *, text):
 
 @client.slash_command(name = "say", description = "Ask the bot to say something")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def say(interaction: Interaction, *, text = None):
-    await interaction.response.send_message(f"{text}\n\n**~ {interaction.user}**")
+async def say(interaction: Interaction, *, text):
+    funny_text = ["I'm stupid", "I'm Stupid", "i'm stupid", "Im stupid", "Im Stupid", "im stupid"]
+
+    if text in funny_text:
+        await interaction.send("Yeah you are.")
+    
+    else:
+        await interaction.send(f"{text}\n\n**~ {interaction.user}**")
 
 
 @client.command()
