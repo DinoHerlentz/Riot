@@ -924,7 +924,7 @@ async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
 
     else:
         await member.edit(nick = nickname)
-        await ctx.reply(f"Successfully changed {member.mention} nicknames to {nickname}", mention_author = False)
+        await ctx.reply(f"Successfully changed {member.mention} nicknames to `{nickname}`", mention_author = False)
 
 
 @client.slash_command(name = "nick", description = "Change member's nickname")
@@ -932,7 +932,7 @@ async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
 @application_checks.has_permissions(manage_nicknames = True)
 async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
     await member.edit(nick = nickname)
-    await interaction.send(f"Successfully changed {member.mention} nicknames to {nickname}")
+    await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
 
 
 @client.command(aliases = ["ctcn"])
