@@ -38,7 +38,7 @@ client.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 hugs = json.load(open("hugs.json"))
 kiss = json.load(open("kiss.json"))
-lyrics_url = "https://some-random-api.ml/lyrics?title = "
+lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
@@ -3262,7 +3262,7 @@ async def quote(interaction: Interaction):
 @client.command(aliases = ["cm"])
 async def cleardm(ctx, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
-    await ctx.reply("Successfully clear my message in your DMs")
+    await ctx.reply(f"Successfully clear {amount} message in your DMs.")
     
     async for message in dmchannel.history(limit = int(amount)):
         await message.delete()
