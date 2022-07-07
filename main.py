@@ -361,7 +361,7 @@ class WordSnacksGame(nextcord.ui.View):
 
 # Event Decorator
 @client.event
-async def on_ready():	
+async def on_ready():
     await client.change_presence(status = nextcord.Status.online, activity = nextcord.Game(">help"))
     print("We have logged in as {0.user}".format(client))
 
@@ -408,10 +408,12 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         pass
 
     try:
-        await ctx.send(f"Now playing -> `{next_song.title}`")
+        em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
+        await ctx.send(embed = em)
     
     except nextcord.HTTPException:
-        await interaction.send(f"Now playing -> `{next_song.title}`")
+        em2 = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
+        await interaction.send(embed = em2)
 
 
 @client.event
@@ -542,13 +544,13 @@ async def help(ctx):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
-    em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
-    em.add_field(name = "Anime", value = "anime")
-    em.add_field(name = "Images", value = "dog, capybara food, rock")
-    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    em.add_field(name = "Application Commands", value = "embed")
-    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn", inline = False)
+    em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "Anime", value = "anime", inline = False)
+    em.add_field(name = "Images", value = "dog, capybara food, rock", inline = False)
+    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
+    em.add_field(name = "Application Commands", value = "embed", inline = False)
+    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo", inline = False)
     
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -871,6 +873,7 @@ async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None)
     if channel == None or message == None:
       em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message in specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
       await ctx.send(embed = em)
+    
     else:
       await ctx.reply("Announcement has been sent.", mention_author = False)
       
@@ -887,6 +890,7 @@ async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = 
     if role == None or member == None:
         em = nextcord.Embed(title = "Add Role", description = "**Command :** >addrole\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO")
         await ctx.send(embed = em)
+    
     else:
         await member.add_roles(role)
         em2 = nextcord.Embed(title = f"Successfully added {role.mention} to {member.mention}", color = 0x2ECC71)
@@ -935,6 +939,7 @@ async def changetextchannelname(ctx, channel: nextcord.TextChannel = None, *, ch
     if channel == None or channel_name == None:
         em = nextcord.Embed(title = "Change Text Channel Name", description = "**Command :** >ctcn\n**Description :** Change the specified text channel name\n**Usage :** >ctcn [channel] [new name]\n**Example :** >ctcn #general 💬general")
         await ctx.send(embed = em)
+    
     else:
         await channel.edit(name = channel_name)
         em2 = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
@@ -995,6 +1000,7 @@ async def dadjoke(ctx):
         if res.status == 200:
             data = await res.json()
             await ctx.send(f"{data['setup']}\n\n||{data['punchline']}||")
+
         else:
             await ctx.send(f"Request Failed - {res.status}")
 
@@ -1007,6 +1013,7 @@ async def dadjoke(interaction: Interaction):
         if res.status == 200:
             data = await res.json()
             await interaction.send(f"{data['setup']}\n\n||{data['punchline']}||")
+
         else:
             await interaction.send(f"Request Failed - {res.status}")
 """
@@ -1029,6 +1036,7 @@ async def eightball(ctx, *, question = None):
 
     if question == None:
         await ctx.reply("Please provide a question.")
+    
     else:
         em = nextcord.Embed(title = ":8ball: 8ball :8ball:")
         em.add_field(name = "Question", value = question, inline = False)
@@ -1311,18 +1319,24 @@ async def guess(ctx):
 
         if guess == str(number):
             await ctx.send("You guessed the number.")
+
         elif guess.content <= 0:
             await ctx.send("I'm not thinking a number 0/below.")
             break
+
         elif guess.content > 100:
             await ctx.send("I'm not thinking a number above 100.")
             break
+
         elif guess.content < str(number):
             await ctx.send("The number is higher.")
+
         elif guess.content > str(number):
             await ctx.send("The number is lower.")
+
         else:
             return
+
     else:
         await ctx.reply(
             f"Times up. The number I was thinking of was {str(number)}.")
@@ -1356,6 +1370,7 @@ async def kiss(ctx, member: nextcord.Member = None):
         pass
     elif member == ctx.author:
         await ctx.reply("You can't kiss yourself.", mention_author = False)
+
     else:
         await ctx.send(f"{ctx.author.name} kiss {member.name}\n{(random.choice(kiss[ctx.invoked_with]))}")
 
@@ -1365,6 +1380,7 @@ async def kiss(ctx, member: nextcord.Member = None):
 async def kiss(interaction: Interaction, member: nextcord.Member):
     if member == interaction.user:
         await interaction.send("You can't kiss yourself")
+
     else:
         await interaction.send(f"{interaction.user.name} kiss {member.name}\n{(random.choice(kiss[interaction.invoked_with]))}")
 """
@@ -1453,8 +1469,10 @@ async def emojify(ctx, *, text):
             emojis.append(f":{num2er.get(s)}:")
         elif s.isalpha():
             emojis.append(f":regional_indicator_{s}:")
+        
         else:
             emojis.append(s)
+    
     await ctx.send("".join(emojis))
 
 
@@ -1479,8 +1497,10 @@ async def emojify(interaction: Interaction, *, text):
             emojis.append(f":{num2er.get(s)}:")
         elif s.isalpha():
             emojis.append(f":regional_indicator_{s}:")
+        
         else:
             emojis.append(s)
+    
     await interaction.response.send_message("".join(emojis))
 
 
@@ -2442,11 +2462,17 @@ async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
 
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
-        await ctx.send(f"Now playing -> `{query.title}`")
+
+        em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{query.title}`")
+        em.timestamp = ctx.message.created_at
+        await ctx.send(embed = em)
 
     else:
         await vc.queue.put_wait(query)
-        await ctx.send(f"Added `{query.title}` to the queue.")
+
+        em2 = nextcord.Embed(title = "Music Query Add", description = f"Added `{query.title}` to the queue")
+        em2.timestamp = ctx.message.created_at
+        await ctx.send(embed = em2)
 
     vc.ctx = ctx
     setattr(vc, "loop", False)
@@ -2467,11 +2493,17 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
 
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
-        await interaction.send(f"Now playing -> `{query.title}`")
+        
+        em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{query.title}`")
+        em.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em)
 
     else:
         await vc.queue.put_wait(query)
-        await interaction.send(f"Added `{query.title}` to the queue.")
+        
+        em2 = nextcord.Embed(title = "Music Query Add", description = f"Added `{query.title}` to the queue")
+        em2.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em2)
 
     vc.interaction = interaction
     setattr(vc, "loop", False)
@@ -2494,7 +2526,10 @@ async def splay(ctx: commands.Context, *, url: str):
             track = await spotify.SpotifyTrack.search(query = decodeURL['id'], return_first = True)
             
             await vc.play(track)
-            await ctx.send(f"Now playing -> `{track.title}`")
+
+            em = nextcord.Embed(title = "Spotify Play", description = f"Now playing -> `{track.title}`")
+            em.timestamp = ctx.message.created_at
+            await ctx.send(embed = em)
         
         except Exception as err:
             await ctx.reply("Please insert a spotify song URL.")
@@ -2502,7 +2537,10 @@ async def splay(ctx: commands.Context, *, url: str):
     
     else:
         await vc.queue.put_wait(track)
-        await ctx.send(f"Added `{track.title}` to the queue.")
+
+        em2 = nextcord.Embed(title = "Music Query Add", description = f"Added `{track.title}` to the queue")
+        em2.timestamp = ctx.message.created_at
+        await ctx.send(embed = em2)
     
     vc.ctx = ctx
     
@@ -2529,7 +2567,10 @@ async def splay(interaction: Interaction, *, url: str):
             track = await spotify.SpotifyTrack.search(query = decodeURL['id'], return_first = True)
             
             await vc.play(track)
-            await interaction.send(f"Now playing -> `{track.title}`")
+            
+            em = nextcord.Embed(title = "Spotify Play", description = f"Now playing -> `{track.title}`")
+            em.timestamp = datetime.datetime.utcnow()
+            await interaction.send(embed = em)
         
         except Exception as err:
             await interaction.send("Please insert a spotify song url.")
@@ -2537,7 +2578,10 @@ async def splay(interaction: Interaction, *, url: str):
     
     else:
         await vc.queue.put_wait(track)
-        await interaction.send(f"Now playing `{track.title}`")
+
+        em2 = nextcord.Embed(title = "Music Query Add", description = f"Added `{track.title}` to the queue")
+        em2.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em2)
     
     vc.interaction = interaction
     
@@ -2559,7 +2603,10 @@ async def pause(ctx: commands.Context):
         vc: wavelink.Player = ctx.voice_client
 
     await vc.pause()
-    await ctx.reply("Successfully paused the music.")
+
+    em = nextcord.Embed(title = "Music Pause", description = "Successfully paused the music")
+    em.timestamp = ctx.message.created_at
+    await ctx.send(embed = em)
 
 
 @client.slash_command(name = "pause", description = "Pause current playing music")
@@ -2574,7 +2621,10 @@ async def pause(interaction: Interaction):
         vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.pause()
-    await interaction.send("Successfully paused the music.")
+
+    em = nextcord.Embed(title = "Music Pause", description = "Successfully paused the music")
+    em.timestamp = datetime.datetime.utcnow()
+    await interaction.send(embed = em)
 
 
 @client.command(aliases = ["r"])
@@ -2589,7 +2639,10 @@ async def resume(ctx: commands.Context):
         vc: wavelink.Player = ctx.voice_client
 
     await vc.resume()
-    await ctx.reply("Successfully resumed the music.")
+
+    em = nextcord.Embed(title = "Music Resume", description = "Successfully resumed the music")
+    em.timestamp = ctx.message.created_at
+    await ctx.send(embed = em)
 
 
 @client.slash_command(name = "resume", description = "Resume paused current music")
@@ -2604,7 +2657,10 @@ async def resume(interaction: Interaction):
         vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.resume()
-    await interaction.send("Successfully resumed the music.")
+    
+    em = nextcord.Embed(title = "Music Resume", description = "Successfully resumed the music")
+    em.timestamp = datetime.datetime.utcnow()
+    await interaction.send(embed = em)
 
 
 @client.command(aliases = ["s"])
@@ -2619,7 +2675,10 @@ async def stop(ctx: commands.Context):
         vc: wavelink.Player = ctx.voice_client
 
     await vc.stop()
-    await ctx.reply("Successfully stop the music")
+
+    em = nextcord.Embed(title = "Music Stop", description = "Successfully stop the music")
+    em.timestamp = ctx.message.created_at
+    await ctx.send(embed = em)
 
 
 @client.slash_command(name = "stop", description = "Stop current playing music")
@@ -2634,7 +2693,10 @@ async def stop(interaction: Interaction):
         vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.stop()
-    await interaction.send("Successfully stop the music.")
+    
+    em = nextcord.Embed(title = "Music Stop", description = "Successfully stop the music")
+    em.timestamp = datetime.datetime.utcnow()
+    await interaction.send(embed = em)
 
 
 @client.command(aliases = ["dc"])
@@ -2647,7 +2709,10 @@ async def disconnect(ctx: commands.Context):
         vc: wavelink.Player = ctx.voice_client
 
     await vc.disconnect()
-    await ctx.reply("Successfully left the voice channel")
+
+    em = nextcord.Embed(title = "Disconnected", description = "Successfully left the voice channel")
+    em.timestamp = ctx.message.created_at
+    await ctx.send(embed = em)
 
 
 @client.slash_command(name = "disconnect", description = "Disconnect the bot from the voice channel.")
@@ -2660,7 +2725,10 @@ async def disconnect(interaction: Interaction):
         vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.disconnect()
-    await interaction.send("Successfully left the voice channel.")
+    
+    em = nextcord.Embed(title = "Disconnected", description = "Successfully left the voice channel")
+    em.timestamp = datetime.datetime.utcnow()
+    await interaction.send(embed = em)
 
 
 @client.command()
@@ -2681,10 +2749,14 @@ async def loop(ctx: commands.Context):
         setattr(vc, "loop", False)
 
     if vc.loop:
-        await ctx.reply("Music loop has been enabled.")
+        em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled")
+        em.timestamp = ctx.message.created_at
+        await ctx.send(embed = em)
     
     else:
-        await ctx.reply("Music loop has been disabled.")
+        em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled")
+        em2.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed = em2)
 
 
 @client.slash_command(name = "loop", description = "Loop current playing music")
@@ -2705,10 +2777,14 @@ async def loop(interaction: Interaction):
         setattr(vc, "loop", False)
 
     if vc.loop:
-        await interaction.send("Music loop has been enabled.")
+        em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled")
+        em.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em)
     
     else:
-        await interaction.send("Music loop has been disabled.")
+        em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled")
+        em2.timestamp = datetime.datetime.utcnow()
+        await interaction.send(embed = em2)
 
 
 @client.command(aliases = ["q"])
@@ -2732,7 +2808,7 @@ async def queue(ctx: commands.Context):
     
         for song in queue:
             song_count += 1
-            em.add_field(name = f"Queue Number {str(song_count)}", value = f"{song}")
+            em.add_field(name = f"Queue Number {str(song_count)}", value = f"{song}", inline = False)
     
         await ctx.send(embed = em)
 
@@ -2781,7 +2857,10 @@ async def volume(ctx: commands.Context, volume: int):
         return await ctx.reply("Minimum volume is 0.")
 
     await vc.set_volume(volume)
-    await ctx.reply(f"Music volume has been set to `{volume}%`")
+
+    em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}`%")
+    em.timestamp = ctx.message.created_at
+    await ctx.send(embed = em)
 
 
 @client.slash_command(name = "volume", description = "Change music volume")
@@ -2803,7 +2882,10 @@ async def volume(interaction: Interaction, volume: int):
     
 
     await vc.set_volume(volume)
-    await interaction.send(f"Music volume has been set to `{volume}%`")
+    
+    em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}`%")
+    em.timestamp = datetime.datetime.utcnow()
+    await interaction.send(embed = em)
 
 
 @client.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
@@ -2929,6 +3011,7 @@ async def weather(ctx, *, city: str = None):
         em.timestamp = ctx.message.created_at
     
         await ctx.send(embed = em)
+    
     else:
         await ctx.send(f"No City Found - {city}")
 
@@ -2961,6 +3044,7 @@ async def weather(interaction: Interaction, *, city: str):
         em.timestamp = datetime.datetime.utcnow()
     
         await interaction.send(embed = em)
+    
     else:
         await interaction.send(f"No City Found - {city}")
 
@@ -2973,8 +3057,10 @@ async def movie(ctx, *, movie_name = None):
         await ctx.send(embed = em)
     
     moviesDB = IMDb()
+    
     try:
         movies = moviesDB.search_movie(movie_name)
+    
     except:
         await ctx.reply(f"No Movie Found - {movie_name.title()}", mention_author = False)
 
@@ -3002,8 +3088,10 @@ async def movie(ctx, *, movie_name = None):
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def movie(interaction: Interaction, *, movie_name):
     moviesDB = IMDb()
+    
     try:
         movies = moviesDB.search_movie(movie_name)
+    
     except:
         await interaction.send(f"No Movie Found - {movie_name.title()}")
 
@@ -3494,7 +3582,7 @@ async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
         emoji = await emoji.guild.fetch_emoji(emoji.id)
     
     except nextcord.NotFound:
-        await ctx.reply("Couldn't find the emoji")
+        await ctx.reply("Couldn't find the emoji.")
 
     is_managed = True if emoji.managed else False
     is_animated = True if emoji.animated else False
