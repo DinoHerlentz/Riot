@@ -222,18 +222,19 @@ class Forum(nextcord.ui.Modal):
 class Pet(nextcord.ui.Select):
     def __init__(self):
         options = [
-            nextcord.SelectOption(label = "Dog", description = "Dog is cute"),
-            nextcord.SelectOption(label = "Puppy", description = "Puppy is also cute"),
-            nextcord.SelectOption(label = "Cat", description = "Cat is cute tho"),
-            nextcord.SelectOption(label = "Hamster", description = "Kinda expensive, but cute"),
-            nextcord.SelectOption(label = "Bird", description = "Chirp"),
-            nextcord.SelectOption(label = "Snake", description = "Kinda risky, but they are cool"),
+            nextcord.SelectOption(label = "Dog", description = "Dog is cute."),
+            nextcord.SelectOption(label = "Puppy", description = "Puppy is also cute."),
+            nextcord.SelectOption(label = "Cat", description = "Cat is cute tho."),
+            nextcord.SelectOption(label = "Hamster", description = "Kinda expensive, but cute."),
+            nextcord.SelectOption(label = "Bird", description = "Chirp."),
+            nextcord.SelectOption(label = "Snake", description = "Kinda risky, but they are cool."),
             nextcord.SelectOption(label = "Dragon", description = "Are dragons real?"),
             nextcord.SelectOption(label = "Chameleon", description = "Where is the chameleon?"),
-            nextcord.SelectOption(label = "Iguana", description = "I love iguana"),
-            nextcord.SelectOption(label = "Piranha", description = "I don't think you gonna buy this piranha"),
+            nextcord.SelectOption(label = "Iguana", description = "I love iguana."),
+            nextcord.SelectOption(label = "Piranha", description = "I don't think you gonna buy this piranha."),
             nextcord.SelectOption(label = "Dolphin", description = "Where you gonna put this doplhin?"),
-            nextcord.SelectOption(label = "Panda", description = "Big boy panda")
+            nextcord.SelectOption(label = "Panda", description = "Big boy panda."),
+            nextcord.SelectOption(label = "Capybara", description = "Ok I pull up.")
         ]
         
         super().__init__(placeholder = "Buy a pet", min_values=1, max_values=1, options=options)
@@ -249,7 +250,7 @@ class Pet(nextcord.ui.Select):
             await interaction.send("You bought Cat. Hope it doesn't steal your fish, if you have any.", ephemeral = True)
         
         elif self.values[0] == "Hamster":
-            await interaction.send("You bought Hamster. Wise choice.", ephemeral = True)
+            await interaction.send("You bought Hampter. Wise choice.", ephemeral = True)
         
         elif self.values[0] == "Bird":
             await interaction.send("You bought Bird. This bird might be your morning alarm.", ephemeral = True)
@@ -273,10 +274,10 @@ class Pet(nextcord.ui.Select):
             await interaction.send("You bought Dolphin. Is this dolphin fit in your aquarium?", ephemeral = True)
         
         elif self.values[0] == "Panda":
-            await interaction.send("You bought Panda. He eats a lot", ephemeral = True)
+            await interaction.send("You bought Panda. He eats a lot.", ephemeral = True)
         
         elif self.values[0] == "Capybara":
-            await interaction.send("You bought Capybara. Wait, is this a Marmut?", ephemeral = True)
+            await interaction.send("You bought Capybara. He's ready to pullin' up.", ephemeral = True)
 
 
 class PetView(nextcord.ui.View):
