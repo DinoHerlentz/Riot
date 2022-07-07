@@ -3262,6 +3262,8 @@ async def quote(interaction: Interaction):
 @client.command(aliases = ["cm"])
 async def cleardm(ctx, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
+    await ctx.reply("Successfully clear my message in your DMs")
+    
     async for message in dmchannel.history(limit = int(amount)):
         await message.delete()
 
