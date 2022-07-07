@@ -409,10 +409,12 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
 
     try:
         em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
+        em.timestamp = ctx.message.created_at
         await ctx.send(embed = em)
     
     except nextcord.HTTPException:
         em2 = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
+        em2.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em2)
 
 
