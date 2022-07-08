@@ -1064,8 +1064,8 @@ async def eightball(interaction: Interaction, *, question):
     ]
     
     em = nextcord.Embed(title = ":8ball: 8ball :8ball:")
-    em.add_field(name = "Question", value = question)
-    em.add_field(name = "Answer", value = random.choice(responses))
+    em.add_field(name = "Question", value = question, inline = False)
+    em.add_field(name = "Answer", value = random.choice(responses), inline = False)
 
     await interaction.send(embed = em)
 
