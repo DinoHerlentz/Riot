@@ -3444,6 +3444,7 @@ async def serverinfo(ctx):
     list_of_bots = [bot.mention for bot in ctx.guild.members if bot.bot]
 
     em = nextcord.Embed(timestamp = ctx.message.created_at, color = ctx.author.color)
+    em.set_thumbnail(url = ctx.guild.icon)
     em.add_field(name = "Member Count", value = ctx.guild.member_count, inline = False)
     em.add_field(name = "Verification Level", value = str(ctx.guild.verification_level), inline = False)
     em.add_field(name = "Top Role", value = ctx.guild.roles[-2], inline = False)
@@ -3459,7 +3460,8 @@ async def serverinfo(interaction: Interaction):
     role_count = len(interaction.guild.roles)
     list_of_bots = [bot.mention for bot in interaction.guild.members if bot.bot]
 
-    em = nextcord.Embed(timestamp = datetime.datetime.utcnow(), color = interaction.user.color)    
+    em = nextcord.Embed(timestamp = datetime.datetime.utcnow(), color = interaction.user.color)
+    em.set_thumbnail(url = interaction.guild.icon)
     em.add_field(name = "Server Name", value = f"{interaction.guild.name}", inline = False)
     em.add_field(name = "Member Count", value = interaction.guild.member_count, inline = False)
     em.add_field(name = "Verification Level", value = str(interaction.guild.verification_level), inline = False)
