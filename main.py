@@ -1522,7 +1522,7 @@ async def handsome(ctx, member: nextcord.Member = None):
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def handsome(interaction: Interaction, member: nextcord.Member = None):
     if member == None:
-        em = nextcord.Embed(title = "Handsome Parameter", description = f"**{random.randrange(100)}%**")
+        em = nextcord.Embed(title = "Handsome Parameter", description = f"You are **{random.randrange(100)}%** handsome.")
         em.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em)
 
@@ -1536,7 +1536,7 @@ async def handsome(interaction: Interaction, member: nextcord.Member = None):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(ctx, member: nextcord.Member = None):
     if member == None:
-        em = nextcord.Embed(title = "Beautiful Parameter", description = f"**{random.randrange(100)}%**")
+        em = nextcord.Embed(title = "Beautiful Parameter", description = f"You are **{random.randrange(100)}%** beautiful.")
         em.timestamp = ctx.message.created_at
         await ctx.reply(embed = em, mention_author = False)
 
@@ -1551,7 +1551,7 @@ async def beautiful(ctx, member: nextcord.Member = None):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(interaction: Interaction, member: nextcord.Member = None):
     if member == None:
-        em = nextcord.Embed(title = "Beautiful Parameter", description = f"**{random.randrange(100)}%**")
+        em = nextcord.Embed(title = "Beautiful Parameter", description = f"You are **{random.randrange(100)}%** beautiful.")
         em.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em)
 
