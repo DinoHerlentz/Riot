@@ -321,7 +321,7 @@ class CheckerGame(nextcord.ui.View):
 class BetrayalGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:betrayal:995154084241887323>"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class SpellcastGame(nextcord.ui.View):
@@ -339,7 +339,7 @@ class PokerGame(nextcord.ui.View):
 class BlazingGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:blazing:995155943396474960>"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
 
 
 class YouTubeGame(nextcord.ui.View):
