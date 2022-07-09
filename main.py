@@ -289,75 +289,75 @@ class PetView(nextcord.ui.View):
 class Help(nextcord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599", label = "Riot Discord Bot"))
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/vote", label = "Vote For Riot"))
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/invite", label = "Riot Invite"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599", label = "Riot Discord Bot", emoji = "<:brilliance:907632371061391430>"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/vote", label = "Vote For Riot", emoji = "<:balance:995148301651423262>"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = "https://top.gg/bot/877493442954006599/invite", label = "Riot Invite", emoji = "<:bravery:995148315391955007>"))
 
 
 class SketchGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:pencils:995158289140678677>"))
 
 
 class FishingGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:fred:995158714514419782>"))
 
 
 class ChessGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:chess:995160970060116078>"))
 
 
 class CheckerGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:checker:995153154591170591>"))
 
 
 class BetrayalGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:betrayal:995154084241887323>"))
 
 
 class SpellcastGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:spellcast:995154338190205028>"))
 
 
 class PokerGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:poker:995163572902559764>"))
 
 
 class BlazingGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:blazing:995155943396474960>"))
 
 
 class YouTubeGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:yt:995156093770666074>"))
 
 
 class LetterLeagueGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "🇱"))
 
 
 class WordSnacksGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:ws:995156642033319937>"))
 
 
 # Event Decorator
@@ -1573,6 +1573,7 @@ async def sketch(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.sketch)
+    
     except nextcord.HTTPException:
         return await ctx.send("Please mention a voice channel")
 
@@ -1588,6 +1589,7 @@ async def sketch(ctx, channel: nextcord.VoiceChannel = None):
 async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.sketch)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel")
 
@@ -1606,6 +1608,7 @@ async def fishington(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.fishington)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1621,6 +1624,7 @@ async def fishington(ctx, channel: nextcord.VoiceChannel = None):
 async def fishington(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.fishington)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1639,6 +1643,7 @@ async def chess(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.chess)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1654,6 +1659,7 @@ async def chess(ctx, channel: nextcord.VoiceChannel = None):
 async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.chess)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1672,6 +1678,7 @@ async def checkers(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.checker)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1687,6 +1694,7 @@ async def checkers(ctx, channel: nextcord.VoiceChannel = None):
 async def checkers(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.checker)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1705,6 +1713,7 @@ async def betrayal(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.betrayal)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1720,6 +1729,7 @@ async def betrayal(ctx, channel: nextcord.VoiceChannel = None):
 async def betrayal(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.betrayal)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1738,6 +1748,7 @@ async def spellcast(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.spellcast)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1753,6 +1764,7 @@ async def spellcast(ctx, channel: nextcord.VoiceChannel = None):
 async def spellcast(interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.spellcast)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1771,6 +1783,7 @@ async def poker(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.poker)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1786,6 +1799,7 @@ async def poker(ctx, channel: nextcord.VoiceChannel = None):
 async def poker(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.poker)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1804,6 +1818,7 @@ async def blazing(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.blazing)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1819,6 +1834,7 @@ async def blazing(ctx, channel: nextcord.VoiceChannel = None):
 async def blazing(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.blazing)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1837,6 +1853,7 @@ async def youtube(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.youtube)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1852,6 +1869,7 @@ async def youtube(ctx, channel: nextcord.VoiceChannel = None):
 async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.youtube)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1870,6 +1888,7 @@ async def letterleague(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.letter_league)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1877,7 +1896,7 @@ async def letterleague(ctx, channel: nextcord.VoiceChannel = None):
     em.add_field(name = "How To Play", value = "Letter League is a game where you and your friends take turns placing letters on a shared game board to create words in a crossword-style. Spelling words with high earning letters and placing letters on special spaces earn players more points, so get your dictionaries and thesauri ready!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4419631744535/LL_Lobby.png")
 
-    await ctx.send(embed = em, view = WordSnacksGame(invite_link))
+    await ctx.send(embed = em, view = LetterLeagueGame(invite_link))
 
 
 @client.slash_command(name = "letterleague", description = "Start letter league game in voice channel")
@@ -1885,6 +1904,7 @@ async def letterleague(ctx, channel: nextcord.VoiceChannel = None):
 async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.letter_league)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1903,6 +1923,7 @@ async def wordsnacks(ctx, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.word_snacks)
+    
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1910,7 +1931,7 @@ async def wordsnacks(ctx, channel: nextcord.VoiceChannel = None):
     em.add_field(name = "How To Play", value = "Word Snacks is a multiplayer word search game, where you and your friends try to make as many words as possible from a few letters. The more words you can spell before your opponents, the higher your score!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4409234925463/word_snack_example.png")
 
-    await ctx.send(embed = em, view = LetterLeagueGame(invite_link))
+    await ctx.send(embed = em, view = WordSnacksGame(invite_link))
 
 
 @client.slash_command(name = "wordsnacks", description = "Start word snacks game in a voice channel")
@@ -1918,6 +1939,7 @@ async def wordsnacks(ctx, channel: nextcord.VoiceChannel = None):
 async def wordsnacks(interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.word_snacks)
+    
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
