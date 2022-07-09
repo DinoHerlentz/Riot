@@ -241,10 +241,7 @@ class Pet(nextcord.ui.Select):
 
     async def callback(self, interaction: Interaction):
         if self.values[0] == "Dog":
-            await interaction.send("You bought Dog. It's a smart dog", ephemeral = True)
-        
-        elif self.values[0] == "Puppy":
-            await interaction.send("You bought Puppy. Can't wait too see the bigger puppy.", ephemeral = True)
+            await interaction.send("You bought Dog. It's a smart dog.", ephemeral = True)
         
         elif self.values[0] == "Cat":
             await interaction.send("You bought Cat. Hope it doesn't steal your fish, if you have any.", ephemeral = True)
