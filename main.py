@@ -237,11 +237,11 @@ class Pet(nextcord.ui.Select):
             nextcord.SelectOption(label = "Capybara", description = "Ok I pull up.")
         ]
         
-        super().__init__(placeholder = "Buy a pet", min_values=1, max_values=1, options=options)
+        super().__init__(placeholder = "Buy a pet", min_values=1, max_values=1, options = options)
 
     async def callback(self, interaction: Interaction):
         if self.values[0] == "Dog":
-            await interaction.send("You bought Dog.", ephemeral = True)
+            await interaction.send("You bought Dog. It's a smart dog", ephemeral = True)
         
         elif self.values[0] == "Puppy":
             await interaction.send("You bought Puppy. Can't wait too see the bigger puppy.", ephemeral = True)
