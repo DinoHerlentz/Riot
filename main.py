@@ -791,7 +791,7 @@ async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
 
 @client.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(administrator = True)
+@commands.has_permissions(manage_messages = True)
 async def warn(ctx, member: nextcord.Member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Warn", description = "**Command :** >warn\n**Description :** Warn a member\n**Usage :** >warn [user] [reason]\n**Example :** >warn @DINO Last warn for being rude")
@@ -815,7 +815,7 @@ async def warn(ctx, member: nextcord.Member = None, *, reason = None):
 
 @client.slash_command(name = "warn", description = "Warn a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(administrator = True)
+@application_checks.has_permissions(manage_messages = True)
 async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't warn yourself.", ephemeral = True)
