@@ -924,7 +924,7 @@ async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
         await ctx.reply(f"Successfully changed {member.mention} nicknames to `{nickname}`", mention_author = False)
 
 
-@client.slash_command(name = "nick", description = "Change member's nickname")
+@client.slash_command(name = "nick", description = "Change server member's nickname")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_nicknames = True)
 async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
@@ -3269,7 +3269,7 @@ async def quote(ctx):
     await ctx.send(quote)
 
 
-@client.slash_command(name = "quote", description = "Get some random inspirating quote")
+@client.slash_command(name = "quote", description = "Get some random inspirating quotes")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def quote(interaction: Interaction):
     res = requests.get("https://zenquotes.io/api/random")
