@@ -115,7 +115,7 @@ class NoLyricsFound(commands.CommandError):
 
 class Embed(nextcord.ui.Modal):
     def __init__(self):
-        super().__init__(name = "Embed Maker")
+        super().__init__("Embed Maker")
 
         self.emTitle = nextcord.ui.TextInput(label = "Embed Title", min_length = 2, max_length = 124, required = True, placeholder = "Enter Embed Title")
         self.add_item(self.emTitle)
@@ -135,7 +135,7 @@ class Embed(nextcord.ui.Modal):
 
 class Suggest(nextcord.ui.Modal):
     def __init__(self):
-        super().__init__(name = "Suggestion Forum")
+        super().__init__("Suggestion Forum")
 
         self.emSug = nextcord.ui.TextInput(label = "Suggestions", min_length = 10, max_length = 4000, required = True, placeholder = "Put your suggestions here", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emSug)
@@ -153,7 +153,7 @@ class Suggest(nextcord.ui.Modal):
 
 class Report(nextcord.ui.Modal):
     def __init__(self):
-        super().__init__(name = "Report Forum")
+        super().__init__("Report Forum")
 
         self.emMsg = nextcord.ui.TextInput(label = "Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emMsg)
@@ -171,7 +171,7 @@ class Report(nextcord.ui.Modal):
 
 class ServerReport(nextcord.ui.Modal):
     def __init__(self):
-        super().__init__(name = "Server Report Forum")
+        super().__init__("Server Report Forum")
 
         self.emMsg = nextcord.ui.TextInput(label = "Server Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emMsg)
@@ -190,7 +190,7 @@ class ServerReport(nextcord.ui.Modal):
 """
 class Forum(nextcord.ui.Modal):
 	def __init__(self):
-		super().__init__(name = "Server Mod Forum")
+		super().__init__("Server Mod Forum")
 
 		self.Name = nextcord.ui.TextInput(label = "Name", min_length = 10, max_length = 100, required = True, placeholder = "Enter your name")
 		self.add_item(self.Name)
