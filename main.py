@@ -1459,7 +1459,7 @@ async def emojify(ctx: commands.Context, *, text):
     await ctx.send("".join(emojis))
 
 
-@client.slash_command(name = "emojify", description = "Make the bot say something with emoji words")
+@client.slash_command(name = "emojify", description = "Ask the bot to say something with emoji words")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def emojify(interaction: Interaction, *, text):
     emojis = []
