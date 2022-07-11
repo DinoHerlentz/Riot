@@ -848,7 +848,7 @@ async def purge(ctx, amount = None, arg: str = None):
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int = None):
     if seconds == None:
-        em = nextcord.Embed(title = "Slowmode", description = "**Command :** >slowmode|>sm\n**Description :** Set a slowmode on the channel (sec)\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5")
+        em = nextcord.Embed(title = "Slowmode", description = "**Command :** >slowmode|>sm\n**Description :** Set a slowmode to the current channel\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5")
         await ctx.send(embed = em)
 
     else:
@@ -857,7 +857,7 @@ async def slowmode(ctx, seconds: int = None):
         await ctx.reply(embed = em2, mention_author = False)
 
 
-@client.slash_command(name = "slowmode", description = "Add a slowmode to a current channel")
+@client.slash_command(name = "slowmode", description = "Set a slowmode to the current channel")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_channels = True)
 async def slowmode(interaction: Interaction, seconds: int):
