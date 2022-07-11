@@ -1435,6 +1435,7 @@ async def ping(interaction: Interaction):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def emojify(ctx: commands.Context, *, text):
     emojis = []
+    
     for s in text.lower():
         if s.isdecimal():
             num2er = mo = {
@@ -1450,6 +1451,7 @@ async def emojify(ctx: commands.Context, *, text):
                 "9": "nine"
             }
             emojis.append(f":{num2er.get(s)}:")
+        
         elif s.isalpha():
             emojis.append(f":regional_indicator_{s}:")
         
@@ -1463,6 +1465,7 @@ async def emojify(ctx: commands.Context, *, text):
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def emojify(interaction: Interaction, *, text):
     emojis = []
+    
     for s in text.lower():
         if s.isdecimal():
             num2er = mo = {
@@ -1478,6 +1481,7 @@ async def emojify(interaction: Interaction, *, text):
                 "9": "nine"
             }
             emojis.append(f":{num2er.get(s)}:")
+        
         elif s.isalpha():
             emojis.append(f":regional_indicator_{s}:")
         
