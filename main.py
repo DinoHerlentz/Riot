@@ -544,13 +544,13 @@ async def help(ctx):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn", inline = False)
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn", inline = False)
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Anime", value = "anime", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
     
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -561,13 +561,13 @@ async def help(interaction: Interaction):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, announce, addrole, removerole, nick, ctcn")
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn")
     em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
     em.add_field(name = "Anime", value = "anime")
     em.add_field(name = "Images", value = "dog, capybara, food, rock")
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
     em.add_field(name = "Application Commands", value = "embed")
-    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, servericon, id, membercount, emojiinfo")
+    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo")
     
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -864,23 +864,6 @@ async def slowmode(interaction: Interaction, seconds: int):
     await interaction.channel.edit(slowmode_delay = seconds)
     em = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
     await interaction.send(embed = em)
-
-
-@client.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_messages = True)
-async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None):
-    if channel == None or message == None:
-      em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message in specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
-      await ctx.send(embed = em)
-    
-    else:
-      await ctx.reply("Announcement has been sent.", mention_author = False)
-      
-      em2 = nextcord.Embed(title = "New Announcement", description = f"{message}")
-      em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
-      em2.timestamp = ctx.message.created_at
-      await channel.send(embed = em2)
 
 
 @client.command(aliases = ["ar"])
@@ -3540,6 +3523,23 @@ async def poll(ctx, *, argument):
 
     await poll_msg.add_reaction("👍")
     await poll_msg.add_reaction("👎")
+
+
+@client.command()
+@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.has_permissions(manage_messages = True)
+async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None):
+    if channel == None or message == None:
+      em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message to the specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
+      await ctx.send(embed = em)
+    
+    else:
+      await ctx.reply("Announcement has been sent.", mention_author = False)
+      
+      em2 = nextcord.Embed(title = "New Announcement", description = f"{message}")
+      em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
+      em2.timestamp = ctx.message.created_at
+      await channel.send(embed = em2)
 
 
 @client.command(aliases = ["gi", "guildicon"])
