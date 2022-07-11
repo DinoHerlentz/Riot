@@ -62,7 +62,7 @@ def is_me():
 
 # Group Command
 @client.group(invoke_without_command = True)
-async def game(ctx):
+async def game(ctx: commands.Context):
     em = nextcord.Embed(title = "Game (>game [game])")
     em.add_field(name = "Game", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks")
     
@@ -70,7 +70,7 @@ async def game(ctx):
 
 
 @client.group(invoke_without_command = True)
-async def dog(ctx):
+async def dog(ctx: commands.Context):
     em = nextcord.Embed(title = "Dog (>dog [command])")
     em.add_field(name = "Commands", value = "image, gif, feed, play, sleep")
     
@@ -83,7 +83,7 @@ async def dogslash(interaction: Interaction):
 
 
 @client.group(invoke_without_command = True)
-async def capybara(ctx):
+async def capybara(ctx: commands.Context):
     em = nextcord.Embed(title = "Capybara (>capybara [command])")
     em.add_field(name = "Commands", value = "large, medium, small, original, facts")
     
@@ -96,7 +96,7 @@ async def capybaraslash(interaction: Interaction):
 
 
 @client.group(invoke_without_command = True)
-async def anime(ctx):
+async def anime(ctx: commands.Context):
     em = nextcord.Embed(title = "Anime (>anime [command])")
     em.add_field(name = "Commands", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe")
     
@@ -385,7 +385,7 @@ async def node_connect():
 @client.event
 async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTubeTrack, reason):
     try:
-        ctx = player.ctx
+        ctx: commands.Context = player.ctx
         vc: player = ctx.voice_client
     
     except nextcord.HTTPException:
@@ -456,7 +456,7 @@ async def on_message_delete(message):
 
 
 @client.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx: commands.Context, error):
     if isinstance(error, commands.CommandNotFound):
         em = nextcord.Embed(title = "Invalid Command", description = "Type `>help` to see available commands")
         await ctx.send(embed = em)
@@ -540,7 +540,7 @@ async def on_error(event, *args, **kwargs):
 
 # Help Command
 @client.command(aliases = [">", "?", "halp", "riot"])
-async def help(ctx):
+async def help(ctx: commands.Context):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
@@ -577,7 +577,7 @@ async def help(interaction: Interaction):
 @client.command(aliases = ["b"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(ban_members = True)
-async def ban(ctx, member: nextcord.Member = None, *, reason = None):
+async def ban(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Ban", description = "**Command :** >ban|>b\n**Description :** Ban a member\n**Usage :** >ban [user] [reason]\n**Example :** >ban @DINO rude!")
         await ctx.send(embed = em)
@@ -623,7 +623,7 @@ async def ban(interaction: Interaction, member: nextcord.Member, *, reason):
 @client.command(aliases = ["uba", "u"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(ban_members = True)
-async def unban(ctx, member = None, *, reason = None):
+async def unban(ctx: commands.Context, member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Unban", description = "**Command :** >unban|>uba|>u\n**Description :** Unban a member\n**Usage :** >uba [member (with discriminator)] [reason]\n**Example :** >uba DINO#9967 Appealed")
         await ctx.send(embed = em)
@@ -661,7 +661,7 @@ async def unban(interaction: Interaction, member, *, reason):
 @client.command(aliases = ["to", "mute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
-async def timeout(ctx, member: nextcord.Member = None, time = None, *, reason = None):
+async def timeout(ctx: commands.Context, member: nextcord.Member = None, time = None, *, reason = None):
     if member == None or time == None:
         em = nextcord.Embed(title = "Timeout", description = "**Command :** >timeout|>to|>mute\n**Description :** Timeout a member so they can't chat/speak/react to a message\n**Usage :** >timeout [member] [duration] [reason]\n**Example :** >timeout @DINO 10m Annoying")
         await ctx.send(embed = em)
@@ -709,7 +709,7 @@ async def timeout(interaction: Interaction, member: nextcord.Member, time, *, re
 @client.command(aliases = ["rt", "unmute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
-async def removetimeout(ctx, member: nextcord.Member = None, *, reason = None):
+async def removetimeout(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Remove Timeout", description = "**Command :** >removetimeout|>rt|>unmute\n**Description :** Remove timeout from a member\n**Usage :** >removetimeout [user] [reason]\n**Example :** >unmute @DINO Appealed")
         await ctx.send(embed = em)
@@ -746,7 +746,7 @@ async def removetimeout(interaction: Interaction, member: nextcord.Member, *, re
 @client.command(aliases = ["k"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(kick_members = True)
-async def kick(ctx, member: nextcord.Member = None, *, reason = None):
+async def kick(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "**Kick**", description = "**Command :** >kick|>k\n**Description :** Kick a member\n**Usage :** >kick [member] [reason]\n**Example :** >kick @DINO Annoying")
         await ctx.send(embed = em)
@@ -792,7 +792,7 @@ async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
 @client.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
-async def warn(ctx, member: nextcord.Member = None, *, reason = None):
+async def warn(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Warn", description = "**Command :** >warn\n**Description :** Warn a member\n**Usage :** >warn [user] [reason]\n**Example :** >warn @DINO Last warn for being rude")
         await ctx.send(embed = em)
@@ -834,7 +834,7 @@ async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
 @client.command(aliases = ["clear", "cls"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
-async def purge(ctx, amount = None, arg: str = None):
+async def purge(ctx: commands.Context, amount = None, arg: str = None):
     if amount == None:
         em = nextcord.Embed(title = "Purge", description = "**Command :** >purge|>clear|>cls\n**Description :** Delete the amount of messages from a channel\n**Usage :** >purge [amount]\n**Example :** >purge 10")
         await ctx.send(embed = em)
@@ -846,7 +846,7 @@ async def purge(ctx, amount = None, arg: str = None):
 @client.command(aliases = ["sm"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_channels = True)
-async def slowmode(ctx, seconds: int = None):
+async def slowmode(ctx: commands.Context, seconds: int = None):
     if seconds == None:
         em = nextcord.Embed(title = "Slowmode", description = "**Command :** >slowmode|>sm\n**Description :** Set a slowmode to the current channel\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5")
         await ctx.send(embed = em)
@@ -869,7 +869,7 @@ async def slowmode(interaction: Interaction, seconds: int):
 @client.command(aliases = ["ar"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
-async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
+async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Add Role", description = "**Command :** >addrole|>ar\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO")
         await ctx.send(embed = em)
@@ -883,7 +883,7 @@ async def addrole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = 
 @client.command(aliases = ["rr"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
-async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member = None):
+async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Remove Role", description = "**Command :** >removerole|>rr\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @DINO")
         await ctx.send(embed = em)
@@ -897,7 +897,7 @@ async def removerole(ctx, role: nextcord.Role = None, *, member: nextcord.Member
 @client.command(aliases = ["cn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_nicknames = True)
-async def nick(ctx, member: nextcord.Member = None, *, nickname = None):
+async def nick(ctx: commands.Context, member: nextcord.Member = None, *, nickname = None):
     if member == None or nickname == None:
         em = nextcord.Embed(title = "Nick", description = "**Command :** >nick|>cn\n**Description :** Change a nickname of a specified user (Note : My role/your role must be higher than the member's role)\n**Usage :** >nick [user] [new nickname]\n**Example  :** >nick @DINO Weebs")
         await ctx.send(embed = em)
@@ -918,7 +918,7 @@ async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
 @client.command(aliases = ["ctcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_channels = True)
-async def changetextchannelname(ctx, channel: nextcord.TextChannel = None, *, channel_name = None):
+async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextChannel = None, *, channel_name = None):
     if channel == None or channel_name == None:
         em = nextcord.Embed(title = "Change Text Channel Name", description = "**Command :** >changetextchannelname|>ctcn\n**Description :** Change the specified text channel name\n**Usage :** >ctcn [channel] [new name]\n**Example :** >ctcn #general 💬general")
         await ctx.send(embed = em)
@@ -932,7 +932,7 @@ async def changetextchannelname(ctx, channel: nextcord.TextChannel = None, *, ch
 # Fun Command
 @client.command(aliases = ["meme"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def memes(ctx):
+async def memes(ctx: commands.Context):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
             res = await r.json()
@@ -963,7 +963,7 @@ async def memes(interaction: Interaction):
 
 
 @client.command()
-async def pet(ctx):
+async def pet(ctx: commands.Context):
     view = PetView()
     await ctx.send("Choose 1 pet to buy", view = view)
 
@@ -976,7 +976,7 @@ async def pet(interaction: Interaction):
 
 """
 @client.command(alises=["dadjokes", "dj"])
-async def dadjoke(ctx):
+async def dadjoke(ctx: commands.Context):
     url = "https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes"
 
     async with aiohttp.request("GET", url, headers={}) as res:
@@ -1004,7 +1004,7 @@ async def dadjoke(interaction: Interaction):
 
 @client.command(aliases = ["8ball"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def eightball(ctx, *, question = None):
+async def eightball(ctx: commands.Context, *, question = None):
     responses = [
         "It is certain.", "It is decidetly so.", "Without a doubt",
         "Yes - definitely.", "You may rely on it.", "As i see it, yes.",
@@ -1052,7 +1052,7 @@ async def eightball(interaction: Interaction, *, question):
 
 @client.command(aliases = ["covidtest", "swabtest", "pcr"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def cvtest(ctx, member: nextcord.Member = None):
+async def cvtest(ctx: commands.Context, member: nextcord.Member = None):
     cvRes = ["positive", "negative"]
 
     if member == None:
@@ -1092,7 +1092,7 @@ async def cvtest(interaction: Interaction, member: nextcord.Member = None):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def temperature(ctx, member: nextcord.Member = None):
+async def temperature(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
       message = await ctx.reply("Analyzing your body temperature...")
       await asyncio.sleep(3)
@@ -1120,7 +1120,7 @@ async def temperature(interaction: Interaction, member: nextcord.Member = None):
 
 @client.command(aliases = ["rolldice", "roll"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def dice(ctx):
+async def dice(ctx: commands.Context):
     message = await ctx.reply(f"{ctx.author.mention} rolled a dice and gets...")
     await asyncio.sleep(3)
     await message.edit(content = f"{ctx.author.mention} rolled a dice and gets **{random.randint(1, 6)}** :game_die:")
@@ -1136,7 +1136,7 @@ async def dice(interaction: Interaction):
 
 @client.command(aliases = ["cf", "coin"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def coinflip(ctx, choice = None):
+async def coinflip(ctx: commands.Context, choice = None):
     if choice == None:
         em = nextcord.Embed(title = "**Coinflip**", description = "**Command :** >coinflip|>cf|>coin\n**Description :** Flip a coin and bet for heads/tails\n**Usage :** >cf [choices]\n**Example :** >cf tails")
         await ctx.send(embed = em)
@@ -1186,7 +1186,7 @@ async def coinflip(interaction: Interaction, choice):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def rps(ctx, choice = None):
+async def rps(ctx: commands.Context, choice = None):
     if choice == None:
         em = nextcord.Embed(title = "**Rock Paper Scissors**", description = "**Command :** >rps\n**Description :** Rock paper scissors with the bot\n**Usage :** >rps [choice]\n**Example :** >rps rock")
         await ctx.send(embed = em)
@@ -1268,7 +1268,7 @@ async def rps(interaction: Interaction, choice):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def rate(ctx, *, argument = None):
+async def rate(ctx: commands.Context, *, argument = None):
     if argument == None:
         em = nextcord.Embed(title = "**Command :** >rate", description = "**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart")
         await ctx.send(embed = em)
@@ -1288,7 +1288,7 @@ async def rate(interaction: Interaction, *, argument):
 """
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def guess(ctx):
+async def guess(ctx: commands.Context):
     number = random.randint(1, 100)
     # print(number)
     await ctx.send(
@@ -1328,7 +1328,7 @@ async def guess(ctx):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def hug(ctx, member: nextcord.Member = None):
+async def hug(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
       await ctx.reply("Question : Who do you want to hug?")
 
@@ -1336,7 +1336,7 @@ async def hug(ctx, member: nextcord.Member = None):
         await ctx.reply("**You can't hug yourself.**")
     
     else:
-        await ctx.send(f"{ctx.author.name} hug {member.name}\n{(random.choice(hugs[ctx.invoked_with]))}")
+        await ctx.send(f"{ctx.author.name} hug {member.name}\n{(random.choice(hugs[ctx: commands.Context.invoked_with]))}")
 
 
 @client.slash_command(name = "hug", description = "Hug someone")
@@ -1348,14 +1348,14 @@ async def hug(interaction: Interaction, member: nextcord.Member):
 """
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def kiss(ctx, member: nextcord.Member = None):
+async def kiss(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
         pass
     elif member == ctx.author:
         await ctx.reply("You can't kiss yourself.", mention_author = False)
 
     else:
-        await ctx.send(f"{ctx.author.name} kiss {member.name}\n{(random.choice(kiss[ctx.invoked_with]))}")
+        await ctx.send(f"{ctx.author.name} kiss {member.name}\n{(random.choice(kiss[ctx: commands.Context.invoked_with]))}")
 
 
 @client.slash_command(name = "kiss", description = "Kiss someone")
@@ -1371,7 +1371,7 @@ async def kiss(interaction: Interaction, member: nextcord.Member):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def slap(ctx, member: nextcord.Member = None):
+async def slap(ctx: commands.Context, member: nextcord.Member = None):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
     
@@ -1395,7 +1395,7 @@ async def slap(interaction: Interaction, member: nextcord.Member):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def say(ctx, *, text):
+async def say(ctx: commands.Context, *, text):
     funny_text = ["I'm stupid", "I'm Stupid", "i'm stupid", "Im stupid", "Im Stupid", "im stupid"]
 
     if text == None:
@@ -1422,7 +1422,7 @@ async def say(interaction: Interaction, *, text):
 
 
 @client.command()
-async def ping(ctx):
+async def ping(ctx: commands.Context):
     await ctx.send(f"{round(client.latency * 1000)}ms")
 
 
@@ -1433,7 +1433,7 @@ async def ping(interaction: Interaction):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def emojify(ctx, *, text):
+async def emojify(ctx: commands.Context, *, text):
     emojis = []
     for s in text.lower():
         if s.isdecimal():
@@ -1489,7 +1489,7 @@ async def emojify(interaction: Interaction, *, text):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def handsome(ctx, member: nextcord.Member = None):
+async def handsome(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
         em = nextcord.Embed(title = "Handsome Parameter", description = f"You are **{random.randrange(100)}%** handsome.")
         em.timestamp = ctx.message.created_at
@@ -1517,7 +1517,7 @@ async def handsome(interaction: Interaction, member: nextcord.Member = None):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def beautiful(ctx, member: nextcord.Member = None):
+async def beautiful(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
         em = nextcord.Embed(title = "Beautiful Parameter", description = f"You are **{random.randrange(100)}%** beautiful.")
         em.timestamp = ctx.message.created_at
@@ -1547,7 +1547,7 @@ async def beautiful(interaction: Interaction, member: nextcord.Member = None):
 # Game Command
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def sketch(ctx, channel: nextcord.VoiceChannel = None):
+async def sketch(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         return await ctx.send("Please select a voice channel.")
 
@@ -1582,7 +1582,7 @@ async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(cha
 
 @game.command(aliases = ["fishing", "fish"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def fishington(ctx, channel: nextcord.VoiceChannel = None):
+async def fishington(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1617,7 +1617,7 @@ async def fishington(interaction: Interaction, channel: GuildChannel=SlashOption
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def chess(ctx, channel: nextcord.VoiceChannel = None):
+async def chess(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1652,7 +1652,7 @@ async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(chan
 
 @game.command(aliases = ["checker"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def checkers(ctx, channel: nextcord.VoiceChannel = None):
+async def checkers(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1687,7 +1687,7 @@ async def checkers(interaction: Interaction, channel: GuildChannel=SlashOption(c
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def betrayal(ctx, channel: nextcord.VoiceChannel = None):
+async def betrayal(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1722,7 +1722,7 @@ async def betrayal(interaction: Interaction, channel: GuildChannel=SlashOption(c
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def spellcast(ctx, channel: nextcord.VoiceChannel = None):
+async def spellcast(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1757,7 +1757,7 @@ async def spellcast(interaction, channel: GuildChannel=SlashOption(channel_types
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def poker(ctx, channel: nextcord.VoiceChannel = None):
+async def poker(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1792,7 +1792,7 @@ async def poker(interaction: Interaction, channel: GuildChannel=SlashOption(chan
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def blazing(ctx, channel: nextcord.VoiceChannel = None):
+async def blazing(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1827,7 +1827,7 @@ async def blazing(interaction: Interaction, channel: GuildChannel=SlashOption(ch
 
 @game.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def youtube(ctx, channel: nextcord.VoiceChannel = None):
+async def youtube(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1862,7 +1862,7 @@ async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(ch
 
 @game.command(aliases = ["ll", "letter"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def letterleague(ctx, channel: nextcord.VoiceChannel = None):
+async def letterleague(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1897,7 +1897,7 @@ async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOpti
 
 @game.command(aliases = ["ws"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def wordsnacks(ctx, channel: nextcord.VoiceChannel = None):
+async def wordsnacks(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
         await ctx.send("Please select a voice channel.")
 
@@ -1933,7 +1933,7 @@ async def wordsnacks(interaction, channel: GuildChannel=SlashOption(channel_type
 # Anime Command
 @anime.command(aliases = ["n"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def news(ctx, amount: int = 5):
+async def news(ctx: commands.Context, amount: int = 5):
     aninews = animec.Aninews(amount)
     links = aninews.links
     titles = aninews.titles
@@ -1967,7 +1967,7 @@ async def news(interaction: Interaction, amount: int = 5):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def search(ctx, *, query):
+async def search(ctx: commands.Context, *, query):
     try:
         anime = animec.Anime(query)
     except:
@@ -2009,7 +2009,7 @@ async def search(interaction: Interaction, *, anime):
 
 @anime.command(aliases = ["chara"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def character(ctx, *, query):
+async def character(ctx: commands.Context, *, query):
     try:
         char = animec.Charsearch(query)
     except:
@@ -2039,7 +2039,7 @@ async def character(interaction: Interaction, *, name):
 
 @anime.command(aliases = ["meme"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def memes(ctx):
+async def memes(ctx: commands.Context):
     async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
             anime_memes = await r.json()
@@ -2066,7 +2066,7 @@ async def memes(interaction: Interaction):
 
 @anime.command(aliases = ["wa"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def waifu(ctx):
+async def waifu(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/waifu")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2082,7 +2082,7 @@ async def waifu(interaction: Interaction):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def neko(ctx):
+async def neko(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/neko")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2090,7 +2090,7 @@ async def neko(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def shinobu(ctx):
+async def shinobu(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/shinobu")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2098,7 +2098,7 @@ async def shinobu(ctx):
 
 @anime.command(aliases = ["megumi"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def megumin(ctx):
+async def megumin(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/megumin")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2106,7 +2106,7 @@ async def megumin(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def cuddle(ctx):
+async def cuddle(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/cuddle")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2114,7 +2114,7 @@ async def cuddle(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def cry(ctx):
+async def cry(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/cry")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2122,7 +2122,7 @@ async def cry(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def awoo(ctx):
+async def awoo(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/awoo")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2130,7 +2130,7 @@ async def awoo(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def kiss(ctx):
+async def kiss(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/kiss")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2138,7 +2138,7 @@ async def kiss(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def lick(ctx):
+async def lick(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/lick")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2146,7 +2146,7 @@ async def lick(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def pat(ctx):
+async def pat(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/pat")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2154,7 +2154,7 @@ async def pat(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def smug(ctx):
+async def smug(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/smug")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2162,7 +2162,7 @@ async def smug(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def bonk(ctx):
+async def bonk(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/bonk")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2170,7 +2170,7 @@ async def bonk(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def yeet(ctx):
+async def yeet(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/yeet")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2178,7 +2178,7 @@ async def yeet(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def blush(ctx):
+async def blush(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/blush")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2186,7 +2186,7 @@ async def blush(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def smile(ctx):
+async def smile(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/smile")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2194,7 +2194,7 @@ async def smile(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def wave(ctx):
+async def wave(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/wave")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2202,7 +2202,7 @@ async def wave(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def highfive(ctx):
+async def highfive(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/highfive")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2210,7 +2210,7 @@ async def highfive(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def handhold(ctx):
+async def handhold(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/handhold")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2218,7 +2218,7 @@ async def handhold(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def nom(ctx):
+async def nom(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/nom")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2226,7 +2226,7 @@ async def nom(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def bite(ctx):
+async def bite(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/bite")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2234,7 +2234,7 @@ async def bite(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def glomp(ctx):
+async def glomp(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/glomp")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2242,7 +2242,7 @@ async def glomp(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def slap(ctx):
+async def slap(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/slap")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2250,7 +2250,7 @@ async def slap(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def kick(ctx):
+async def kick(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/k")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2258,7 +2258,7 @@ async def kick(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def happy(ctx):
+async def happy(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/happy")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2266,7 +2266,7 @@ async def happy(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def wink(ctx):
+async def wink(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/wink")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2274,7 +2274,7 @@ async def wink(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def poke(ctx):
+async def poke(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/poke")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2282,7 +2282,7 @@ async def poke(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def dance(ctx):
+async def dance(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/dance")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2290,7 +2290,7 @@ async def dance(ctx):
 
 @anime.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def cringe(ctx):
+async def cringe(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/cringe")
     image_link = res.json()["url"]
     await ctx.send(image_link)
@@ -2299,7 +2299,7 @@ async def cringe(ctx):
 # Image Command
 @dog.command(name = "image")
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def image(ctx):
+async def image(ctx: commands.Context):
     res = requests.get("https://dog.ceo/api/breeds/image/random")
     image_link = res.json()["message"]
     await ctx.send(image_link)
@@ -2315,13 +2315,13 @@ async def image(interaction: Interaction):
 
 @dog.command(name = "gif", aliases = ["feed", "play", "sleep"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def gif(ctx):
-	await ctx.send(random.choice(dogs[ctx.invoked_with]))
+async def gif(ctx: commands.Context):
+	await ctx.send(random.choice(dogs[ctx: commands.Context.invoked_with]))
 
 
 @capybara.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def large(ctx):
+async def large(ctx: commands.Context):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["large"]
     await ctx.send(image_link)
@@ -2337,7 +2337,7 @@ async def large(interaction: Interaction):
 
 @capybara.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def medium(ctx):
+async def medium(ctx: commands.Context):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["medium"]
     await ctx.send(image_link)
@@ -2353,7 +2353,7 @@ async def medium(interaction: Interaction):
 
 @capybara.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def small(ctx):
+async def small(ctx: commands.Context):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["small"]
     await ctx.send(image_link)
@@ -2369,7 +2369,7 @@ async def small(interaction: Interaction):
 
 @capybara.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def original(ctx):
+async def original(ctx: commands.Context):
     res = requests.get("https://api.capybara-api.xyz/v1/image/random")
     image_link = res.json()["image_urls"]["original"]
     await ctx.send(image_link)
@@ -2385,7 +2385,7 @@ async def original(interaction: Interaction):
 
 @capybara.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def facts(ctx):
+async def facts(ctx: commands.Context):
     res = requests.get("https://api.capybara-api.xyz/v1/facts/random")
     fact = res.json()["fact"]
     await ctx.send(fact)
@@ -2401,7 +2401,7 @@ async def facts(interaction: Interaction):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def food(ctx):
+async def food(ctx: commands.Context):
     res = requests.get("https://foodish-api.herokuapp.com/api/")
     image_link = res.json()["image"]
     await ctx.send(image_link)
@@ -2986,7 +2986,7 @@ async def forum(interaction: Interaction):
 # Miscellaneous Command
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def weather(ctx, *, city: str = None):
+async def weather(ctx: commands.Context, *, city: str = None):
     if city == None:
         em = nextcord.Embed(title = "Weather", description = "**Command :** >weather\n**Description :** Shows weather information of a city\n**Usage :** >weather [city]\n**Example :** >weather Jakarta")
         await ctx.send(embed = em)
@@ -3056,7 +3056,7 @@ async def weather(interaction: Interaction, *, city: str):
 
 @client.command(aliases = ["imdb"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def movie(ctx, *, movie_name = None):
+async def movie(ctx: commands.Context, *, movie_name = None):
     if movie_name == None:
         em = nextcord.Embed(title = "Movie", description = "**Command :** >movie|>imdb\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)")
         await ctx.send(embed = em)
@@ -3122,7 +3122,7 @@ async def movie(interaction: Interaction, *, movie_name):
 
 @client.command(aliases = ["covid"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def cv(ctx, *, country):
+async def cv(ctx: commands.Context, *, country):
     r = requests.get("https://api.covid19api.com/summary")
 
     if r.status_code != 200:
@@ -3172,7 +3172,7 @@ async def cv(interaction: Interaction, *, country):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def afk(ctx, *, reason = None):
+async def afk(ctx: commands.Context, *, reason = None):
     if reason == None:
         reason = "AFK"
     
@@ -3218,7 +3218,7 @@ async def afk(interaction: Interaction, *, reason):
 
 
 @client.command()
-async def snipe(ctx):
+async def snipe(ctx: commands.Context):
     if snipe_message_content == None:
         await ctx.reply("There's nothing to snipe")
 
@@ -3245,7 +3245,7 @@ async def snipe(interaction: Interaction):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def quote(ctx):
+async def quote(ctx: commands.Context):
     res = requests.get("https://zenquotes.io/api/random")
     json_data = json.loads(res.text)
     quote = json_data[0]["q"] + "\n\n~" + json_data[0]["a"]
@@ -3262,7 +3262,7 @@ async def quote(interaction: Interaction):
 
 
 @client.command(aliases = ["cd"])
-async def cleardm(ctx, amount, arg: int = None):
+async def cleardm(ctx: commands.Context, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
     await ctx.reply(f"Successfully clear {amount} message in your DMs.")
     
@@ -3271,14 +3271,14 @@ async def cleardm(ctx, amount, arg: int = None):
 
 
 @cleardm.error
-async def cleardm_error(ctx, error):
+async def cleardm_error(ctx: commands.Context, error):
     if isinstance(error, commands.MissingRequiredArgument):
         em = nextcord.Embed(title = "**Clear DM**", description = "**Command :** >cleardm|>cd\n**Description :** Delete bot response/message in your dm\n**Usage :** >cleardm [amount]\n**Example :** >cleardm 727")
         await ctx.send(embed = em)
 
 @client.command()
 @commands.cooldown(1, 3600, commands.BucketType.user)
-async def suggest(ctx, *, suggestion):
+async def suggest(ctx: commands.Context, *, suggestion):
     author = ctx.author
     channel = client.get_channel(976437035504128011)
     
@@ -3295,7 +3295,7 @@ async def suggest(interaction: Interaction):
     await interaction.response.send_modal(Suggest())
 
 @client.command()
-async def report(ctx, *, message):
+async def report(ctx: commands.Context, *, message):
     author = ctx.author
     channel = client.get_channel(976502829546086440)
 
@@ -3318,7 +3318,7 @@ async def serverreport(interaction: Interaction):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def wsay(ctx, *, message = None):
+async def wsay(ctx: commands.Context, *, message = None):
     author = ctx.author
     if message == None:
         await ctx.reply("Please provide a message")
@@ -3335,7 +3335,7 @@ async def wsay(ctx, *, message = None):
 
 @client.command(aliases = ["avatar"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def av(ctx, member: nextcord.Member = None):
+async def av(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
         member = ctx.author
 
@@ -3367,7 +3367,7 @@ async def av(interaction: Interaction, member: nextcord.Member = None):
 
 @client.command(aliases = ["whois", "w", "ui", "info"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def userinfo(ctx, member: nextcord.Member = None):
+async def userinfo(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
         member = ctx.author
 
@@ -3419,7 +3419,7 @@ async def userinfo(interaction: Interaction, member: nextcord.Member = None):
 
 @client.command(aliases = ["si"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def serverinfo(ctx):
+async def serverinfo(ctx: commands.Context):
     role_count = len(ctx.guild.roles)
     list_of_bots = [bot.mention for bot in ctx.guild.members if bot.bot]
 
@@ -3454,7 +3454,7 @@ async def serverinfo(interaction: Interaction):
 
 @client.command()
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def timer(ctx, seconds = None):
+async def timer(ctx: commands.Context, seconds = None):
     if seconds == None:
         timer_delete = await ctx.send("**Please enter a number of timer countdown (second).**")
         await asyncio.sleep(3)
@@ -3507,7 +3507,7 @@ async def timer(interaction: Interaction, seconds):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def poll(ctx, *, argument):
+async def poll(ctx: commands.Context, *, argument):
 
     icon_url = ctx.author.avatar.url
 
@@ -3528,7 +3528,7 @@ async def poll(ctx, *, argument):
 @client.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
-async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None):
+async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, *, message = None):
     if channel == None or message == None:
       em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message to the specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
       await ctx.send(embed = em)
@@ -3544,7 +3544,7 @@ async def announce(ctx, channel: nextcord.TextChannel = None, *, message = None)
 
 @client.command(aliases = ["gi", "guildicon"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def servericon(ctx):
+async def servericon(ctx: commands.Context):
     icon = ctx.guild.icon
 
     if icon == None:
@@ -3568,7 +3568,7 @@ async def servericon(interaction: Interaction):
 
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def id(ctx, member: nextcord.Member = None):
+async def id(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
         await ctx.reply(ctx.author.id, mention_author = False)
     
@@ -3584,7 +3584,7 @@ async def id(interaction: Interaction, member: nextcord.Member):
 
 @client.command(aliases = ["mc"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def membercount(ctx):
+async def membercount(ctx: commands.Context):
     em = nextcord.Embed(title = f"{ctx.guild.name}'s Total Members", description = ctx.guild.member_count)
     em.timestamp = ctx.message.created_at
     await ctx.send(embed = em)
@@ -3600,7 +3600,7 @@ async def membercount(interaction: Interaction):
 
 @client.command(aliases = ["ei"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
+async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
     if emoji == None:
         await ctx.reply("Please insert the emoji.")
 
@@ -3635,7 +3635,7 @@ async def emojiinfo(ctx, emoji: nextcord.Emoji = None):
 # Owner Command
 @client.command()
 @commands.is_owner()
-async def dm(ctx, member: nextcord.User, *, content):
+async def dm(ctx: commands.Context, member: nextcord.User, *, content):
     user = await member.create_dm()
 
     try:
@@ -3649,7 +3649,7 @@ async def dm(ctx, member: nextcord.User, *, content):
 
 @client.command(aliases = ["statistic", "stat"])
 @commands.is_owner()
-async def stats(ctx):
+async def stats(ctx: commands.Context):
     em = nextcord.Embed(title = "Riot Bot Statistics")
     em.add_field(name = "CPU", value = f"{psutil.cpu_percent()}%", inline = False)
     em.add_field(name = "RAM", value = f"{psutil.virtual_memory()[2]}%", inline = False)
@@ -3658,14 +3658,14 @@ async def stats(ctx):
 
 @client.command()
 @commands.is_owner()
-async def activity(ctx, *, activity):
+async def activity(ctx: commands.Context, *, activity):
     await client.change_presence(activity=nextcord.Game(activity))
     await ctx.reply(f"My activity has been set to **{activity}**")
 
 
 @client.command(aliases = ["ln"])
 @commands.is_owner()
-async def leaveservername(ctx, *, guild_name):
+async def leaveservername(ctx: commands.Context, *, guild_name):
     guildName = nextcord.utils.get(client.guilds, name = guild_name)
 
     if guildName is None:
@@ -3678,7 +3678,7 @@ async def leaveservername(ctx, *, guild_name):
 
 @client.command(aliases = ["lid"])
 @commands.is_owner()
-async def leaveserverid(ctx, *, guild_id):
+async def leaveserverid(ctx: commands.Context, *, guild_id):
     guildID = nextcord.utils.get(client.guilds, name = guild_id)
 
     if guildID is None:
@@ -3691,7 +3691,7 @@ async def leaveserverid(ctx, *, guild_id):
 
 @client.command(aliases = ["message"])
 @commands.is_owner()
-async def msg(ctx, channel: nextcord.TextChannel, *, msg):
+async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
     # await ctx.reply("Successfully sent the message.")
 
     try:
@@ -3703,7 +3703,7 @@ async def msg(ctx, channel: nextcord.TextChannel, *, msg):
 
 @client.command()
 @commands.is_owner()
-async def toggle(ctx, *, command):
+async def toggle(ctx: commands.Context, *, command):
     command = client.get_command(command)
 
     if command == None:
@@ -3715,7 +3715,7 @@ async def toggle(ctx, *, command):
 
 @client.command()
 @commands.is_owner()
-async def act(ctx, member: nextcord.Member = None, *, message = None):
+async def act(ctx: commands.Context, member: nextcord.Member = None, *, message = None):
     if member == None:
         await ctx.reply("Please mention a member.", mention_author = False)
 
@@ -3732,45 +3732,45 @@ async def act(ctx, member: nextcord.Member = None, *, message = None):
 
 
 @client.command(aliases = ["owner"])
-async def creator(ctx):
+async def creator(ctx: commands.Context):
     await ctx.reply("DINO#9914")
 
 
 @client.command(aliases = ["born"])
-async def created(ctx):
+async def created(ctx: commands.Context):
     await ctx.reply("I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
 
 
 @client.command(aliases = ["ver", "__ver__" "__version__"])
 @commands.is_owner()
-async def version(ctx):
+async def version(ctx: commands.Context):
     await ctx.send(nextcord.__version__)
 
 
 @client.command(aliases = ["checkguildid"])
 @commands.is_owner()
-async def gid(ctx):
+async def gid(ctx: commands.Context):
     async for guild in client.fetch_guilds():
         await ctx.send(guild.id)
 
 
 @client.command(aliases = ["checkguild"])
 @commands.is_owner()
-async def cg(ctx):
+async def cg(ctx: commands.Context):
     async for guild in client.fetch_guilds():
         await ctx.send(guild.name)
 
 
 @client.command(aliases = ["checkguildlist"])
 @commands.is_owner()
-async def cgl(ctx):
+async def cgl(ctx: commands.Context):
     guilds = await client.fetch_guilds().flatten()
     await ctx.send(guilds)
 
 
 @client.command(aliases = ["ci"])
 @commands.is_owner()
-async def createinvite(ctx, guildid: int):
+async def createinvite(ctx: commands.Context, guildid: int):
     try:
         guild = client.get_guild(guildid)
         invitelink = ""
@@ -3790,7 +3790,7 @@ async def createinvite(ctx, guildid: int):
 
 @client.command(pass_context = True)
 @commands.is_owner()
-async def join(ctx):
+async def join(ctx: commands.Context):
     if (ctx.author.voice):
         channel = ctx.message.author.voice.channel
         await channel.connect()
@@ -3802,7 +3802,7 @@ async def join(ctx):
 
 @client.command(pass_context = True)
 @commands.is_owner()
-async def left(ctx):
+async def left(ctx: commands.Context):
     if (ctx.voice_client):
         await ctx.guild.voice_client.disconnect()
         await ctx.reply("Successfully left the voice channel.")
@@ -3813,7 +3813,7 @@ async def left(ctx):
 
 @client.command(aliases = ["e"])
 @commands.is_owner()
-async def eval(ctx, *, code):
+async def eval(ctx: commands.Context, *, code):
     code = clean_code(code)
     str_obj = io.StringIO()
 
