@@ -2654,7 +2654,7 @@ async def resume(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@client.slash_command(name = "resume", description = "Resume paused current music")
+@client.slash_command(name = "resume", description = "Resume current paused music")
 async def resume(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
