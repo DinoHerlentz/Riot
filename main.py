@@ -525,17 +525,14 @@ async def on_application_command_error(interaction: Interaction, error):
         await interaction.send(f"This command is still on cooldown. Try again in `{error.retry_after}` seconds.", ephemeral = True)
 
 
-"""
 @client.event
 async def on_error(event, *args, **kwargs):
     info = await client.application_info()
-    channel = client.get_channel(989087268033687593)
     
     em = nextcord.Embed(title = ":x: Error :x:", description = "```py\n%s\n```" % traceback.format_exc(), color = nextcord.Color.red())
     em.add_field(name = "Event", value = event)
     em.timestamp = datetime.datetime.utcnow()
-    await info.channel.send(embed = em)
-"""
+    await info.owner.send(embed = em)
 
 
 # Help Command
