@@ -3582,6 +3582,19 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
       await channel.send(embed = em2)
 
 
+@client.slash_command(name = "announce", description = "Announce a message to the specified channel")
+# @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
+@application_checks.has_permissions(manage_messages = True)
+async def announce(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select voice channel"), *, message):
+    await interaction.send("Announcement has been sent.", ephemeral = True)
+    
+    em = nextcord.Embed(title = "New Announcement", description = f"{message}")
+    em.set_footer(text = f"Announcement from {interaction.user}", icon_url = interaction.user.avatar.url)
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await channel.send(embed = em)
+
+
 @client.command(aliases = ["gi", "guildicon"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def servericon(ctx: commands.Context):
