@@ -2518,8 +2518,8 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
     setattr(vc, "loop", False)
 
 
-@client.command(aliases = ["spotify", "sp", "spotifyplay"])
-async def splay(ctx: commands.Context, *, url: str):
+@client.command(aliases = ["spotify", "sp", "splay"])
+async def spotifyplay(ctx: commands.Context, *, url: str):
     if not ctx.voice_client:
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
     
@@ -2560,7 +2560,7 @@ async def splay(ctx: commands.Context, *, url: str):
 
 
 @client.slash_command(name = "spotifyplay", description = "Play a song from spotify")
-async def splay(interaction: Interaction, *, url: str):
+async def spotifyplay(interaction: Interaction, *, url: str):
     if not interaction.guild.voice_client:
         vc: wavelink.Player = await interaction.user.voice.channel.connect(cls = wavelink.Player)
     
