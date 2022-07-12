@@ -69,7 +69,7 @@ async def moderation(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@client.group(invoke_without_command = True)
+@client.group(invoke_without_command = True, aliases = ["f"])
 async def fun(ctx: commands.Context):
     em = nextcord.Embed(title = "Fun Command (>fun [command])")
     em.add_field(name = "Command", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
@@ -98,7 +98,7 @@ async def animeslash(interaction: Interaction):
     return
 
 
-@client.group(invoke_without_command = True)
+@client.group(invoke_without_command = True, aliases = ["m"])
 async def music(ctx: commands.Context):
     em = nextcord.Embed(title = "Music Command (>music [command])")
     em.add_field(name = "Command", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
@@ -106,7 +106,7 @@ async def music(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@client.group(invoke_without_command = True)
+@client.group(invoke_without_command = True, aliases = ["d"])
 async def dog(ctx: commands.Context):
     em = nextcord.Embed(title = "Dog Command (>dog [command])")
     em.add_field(name = "Commands", value = "image, gif, feed, play, sleep")
@@ -119,7 +119,7 @@ async def dogslash(interaction: Interaction):
     return
 
 
-@client.group(invoke_without_command = True)
+@client.group(invoke_without_command = True, aliases = ["c"])
 async def capybara(ctx: commands.Context):
     em = nextcord.Embed(title = "Capybara Command (>capybara [command])")
     em.add_field(name = "Commands", value = "large, medium, small, original, facts")
