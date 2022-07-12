@@ -928,15 +928,51 @@ async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
 @moderation.command(aliases = ["ctcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_channels = True)
-async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextChannel = None, *, channel_name = None):
-    if channel == None or channel_name == None:
-        em = nextcord.Embed(title = "Change Text Channel Name", description = "**Command :** >changetextchannelname|>ctcn\n**Description :** Change the specified text channel name\n**Usage :** >ctcn [channel] [new name]\n**Example :** >ctcn #general 💬general")
+async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextChannel = None, *, name = None):
+    if channel == None or name == None:
+        em = nextcord.Embed(title = "Change Text Channel Name", description = "**Command :** >changetextchannelname|>ctcn\n**Description :** Change the specified text channel name\n**Usage :** >changetextchannelname [channel] [name]\n**Example :** >changetextchannelname #general hangout")
         await ctx.send(embed = em)
     
     else:
-        await channel.edit(name = channel_name)
+        await channel.edit(name = name)
+        
         em2 = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
         await ctx.reply(embed = em2, mention_author = False)
+
+
+@client.slash_command(name = "changetextchannelname", description = "Change the specified text channel name")
+#@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
+@application_checks.has_permissions(manage_channels = True)
+async def changetextchannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select voice channel"), *, name):
+    await channel.edit(name = name)
+
+    em = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
+    await interaction.send(embed = em)
+
+
+@moderation.command(aliases = ["cvcn"])
+@commands.cooldown(1, 5, commands.BucketType.user)
+@commands.has_permissions(manage_channels = True)
+async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceChannel = None, *, name = None):
+    if channel == None or name == None:
+        em = nextcord.Embed(title = "Change Voice Channel Name", description = "**Command :** >changevoicechannelname|>cvcn\n**Description :** Change the specified voice channel name\n**Usage :** >changevoicechannelname [channel] [name]\n**Example :** >changevoicechannelname #Gaming Chill")
+        await ctx.send(embed = em)
+
+    else:
+        await channel.edit(name = name)
+
+        em2 = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
+        await ctx.reply(embed = em2, mention_author = False)
+
+
+@client.slash_command(name = "changevoicechannelname", description = "Change the specified voice channel name")
+#@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
+@application_checks.has_permissions(manage_channels = True)
+async def changevoicechannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel"), *, name):
+    await channel.edit(name = name)
+
+    em = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
+    await interaction.send(embed = em)
 
 
 # Fun Command
