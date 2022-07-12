@@ -61,17 +61,54 @@ def is_me():
 
 
 # Group Command
+@client.group(invoke_without_command = True, aliases = ["mod"])
+async def moderation(ctx: commands.Context):
+    em = nextcord.Embed(title = "Moderation Command (>moderation [command]")
+    em.add_field(name = "Command", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, changetextchannelname")
+
+    await ctx.send(embed = em)
+
+
 @client.group(invoke_without_command = True)
-async def game(ctx: commands.Context):
-    em = nextcord.Embed(title = "Game (>game [game])")
+async def fun(ctx: commands.Context):
+    em = nextcord.Embed(title = "Fun Command (>fun [command])")
+    em.add_field(name = "Command", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
+
+    await ctx.send(embed = em)
+
+
+@client.group(invoke_without_command = True)
+async def activities(ctx: commands.Context):
+    em = nextcord.Embed(title = "Activities Game (>activities [game])")
     em.add_field(name = "Game", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks")
     
     await ctx.send(embed = em)
 
 
 @client.group(invoke_without_command = True)
+async def anime(ctx: commands.Context):
+    em = nextcord.Embed(title = "Anime Command (>anime [command])")
+    em.add_field(name = "Commands", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe")
+    
+    await ctx.send(embed = em)
+
+
+@client.slash_command(name = "anime", description = "Anime slash command")
+async def animeslash(interaction: Interaction):
+    return
+
+
+@client.group(invoke_without_command = True)
+async def music(ctx: commands.Context):
+    em = nextcord.Embed(title = "Music Command (>music [command])")
+    em.add_field(name = "Command", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
+
+    await ctx.send(embed = em)
+
+
+@client.group(invoke_without_command = True)
 async def dog(ctx: commands.Context):
-    em = nextcord.Embed(title = "Dog (>dog [command])")
+    em = nextcord.Embed(title = "Dog Command (>dog [command])")
     em.add_field(name = "Commands", value = "image, gif, feed, play, sleep")
     
     await ctx.send(embed = em)
@@ -84,7 +121,7 @@ async def dogslash(interaction: Interaction):
 
 @client.group(invoke_without_command = True)
 async def capybara(ctx: commands.Context):
-    em = nextcord.Embed(title = "Capybara (>capybara [command])")
+    em = nextcord.Embed(title = "Capybara Command (>capybara [command])")
     em.add_field(name = "Commands", value = "large, medium, small, original, facts")
     
     await ctx.send(embed = em)
@@ -92,19 +129,6 @@ async def capybara(ctx: commands.Context):
 
 @client.slash_command(name = "capybara", description = "Capybara slash command")
 async def capybaraslash(interaction: Interaction):
-    return
-
-
-@client.group(invoke_without_command = True)
-async def anime(ctx: commands.Context):
-    em = nextcord.Embed(title = "Anime (>anime [command])")
-    em.add_field(name = "Commands", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe")
-    
-    await ctx.send(embed = em)
-
-
-@client.slash_command(name = "anime", description = "Anime slash command")
-async def animeslash(interaction: Interaction):
     return
 
 
@@ -542,12 +566,13 @@ async def help(ctx: commands.Context):
     
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn", inline = False)
-    em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful", inline = False)
-    em.add_field(name = "Anime", value = "anime", inline = False)
+    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
+    em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
     
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -558,20 +583,21 @@ async def help(interaction: Interaction):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn")
-    em.add_field(name = "Fun", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
-    em.add_field(name = "Anime", value = "anime")
-    em.add_field(name = "Images", value = "dog, capybara, food, rock")
-    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
-    em.add_field(name = "Application Commands", value = "embed")
-    em.add_field(name = "Miscellaneous", value = "weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo")
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn", inline = False)
+    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
+    em.add_field(name = "Anime", value = "anime", inline = False)
+    em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
+    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
+    em.add_field(name = "Application Commands", value = "embed", inline = False)
+    em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
     
     await interaction.send(embed = em, view = view)
     await view.wait()
 
 
 # Moderation Command
-@client.command(aliases = ["b"])
+@moderation.command(aliases = ["b"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(ban_members = True)
 async def ban(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
@@ -617,7 +643,7 @@ async def ban(interaction: Interaction, member: nextcord.Member, *, reason):
         await interaction.send(embed = em2)
 
 
-@client.command(aliases = ["uba", "u"])
+@moderation.command(aliases = ["uba", "u"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(ban_members = True)
 async def unban(ctx: commands.Context, member = None, *, reason = None):
@@ -655,7 +681,7 @@ async def unban(interaction: Interaction, member, *, reason):
             await interaction.send(embed = em)
 
 
-@client.command(aliases = ["to", "mute"])
+@moderation.command(aliases = ["to", "mute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
 async def timeout(ctx: commands.Context, member: nextcord.Member = None, time = None, *, reason = None):
@@ -703,7 +729,7 @@ async def timeout(interaction: Interaction, member: nextcord.Member, time, *, re
         await member.send(embed = em2)
 
 
-@client.command(aliases = ["rt", "unmute"])
+@moderation.command(aliases = ["rt", "unmute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
 async def removetimeout(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
@@ -740,7 +766,7 @@ async def removetimeout(interaction: Interaction, member: nextcord.Member, *, re
         await member.send(embed = em2)
 
 
-@client.command(aliases = ["k"])
+@moderation.command(aliases = ["k"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(kick_members = True)
 async def kick(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
@@ -786,7 +812,7 @@ async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
         await member.send(embed = em2)
 
 
-@client.command()
+@moderation.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
 async def warn(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
@@ -828,7 +854,7 @@ async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
         await member.send(embed = em2)
 
 
-@client.command(aliases = ["clear", "cls"])
+@moderation.command(aliases = ["clear", "cls"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
 async def purge(ctx: commands.Context, amount = None, arg: str = None):
@@ -840,7 +866,7 @@ async def purge(ctx: commands.Context, amount = None, arg: str = None):
     await ctx.channel.purge(limit = int(amount))
 
 
-@client.command(aliases = ["sm"])
+@moderation.command(aliases = ["sm"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx: commands.Context, seconds: int = None):
@@ -863,7 +889,7 @@ async def slowmode(interaction: Interaction, seconds: int):
     await interaction.send(embed = em)
 
 
-@client.command(aliases = ["ar"])
+@moderation.command(aliases = ["ar"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
 async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
@@ -877,7 +903,7 @@ async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: 
         await ctx.reply(embed = em2, mention_author = False)
 
 
-@client.command(aliases = ["rr"])
+@moderation.command(aliases = ["rr"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
 async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
@@ -891,7 +917,7 @@ async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, membe
         await ctx.reply(embed = em2, mention_author = False)
 
 
-@client.command(aliases = ["cn"])
+@moderation.command(aliases = ["cn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_nicknames = True)
 async def nick(ctx: commands.Context, member: nextcord.Member = None, *, nickname = None):
@@ -912,7 +938,7 @@ async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
     await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
 
 
-@client.command(aliases = ["ctcn"])
+@moderation.command(aliases = ["ctcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_channels = True)
 async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextChannel = None, *, channel_name = None):
@@ -927,7 +953,7 @@ async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextCha
 
 
 # Fun Command
-@client.command(aliases = ["meme"])
+@fun.command(aliases = ["meme"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx: commands.Context):
     async with aiohttp.ClientSession() as cs:
@@ -959,7 +985,7 @@ async def memes(interaction: Interaction):
             await interaction.send(embed = em)
 
 
-@client.command()
+@fun.command()
 async def pet(ctx: commands.Context):
     view = PetView()
     await ctx.send("Choose 1 pet to buy", view = view)
@@ -972,7 +998,7 @@ async def pet(interaction: Interaction):
 
 
 """
-@client.command(alises=["dadjokes", "dj"])
+@fun.command(alises=["dadjokes", "dj"])
 async def dadjoke(ctx: commands.Context):
     url = "https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes"
 
@@ -999,7 +1025,7 @@ async def dadjoke(interaction: Interaction):
 """
 
 
-@client.command(aliases = ["8ball"])
+@fun.command(aliases = ["8ball"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def eightball(ctx: commands.Context, *, question = None):
     responses = [
@@ -1047,7 +1073,7 @@ async def eightball(interaction: Interaction, *, question):
     await interaction.send(embed = em)
 
 
-@client.command(aliases = ["covidtest", "swabtest", "pcr"])
+@fun.command(aliases = ["covidtest", "swabtest", "pcr"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def cvtest(ctx: commands.Context, member: nextcord.Member = None):
     cvRes = ["positive", "negative"]
@@ -1087,7 +1113,7 @@ async def cvtest(interaction: Interaction, member: nextcord.Member = None):
         await interaction.edit_original_message(content = f"{member.mention} is **__{random.choice(cvRes)}__** COVID-19.")
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def temperature(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
@@ -1115,7 +1141,7 @@ async def temperature(interaction: Interaction, member: nextcord.Member = None):
         await interaction.edit_original_message(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
 
 
-@client.command(aliases = ["rolldice", "roll"])
+@fun.command(aliases = ["rolldice", "roll"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def dice(ctx: commands.Context):
     message = await ctx.reply(f"{ctx.author.mention} rolled a dice and gets...")
@@ -1131,7 +1157,7 @@ async def dice(interaction: Interaction):
     await interaction.edit_original_message(content = f"{interaction.user.mention} rolled a dice and gets **{random.randint(1, 6)}** :game_die:")
 
 
-@client.command(aliases = ["cf", "coin"])
+@fun.command(aliases = ["cf", "coin"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def coinflip(ctx: commands.Context, choice = None):
     if choice == None:
@@ -1181,7 +1207,7 @@ async def coinflip(interaction: Interaction, choice):
                 await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rps(ctx: commands.Context, choice = None):
     if choice == None:
@@ -1263,7 +1289,7 @@ async def rps(interaction: Interaction, choice):
                 await interaction.send(f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**.")
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rate(ctx: commands.Context, *, argument = None):
     if argument == None:
@@ -1283,7 +1309,7 @@ async def rate(interaction: Interaction, *, argument):
 
 
 """
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def guess(ctx: commands.Context):
     number = random.randint(1, 100)
@@ -1323,7 +1349,7 @@ async def guess(ctx: commands.Context):
 """
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def hug(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
@@ -1343,7 +1369,7 @@ async def hug(interaction: Interaction, member: nextcord.Member):
 
 
 """
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kiss(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
@@ -1366,7 +1392,7 @@ async def kiss(interaction: Interaction, member: nextcord.Member):
 """
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def slap(ctx: commands.Context, member: nextcord.Member = None):
     res = requests.get("https://waifu.pics/api/sfw/slap")
@@ -1390,7 +1416,7 @@ async def slap(interaction: Interaction, member: nextcord.Member):
     await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def say(ctx: commands.Context, *, text):
     funny_text = ["I'm stupid", "I'm Stupid", "i'm stupid", "Im stupid", "Im Stupid", "im stupid"]
@@ -1418,17 +1444,7 @@ async def say(interaction: Interaction, *, text):
         await interaction.send(f"{text}\n\n**~ {interaction.user}**")
 
 
-@client.command()
-async def ping(ctx: commands.Context):
-    await ctx.send(f"{round(client.latency * 1000)}ms")
-
-
-@client.slash_command(name = "ping", description = "Shows the bot latency")
-async def ping(interaction: Interaction):
-  await interaction.response.send_message(f"{round(client.latency * 1000)}ms")
-
-
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def emojify(ctx: commands.Context, *, text):
     emojis = []
@@ -1488,7 +1504,7 @@ async def emojify(interaction: Interaction, *, text):
     await interaction.response.send_message("".join(emojis))
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def handsome(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
@@ -1516,7 +1532,7 @@ async def handsome(interaction: Interaction, member: nextcord.Member = None):
         await interaction.send(embed = em)
 
 
-@client.command()
+@fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def beautiful(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
@@ -1546,7 +1562,7 @@ async def beautiful(interaction: Interaction, member: nextcord.Member = None):
 
 
 # Game Command
-@game.command()
+@activities.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def sketch(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1581,7 +1597,7 @@ async def sketch(interaction: Interaction, channel: GuildChannel=SlashOption(cha
     await interaction.send(embed = em, view = SketchGame(invite_link))
 
 
-@game.command(aliases = ["fishing", "fish"])
+@activities.command(aliases = ["fishing", "fish"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def fishington(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1616,7 +1632,7 @@ async def fishington(interaction: Interaction, channel: GuildChannel=SlashOption
     await interaction.send(embed = em, view = FishingGame(invite_link))
 
 
-@game.command()
+@activities.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def chess(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1651,7 +1667,7 @@ async def chess(interaction: Interaction, channel: GuildChannel=SlashOption(chan
     await interaction.send(embed = em, view = ChessGame(invite_link))
 
 
-@game.command(aliases = ["checker"])
+@activities.command(aliases = ["checker"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def checkers(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1686,7 +1702,7 @@ async def checkers(interaction: Interaction, channel: GuildChannel=SlashOption(c
     await interaction.send(embed = em, view = CheckerGame(invite_link))
 
 
-@game.command()
+@activities.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def betrayal(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1721,7 +1737,7 @@ async def betrayal(interaction: Interaction, channel: GuildChannel=SlashOption(c
     await interaction.send(embed = em, view = BetrayalGame(invite_link))
 
 
-@game.command()
+@activities.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def spellcast(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1756,7 +1772,7 @@ async def spellcast(interaction, channel: GuildChannel=SlashOption(channel_types
     await interaction.send(embed = em, view = SpellcastGame(invite_link))
 
 
-@game.command()
+@activities.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def poker(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1791,7 +1807,7 @@ async def poker(interaction: Interaction, channel: GuildChannel=SlashOption(chan
     await interaction.send(embed = em, view = PokerGame(invite_link))
 
 
-@game.command()
+@activities.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def blazing(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1826,42 +1842,7 @@ async def blazing(interaction: Interaction, channel: GuildChannel=SlashOption(ch
     await interaction.send(embed = em, view = BlazingGame(invite_link))
 
 
-@game.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def youtube(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
-    if channel == None:
-        await ctx.send("Please select a voice channel.")
-
-    try:
-        invite_link = await channel.create_activity_invite(activities.Activity.youtube)
-    
-    except nextcord.HTTPException:
-        await ctx.send("Please mention a voice channel.")
-
-    em = nextcord.Embed(title = "YouTube", description = f"{ctx.author.mention} has started YouTube in {channel.mention}")
-    em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
-    em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
-
-    await ctx.send(embed = em, view = YouTubeGame(invite_link))
-
-
-@client.slash_command(name = "youtube", description = "Watch youtube together with your friends")
-# @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
-    try:
-        invite_link = await channel.create_activity_invite(activities.Activity.youtube)
-    
-    except nextcord.HTTPException:
-        await interaction.send("Please mention a voice channel.")
-
-    em = nextcord.Embed(title = "YouTube", description = f"{interaction.user.mention} has started YouTube in {channel.mention}")
-    em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
-    em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
-
-    await interaction.send(embed = em, view = YouTubeGame(invite_link))
-
-
-@game.command(aliases = ["ll", "letter"])
+@activities.command(aliases = ["ll", "letter"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def letterleague(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1896,7 +1877,7 @@ async def letterleague(interaction: Interaction, channel: GuildChannel=SlashOpti
     await interaction.send(embed = em, view = LetterLeagueGame(invite_link))
 
 
-@game.command(aliases = ["ws"])
+@activities.command(aliases = ["ws"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def wordsnacks(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -2455,7 +2436,7 @@ async def rock(Interaction: commands.Context):
 
 
 # Music Command
-@client.command(aliases = ["p"])
+@music.command(aliases = ["p"])
 async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
     if not ctx.voice_client:
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
@@ -2515,7 +2496,7 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
     setattr(vc, "loop", False)
 
 
-@client.command(aliases = ["spotify", "sp", "splay"])
+@music.command(aliases = ["spotify", "sp", "splay"])
 async def spotifyplay(ctx: commands.Context, *, url: str):
     if not ctx.voice_client:
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
@@ -2597,7 +2578,7 @@ async def spotifyplay(interaction: Interaction, *, url: str):
     setattr(vc, "loop", False)
 
 
-@client.command()
+@music.command()
 async def pause(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
@@ -2633,7 +2614,7 @@ async def pause(interaction: Interaction):
     await interaction.send(embed = em)
 
 
-@client.command(aliases = ["r"])
+@music.command(aliases = ["r"])
 async def resume(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
@@ -2669,7 +2650,7 @@ async def resume(interaction: Interaction):
     await interaction.send(embed = em)
 
 
-@client.command(aliases = ["s"])
+@music.command(aliases = ["s"])
 async def stop(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
@@ -2705,7 +2686,7 @@ async def stop(interaction: Interaction):
     await interaction.send(embed = em)
 
 
-@client.command(aliases = ["dc"])
+@music.command(aliases = ["dc"])
 @commands.has_permissions(administrator = True)
 async def disconnect(ctx: commands.Context):
     if not getattr(ctx.author.voice, "channel", None):
@@ -2737,7 +2718,7 @@ async def disconnect(interaction: Interaction):
     await interaction.send(embed = em)
 
 
-@client.command()
+@music.command()
 async def loop(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
@@ -2793,7 +2774,7 @@ async def loop(interaction: Interaction):
         await interaction.send(embed = em2)
 
 
-@client.command(aliases = ["q"])
+@music.command(aliases = ["q"])
 async def queue(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
@@ -2845,7 +2826,7 @@ async def queue(interaction: Interaction):
         await interaction.send(embed = em)
 
 
-@client.command(aliases = ["vol"])
+@music.command(aliases = ["vol"])
 async def volume(ctx: commands.Context, volume: int):
     if not ctx.voice_client:
         return await ctx.reply(f"I'm not in a voice channel.")
@@ -2894,7 +2875,7 @@ async def volume(interaction: Interaction, volume: int):
     await interaction.send(embed = em)
 
 
-@client.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
+@music.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
 async def nowplaying(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in the voice channel.")
@@ -2936,7 +2917,7 @@ async def nowplaying(interaction: Interaction):
         await interaction.send(embed = em)
 
 
-@client.command(aliases = ["l"])
+@music.command(aliases = ["l"])
 async def lyrics(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in the voice channel.")
@@ -2950,7 +2931,7 @@ async def lyrics(ctx: commands.Context):
     song = vc.track.title
 
     async with ctx.typing():
-        async with aiohttp.request("GET", lyrics_url + song, headers={}) as r:
+        async with aiohttp.request("GET", lyrics_url + song, headers = {}) as r:
             if not 200 <= r.status <= 299:
                 raise NoLyricsFound
     
@@ -2962,13 +2943,45 @@ async def lyrics(ctx: commands.Context):
             if len(data['lyrics']) > 2000:
                 await ctx.send(f"<{data['links']['genius']}>")
             
-            
             em = nextcord.Embed(title = data['title'], description = data['lyrics'])
             em.set_thumbnail(url = data['thumbnail']['genius'])
             em.set_author(name = data['author'])
             em.timestamp = ctx.message.created_at
     
             await ctx.send(embed = em)
+
+
+@client.slash_command(name = "lyrics", description = "Get the current playing music lyrics")
+async def lyrics(interaction: Interaction):
+    if not interaction.guild.voice_client:
+        return await interaction.send("I'm not in the voice channel.", ephemeral = True)
+    
+    elif not getattr(interaction.user.voice, "channel", None):
+        return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
+    
+    else:
+        vc: wavelink.Player = interaction.guild.voice_client
+
+    song = interaction.track.title
+
+    async with interaction.channel.typing():
+        async with aiohttp.request("GET", lyrics_url + song, headers = {}) as r:
+            if not 200 <= r.status <= 299:
+                raise NoLyricsFound
+
+            data = await r.json()
+
+            await interaction.send(f"<{data['links']['genius']}>")
+
+            if len(data['lyrics']) > 2000:
+                await interaction.send(f"<{data['links']['genius']}>")
+
+            em = nextcord.Embed(title = data['title'], description = data['lyrics'])
+            em.set_thumbnail(url = data['thumbnail']['genius'])
+            em.set_author(name = data['author'])
+            em.timestamp = datetime.datetime.utcnow()
+
+            await interaction.send(embed = em)
 
 
 # Application Commands
@@ -2985,6 +2998,51 @@ async def forum(interaction: Interaction):
 
 
 # Miscellaneous Command
+@client.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def youtube(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
+    if channel == None:
+        await ctx.send("Please select a voice channel.")
+
+    try:
+        invite_link = await channel.create_activity_invite(activities.Activity.youtube)
+    
+    except nextcord.HTTPException:
+        await ctx.send("Please mention a voice channel.")
+
+    em = nextcord.Embed(title = "YouTube", description = f"{ctx.author.mention} has started YouTube in {channel.mention}")
+    em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
+    em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
+
+    await ctx.send(embed = em, view = YouTubeGame(invite_link))
+
+
+@client.slash_command(name = "youtube", description = "Watch youtube together with your friends")
+# @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def youtube(interaction: Interaction, channel: GuildChannel=SlashOption(channel_types=[ChannelType.voice], description = "Select voice channel")):
+    try:
+        invite_link = await channel.create_activity_invite(activities.Activity.youtube)
+    
+    except nextcord.HTTPException:
+        await interaction.send("Please mention a voice channel.")
+
+    em = nextcord.Embed(title = "YouTube", description = f"{interaction.user.mention} has started YouTube in {channel.mention}")
+    em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
+    em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
+
+    await interaction.send(embed = em, view = YouTubeGame(invite_link))
+
+
+@client.command()
+async def ping(ctx: commands.Context):
+    await ctx.send(f"{round(client.latency * 1000)}ms")
+
+
+@client.slash_command(name = "ping", description = "Shows the bot latency")
+async def ping(interaction: Interaction):
+  await interaction.response.send_message(f"{round(client.latency * 1000)}ms")
+
+
 @client.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def weather(ctx: commands.Context, *, city: str = None):
