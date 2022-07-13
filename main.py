@@ -77,9 +77,9 @@ async def fun(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@client.group(invoke_without_command = True)
+@client.group(invoke_without_command = True, aliases = ["activity"])
 async def activities(ctx: commands.Context):
-    em = nextcord.Embed(title = "Activities Game (>activities [game])")
+    em = nextcord.Embed(title = "Activity Game (>activities [game])")
     em.add_field(name = "Game", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks")
     
     await ctx.send(embed = em)
@@ -552,7 +552,7 @@ async def help(ctx: commands.Context):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn", inline = False)
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn", inline = False)
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
@@ -570,7 +570,7 @@ async def help(interaction: Interaction):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn", inline = False)
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn", inline = False)
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
@@ -3747,8 +3747,8 @@ async def stats(ctx: commands.Context):
 
 @client.command()
 @commands.is_owner()
-async def activity(ctx: commands.Context, *, activity):
-    await client.change_presence(activity=nextcord.Game(activity))
+async def status(ctx: commands.Context, *, activity):
+    await client.change_presence(activity = nextcord.Game(activity))
     await ctx.reply(f"My activity has been set to **{activity}**")
 
 
