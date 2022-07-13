@@ -3372,7 +3372,7 @@ async def quote(interaction: Interaction):
 @client.command(aliases = ["cd"])
 async def cleardm(ctx: commands.Context, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
-    await ctx.reply(f"Successfully clear {amount} message in your DMs.")
+    await ctx.reply(f"Successfully clear {amount} message(s) in your DMs.")
     
     async for message in dmchannel.history(limit = int(amount)):
         await message.delete()
@@ -3381,7 +3381,7 @@ async def cleardm(ctx: commands.Context, amount, arg: int = None):
 @cleardm.error
 async def cleardm_error(ctx: commands.Context, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        em = nextcord.Embed(title = "**Clear DM**", description = "**Command :** >cleardm|>cd\n**Description :** Delete bot response/message in your dm\n**Usage :** >cleardm [amount]\n**Example :** >cleardm 727")
+        em = nextcord.Embed(title = "**Clear DM**", description = "**Command :** >cleardm|>cd\n**Description :** Delete bot response/message in your dm\n**Usage :** >cleardm [amount]\n**Example :** >cleardm 10")
         await ctx.send(embed = em)
 
 @client.command()
