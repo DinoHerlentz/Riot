@@ -468,34 +468,66 @@ async def on_message_delete(message):
 
 @client.event
 async def on_command_error(ctx: commands.Context, error):
-    if isinstance(error, commands.CommandNotFound):
+    if isinstance(error, CommandNotFound):
         em = nextcord.Embed(title = "Invalid Command", description = "Type `>help` to see available commands")
         await ctx.send(embed = em)
     
-    elif isinstance(error, commands.MissingRequiredArgument):
+    elif isinstance(error, MissingRequiredArgument):
         pass
     
-    elif isinstance(error, commands.MissingPermissions):
+    elif isinstance(error, MissingPermissions):
         pass
     
-    elif isinstance(error, commands.BadArgument):
+    elif isinstance(error, BadArgument):
         pass
     
-    elif isinstance(error, commands.BotMissingPermissions):
+    elif isinstance(error, BotMissingPermissions):
         botDel = await ctx.reply("Bot missing required permissions")
         await asyncio.sleep(3)
         await botDel.delete()
     
-    elif isinstance(error, commands.CommandOnCooldown):
+    elif isinstance(error, CommandOnCooldown):
         cdDel = await ctx.reply("This command is still on cooldown. Try again in `{:.2f}` seconds.".format(error.retry_after))
         await asyncio.sleep(3)
         await cdDel.delete()
     
-    elif isinstance(error, commands.DisabledCommand):
+    elif isinstance(error, DisabledCommand):
       await ctx.reply("This command is disabled.", mention_author = False)
     
-    elif isinstance(error, commands.MemberNotFound):
+    elif isinstance(error, MemberNotFound):
         pass
+
+
+@client.event
+async def on_command_error(ctx: commands.Context, error):
+    if isinstance(error, CommandNotFound):
+        em = nextcord.Embed(title = "Invalid Command", description = "Type `>help` to see available commands")
+        await ctx.send(embed = em)
+
+    elif isinstance(error, MissingRequiredArgument):
+        pass
+
+    elif isinstance(error, MissingPermissions):
+        pass
+
+    elif isinstance(error, BadArgument):
+        pass
+
+    elif isinstance(error, MemberNotFound):
+        em2 = nextcord.Embed(title = "Error", description = "Couldn't find that member", color = nextcord.Color.red())
+        await ctx.reply(embed = em2, mention_author = False)
+
+    elif isinstance(error, BotMissingPermissions):
+        em3 = nextcord.Embed(title = "Error", description = "Bot missing required permissions", color = nextcord.Color.red())
+        await ctx.reply(embed = em3, mention_author = False)
+
+    elif isinstance(error, CommandOnCooldown):
+        em4 = nextcord.Embed(title = "Cooldown", description = "This command is still on cooldown. Try again in {:.2f} seconds".format(error.retry_after), color = nextcord.Color.red())
+        await ctx.reply(embed = em4, mention_author = False)
+
+    elif isinstance(error, DisabledCommand):
+        em5 = nextcord.Embed(title = "Error", description = "This command is disabled", color = nextcord.Color.red())
+        await ctx.reply(embed = em5, mention_author = False)
 
 
 @client.event
@@ -3799,7 +3831,15 @@ async def toggle(ctx: commands.Context, *, command):
         await ctx.reply("Couldn't find that command.", mention_author = False)
 
     elif ctx.command == command:
-        await ctx.reply(f"{command.qualified_name} has been {ternary}.", mention_author = False)
+        await ctx.reply(f"You can't disable this command", mention_author = False)
+
+    else:
+        command.enabled = not command.enabled
+        ternary = "enabled" if command.enabled else "disabled"
+
+        em = nextcord.Embed(title = "Command Toggle", description = f"Successfully {ternary} command {command.qualified_name}", color = 0x2CCE71)
+        await ctx.send(embed = em)
+        
 
 
 @client.command()
