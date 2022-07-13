@@ -101,7 +101,7 @@ async def animeslash(interaction: Interaction):
 @bot.group(invoke_without_command = True, aliases = ["m"])
 async def music(ctx: commands.Context):
     em = nextcord.Embed(title = "Music Command (>music [command])")
-    em.add_field(name = "Command", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics")
+    em.add_field(name = "Command", value = "play, splay, pause, resume, stop, disconnect, loop, queue, nowplaying, lyrics")
 
     await ctx.send(embed = em)
 
@@ -397,11 +397,11 @@ async def node_connect():
 async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTubeTrack, reason):
     try:
         ctx: commands.Context = player.ctx
-        vc: player = ctx.voice_bot
+        vc: player = ctx.voice_client
     
     except nextcord.HTTPException:
         interaction = player.interaction
-        vc: player = interaction.guild.voice_bot
+        vc: player = interaction.guild.voice_client
 
     if vc.loop:
         return await vc.play(track)
@@ -2487,14 +2487,14 @@ async def rock(Interaction: commands.Context):
 # Music Command
 @music.command(aliases = ["p"])
 async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
 
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
@@ -2518,14 +2518,14 @@ async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
 async def play(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel"), query: str = SlashOption(description = "Enter music name")):
     query = await wavelink.YouTubeTrack.search(query=query, return_first=True)
 
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         vc: wavelink.Player = await channel.connect(cls = wavelink.Player)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
 
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
@@ -2547,14 +2547,14 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
 
 @music.command(aliases = ["spotify", "sp", "splay"])
 async def spotifyplay(ctx: commands.Context, *, url: str):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
     
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     if vc.queue.is_empty and not vc.is_playing():
         try:
@@ -2588,14 +2588,14 @@ async def spotifyplay(ctx: commands.Context, *, url: str):
 
 @bot.slash_command(name = "spotifyplay", description = "Play a song from spotify")
 async def spotifyplay(interaction: Interaction, *, url: str):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         vc: wavelink.Player = await interaction.user.voice.channel.connect(cls = wavelink.Player)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     if vc.queue.is_empty and not vc.is_playing():
         try:
@@ -2629,14 +2629,14 @@ async def spotifyplay(interaction: Interaction, *, url: str):
 
 @music.command()
 async def pause(ctx: commands.Context):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
 
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     await vc.pause()
 
@@ -2647,14 +2647,14 @@ async def pause(ctx: commands.Context):
 
 @bot.slash_command(name = "pause", description = "Pause current playing music")
 async def pause(interaction: Interaction):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.pause()
 
@@ -2665,14 +2665,14 @@ async def pause(interaction: Interaction):
 
 @music.command(aliases = ["r"])
 async def resume(ctx: commands.Context):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
 
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     await vc.resume()
 
@@ -2683,14 +2683,14 @@ async def resume(ctx: commands.Context):
 
 @bot.slash_command(name = "resume", description = "Resume current paused music")
 async def resume(interaction: Interaction):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.resume()
     
@@ -2701,14 +2701,14 @@ async def resume(interaction: Interaction):
 
 @music.command(aliases = ["s"])
 async def stop(ctx: commands.Context):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
 
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     await vc.stop()
 
@@ -2719,14 +2719,14 @@ async def stop(ctx: commands.Context):
 
 @bot.slash_command(name = "stop", description = "Stop current playing music")
 async def stop(interaction: Interaction):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not connected to the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.stop()
     
@@ -2742,7 +2742,7 @@ async def disconnect(ctx: commands.Context):
         return await ctx.reply("You aren't connected to the voice channel.")
 
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     await vc.disconnect()
 
@@ -2758,7 +2758,7 @@ async def disconnect(interaction: Interaction):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.disconnect()
     
@@ -2769,14 +2769,14 @@ async def disconnect(interaction: Interaction):
 
 @music.command()
 async def loop(ctx: commands.Context):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
     
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     try:
         vc.loop ^= True
@@ -2797,14 +2797,14 @@ async def loop(ctx: commands.Context):
 
 @bot.slash_command(name = "loop", description = "Loop current playing music")
 async def loop(interaction: Interaction):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not in a voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
 
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     try:
         vc.loop ^= True
@@ -2825,14 +2825,14 @@ async def loop(interaction: Interaction):
 
 @music.command(aliases = ["q"])
 async def queue(ctx: commands.Context):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply("I'm not in a voice channel.")
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
 
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     if vc.queue.is_empty:
         await ctx.reply("The queue is empty.")
@@ -2851,14 +2851,14 @@ async def queue(ctx: commands.Context):
 
 @bot.slash_command(name = "queue", description = "Shows music queue")
 async def queue(interaction: Interaction):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not connected to the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     if vc.queue.is_empty:
         await interaction.send("Queue is empty.")
@@ -2875,16 +2875,17 @@ async def queue(interaction: Interaction):
         await interaction.send(embed = em)
 
 
+"""
 @music.command(aliases = ["vol"])
 async def volume(ctx: commands.Context, volume: int):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply(f"I'm not in a voice channel.")
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
     
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     if volume > 100:
         return await ctx.reply("Maximum volume is 100.")
@@ -2901,14 +2902,14 @@ async def volume(ctx: commands.Context, volume: int):
 
 @bot.slash_command(name = "volume", description = "Change music volume")
 async def volume(interaction: Interaction, volume: int):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     if volume > 100:
         return await interaction.send("Maximum volume is 100.")
@@ -2922,18 +2923,19 @@ async def volume(interaction: Interaction, volume: int):
     em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}`%")
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
+"""
 
 
 @music.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
 async def nowplaying(ctx: commands.Context):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply("I'm not in the voice channel.")
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
 
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     if not vc.is_playing():
         await ctx.reply("There is no current playing music.")
@@ -2947,14 +2949,14 @@ async def nowplaying(ctx: commands.Context):
 
 @bot.slash_command(name = "nowplaying", description = "Shows current playing music info")
 async def nowplaying(interaction: Interaction):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     if not vc.is_playing():
         await interaction.send("There is no current playing music.")
@@ -2968,14 +2970,14 @@ async def nowplaying(interaction: Interaction):
 
 @music.command(aliases = ["l"])
 async def lyrics(ctx: commands.Context):
-    if not ctx.voice_bot:
+    if not ctx.voice_client:
         return await ctx.reply("I'm not in the voice channel.")
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.")
     
     else:
-        vc: wavelink.Player = ctx.voice_bot
+        vc: wavelink.Player = ctx.voice_client
 
     song = vc.track.title
 
@@ -3002,14 +3004,14 @@ async def lyrics(ctx: commands.Context):
 
 @bot.slash_command(name = "lyrics", description = "Get the current playing music lyrics")
 async def lyrics(interaction: Interaction):
-    if not interaction.guild.voice_bot:
+    if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
     
     else:
-        vc: wavelink.Player = interaction.guild.voice_bot
+        vc: wavelink.Player = interaction.guild.voice_client
 
     song = interaction.track.title
 
@@ -3930,7 +3932,7 @@ async def join(ctx: commands.Context):
 @bot.command(pass_context = True)
 @commands.is_owner()
 async def left(ctx: commands.Context):
-    if (ctx.voice_bot):
+    if (ctx.voice_client):
         await ctx.guild.voice_bot.disconnect()
         await ctx.reply("Successfully left the voice channel.")
     
