@@ -77,14 +77,6 @@ async def fun(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.group(invoke_without_command = True, aliases = ["activity"])
-async def activities(ctx: commands.Context):
-    em = nextcord.Embed(title = "Activity Game (>activities [game])")
-    em.add_field(name = "Game", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks")
-    
-    await ctx.send(embed = em)
-
-
 @bot.group(invoke_without_command = True)
 async def anime(ctx: commands.Context):
     em = nextcord.Embed(title = "Anime Command (>anime [command])")
@@ -1617,7 +1609,7 @@ async def beautiful(interaction: Interaction, member: nextcord.Member = None):
 
 
 # Game Command
-@activities.command()
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def sketch(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1652,7 +1644,7 @@ async def sketch(interaction: Interaction, channel: GuildChannel = SlashOption(c
     await interaction.send(embed = em, view = SketchGame(invite_link))
 
 
-@activities.command(aliases = ["fishing", "fish"])
+@bot.command(aliases = ["fishing", "fish"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def fishington(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1687,7 +1679,7 @@ async def fishington(interaction: Interaction, channel: GuildChannel = SlashOpti
     await interaction.send(embed = em, view = FishingGame(invite_link))
 
 
-@activities.command()
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def chess(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1722,7 +1714,7 @@ async def chess(interaction: Interaction, channel: GuildChannel = SlashOption(ch
     await interaction.send(embed = em, view = ChessGame(invite_link))
 
 
-@activities.command(aliases = ["checker"])
+@bot.command(aliases = ["checker"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def checkers(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1757,7 +1749,7 @@ async def checkers(interaction: Interaction, channel: GuildChannel = SlashOption
     await interaction.send(embed = em, view = CheckerGame(invite_link))
 
 
-@activities.command()
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def betrayal(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1792,7 +1784,7 @@ async def betrayal(interaction: Interaction, channel: GuildChannel = SlashOption
     await interaction.send(embed = em, view = BetrayalGame(invite_link))
 
 
-@activities.command()
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def spellcast(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1827,7 +1819,7 @@ async def spellcast(interaction, channel: GuildChannel = SlashOption(channel_typ
     await interaction.send(embed = em, view = SpellcastGame(invite_link))
 
 
-@activities.command()
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def poker(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1862,7 +1854,7 @@ async def poker(interaction: Interaction, channel: GuildChannel = SlashOption(ch
     await interaction.send(embed = em, view = PokerGame(invite_link))
 
 
-@activities.command()
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def blazing(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1897,7 +1889,7 @@ async def blazing(interaction: Interaction, channel: GuildChannel = SlashOption(
     await interaction.send(embed = em, view = BlazingGame(invite_link))
 
 
-@activities.command(aliases = ["ll", "letter"])
+@bot.command(aliases = ["ll", "letter"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def letterleague(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
@@ -1932,7 +1924,7 @@ async def letterleague(interaction: Interaction, channel: GuildChannel = SlashOp
     await interaction.send(embed = em, view = LetterLeagueGame(invite_link))
 
 
-@activities.command(aliases = ["ws"])
+@bot.command(aliases = ["ws"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def wordsnacks(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     if channel == None:
