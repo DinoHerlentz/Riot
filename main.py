@@ -3279,7 +3279,6 @@ async def cv(interaction: Interaction, *, country):
 
 
 @client.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def afk(ctx: commands.Context, *, reason = None):
     if reason == None:
         reason = "AFK"
@@ -3290,7 +3289,7 @@ async def afk(ctx: commands.Context, *, reason = None):
 
         if data:
             if data[0] == reason:
-                return await ctx.send("You've been AFK with the same reason")
+                return await ctx.send("You've been AFK with the same reason.")
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (ctx.author.id, ctx.guild.id,))
         
         else:
@@ -3304,7 +3303,6 @@ async def afk(ctx: commands.Context, *, reason = None):
 
 
 @client.slash_command(name = "afk", description = "Go AFK")
-# @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def afk(interaction: Interaction, *, reason):    
     async with client.db.cursor() as cursor:
         await cursor.execute("SELECT reason FROM afk WHERE user = ? AND guild = ?", (interaction.user.id, interaction.guild.id,))
@@ -3312,7 +3310,7 @@ async def afk(interaction: Interaction, *, reason):
 
         if data:
             if data[0] == reason:
-                return await interaction.send("You've been AFK with the same reason")
+                return await interaction.send("You've been AFK with the same reason.")
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (interaction.user.id, interaction.guild.id,))
         
         else:
