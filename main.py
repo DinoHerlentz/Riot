@@ -613,7 +613,13 @@ async def help(interaction: Interaction):
 @commands.has_permissions(ban_members = True)
 async def ban(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Ban", description = "**Command :** >ban|>b\n**Description :** Ban a member\n**Usage :** >ban [user] [reason]\n**Example :** >ban @DINO rude!")
+        em = nextcord.Embed(title = "Ban")
+        em.add_field(name = "Command", value = ">ban|>b", inline = False)
+        em.add_field(name = "Description", value = "Ban a member", inline = False)
+        em.add_field(name = "Permissions Required", value = "Ban Members", inline = False)
+        em.add_field(name = "Usage", value = ">ban [member] (reason)", inline = False)
+        em.add_field(name = "Example", value = ">ban @DINO sending phising links", inline = False)
+        
         await ctx.send(embed = em)
 
     elif member.id == ctx.author.id:
@@ -659,7 +665,13 @@ async def ban(interaction: Interaction, member: nextcord.Member, *, reason):
 @commands.has_permissions(ban_members = True)
 async def unban(ctx: commands.Context, member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Unban", description = "**Command :** >unban|>uba|>u\n**Description :** Unban a member\n**Usage :** >uba [member (with discriminator)] [reason]\n**Example :** >uba DINO#9967 Appealed")
+        em = nextcord.Embed(title = "Unban")
+        em.add_field(name = "Command", value = ">uba|>u", inline = False)
+        em.add_field(name = "Description", value = "Unban a member", inline = False)
+        em.add_field(name = "Permissions Required", value = "Ban Members", inline = False)
+        em.add_field(name = "Usage", value = ">uba [member] (reason)", inline = False)
+        em.add_field(name = "Example", value = ">uba @DINO#9967 Appealed", inline = False)
+        
         await ctx.send(embed = em)
 
     banned_users = await ctx.guild.bans()
@@ -697,7 +709,13 @@ async def unban(interaction: Interaction, member, *, reason):
 @commands.has_permissions(moderate_members = True)
 async def timeout(ctx: commands.Context, member: nextcord.Member = None, time = None, *, reason = None):
     if member == None or time == None:
-        em = nextcord.Embed(title = "Timeout", description = "**Command :** >timeout|>to|>mute\n**Description :** Timeout a member so they can't chat/speak/react to a message\n**Usage :** >timeout [member] [duration] [reason]\n**Example :** >timeout @DINO 10m Annoying")
+        em = nextcord.Embed(title = "Timeout")
+        em.add_field(name = "Command", value = ">timeout|>to|>mute", inline = False)
+        em.add_field(name = "Description", value = "Timeout a member so they can't chat\speak\react to a message", inline = False)
+        em.add_field(name = "Permissions Required", value = "Timeout Members", inline = False)
+        em.add_field(name = "Usage", value = ">timeout [member] [duration] (reason)", inline = False)
+        em.add_field(name = "Example", value = ">timeout @DINO 10m Annoying", inline = False)
+        
         await ctx.send(embed = em)
 
     if member == ctx.author:
@@ -745,7 +763,13 @@ async def timeout(interaction: Interaction, member: nextcord.Member, time, *, re
 @commands.has_permissions(moderate_members = True)
 async def removetimeout(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Remove Timeout", description = "**Command :** >removetimeout|>rt|>unmute\n**Description :** Remove timeout from a member\n**Usage :** >removetimeout [user] [reason]\n**Example :** >unmute @DINO Appealed")
+        em = nextcord.Embed(title = "Remove Timeout")
+        em.add_field(name = "Command", value = ">removetimeout|>rt|>unmute", inline = False)
+        em.add_field(name = "Description", value = "Remove timeout from a member", inline = False)
+        em.add_field(name = "Permissions Required", value = "Timeout Members", inline = False)
+        em.add_field(name = "Usage", value = ">removetimeout [member] (reason)", inline = False)
+        em.add_field(name = "Example", value = ">removetimeout @DINO Appealed", inline = False)
+        
         await ctx.send(embed = em)
 
     if member.top_role >= ctx.author.top_role:
@@ -782,7 +806,13 @@ async def removetimeout(interaction: Interaction, member: nextcord.Member, *, re
 @commands.has_permissions(kick_members = True)
 async def kick(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "**Kick**", description = "**Command :** >kick|>k\n**Description :** Kick a member\n**Usage :** >kick [member] [reason]\n**Example :** >kick @DINO Annoying")
+        em = nextcord.Embed(title = "Kick")
+        em.add_field(name = "Command", value = ">kick|>k", inline = False)
+        em.add_field(name = "Description", value = "Kick a member", inline = False)
+        em.add_field(name = "Permissions Required", value = "Kick Members")
+        em.add_field(name = "Usage", value = ">kick [member] (reason)", inline = False)
+        em.add_field(name = "Example", value = ">kick @DINO Annoying", inline = False)
+        
         await ctx.send(embed = em)
 
     if member == ctx.author:
@@ -824,11 +854,15 @@ async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
 
 
 @moderation.command()
-@commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_messages = True)
 async def warn(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
     if member == None:
-        em = nextcord.Embed(title = "Warn", description = "**Command :** >warn\n**Description :** Warn a member\n**Usage :** >warn [user] [reason]\n**Example :** >warn @DINO Last warn for being rude")
+        em = nextcord.Embed(title = "Warn")
+        em.add_field(name = "Command", value = ">warn", inline = False)
+        em.add_field(name = "Description", value = "Warn a member", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Messages", inline = False)
+        em.add_field(name = "Usage", value = ">warn [member] (reason)", inline = False)
+        em.add_field(name = "Example", value = ">warn @DINO Last warn for being rude", inline = False)
+
         await ctx.send(embed = em)
 
     elif member == ctx.author:
@@ -870,7 +904,13 @@ async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
 @commands.has_permissions(manage_messages = True)
 async def purge(ctx: commands.Context, amount = None, arg: str = None):
     if amount == None:
-        em = nextcord.Embed(title = "Purge", description = "**Command :** >purge|>clear|>cls\n**Description :** Delete the amount of messages from a channel\n**Usage :** >purge [amount]\n**Example :** >purge 10")
+        em = nextcord.Embed(title = "Purge")
+        em.add_field(name = "Command", value = ">purge|>clear|>cls", inline = False)
+        em.add_field(name = "Description", value = "Delete the amount of messages", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Messages", inline = False)
+        em.add_field(name = "Usage", value = ">purge [amount]", inline = False)
+        em.add_field(name = "Example", value = ">purge 10", inline = False)
+        
         await ctx.send(embed = em)
     
     await ctx.message.delete()
@@ -882,7 +922,13 @@ async def purge(ctx: commands.Context, amount = None, arg: str = None):
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx: commands.Context, seconds: int = None):
     if seconds == None:
-        em = nextcord.Embed(title = "Slowmode", description = "**Command :** >slowmode|>sm\n**Description :** Set a slowmode to the current channel\n**Usage :** >slowmode [duration (second)]\n**Example :** >slowmode 5")
+        em = nextcord.Embed(title = "Slowmode")
+        em.add_field(name = "Command", value = ">slowmode|>sm", inline = False)
+        em.add_field(name = "Description", value = "Set a slowmode to the current channel", inlnie = False)
+        em.add_field(name = "Permissions Required", value = "Manage Channels", inline = False)
+        em.add_field(name = "Usage", value = ">slowmode [duration (second)]", inline = False)
+        em.add_field(name = "Example", value = ">slowmode 5", inline = False)
+        
         await ctx.send(embed = em)
 
     else:
@@ -905,7 +951,13 @@ async def slowmode(interaction: Interaction, seconds: int):
 @commands.has_permissions(manage_roles = True)
 async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
-        em = nextcord.Embed(title = "Add Role", description = "**Command :** >addrole|>ar\n**Description :** Add a role to specified user\n**Usage :** >addrole [role] [user]\n**Usage :** >addrole @Administrator @DINO")
+        em = nextcord.Embed(title = "Add Role")
+        em.add_field(name = "Command", value = ">addrole|>ar", inline = False)
+        em.add_field(name = "Description", value = "Add a role to a member", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Roles", inline = False)
+        em.add_field(name = "Usage", value = ">addrole [role] [member]", inline = False)
+        em.add_field(name = "Example", value = ">addrole @Administrator @DINO", inline = False)
+        
         await ctx.send(embed = em)
     
     else:
@@ -919,7 +971,13 @@ async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: 
 @commands.has_permissions(manage_roles = True)
 async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
     if role == None or member == None:
-        em = nextcord.Embed(title = "Remove Role", description = "**Command :** >removerole|>rr\n**Description :** Remove a role from a user\n**Usage :** >removerole [role] [user]\n**Example :** >removerole @Administrator @DINO")
+        em = nextcord.Embed(title = "Remove Role")
+        em.add_field(name = "Command", value = ">removerole|>rr", inline = False)
+        em.add_field(name = "Description", value = "Remove a role from a member", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Roles", inline = False)
+        em.add_field(name = "Usage", value = ">removerole [role] [member]", inline = False)
+        em.add_field(name = "Example", value = ">removerole @Administrator @DINO", inline = False)
+        
         await ctx.send(embed = em)
 
     else:
@@ -933,7 +991,13 @@ async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, membe
 @commands.has_permissions(manage_nicknames = True)
 async def nick(ctx: commands.Context, member: nextcord.Member = None, *, nickname = None):
     if member == None or nickname == None:
-        em = nextcord.Embed(title = "Nick", description = "**Command :** >nick|>cn\n**Description :** Change a nickname of a specified user (Note : My role/your role must be higher than the member's role)\n**Usage :** >nick [user] [new nickname]\n**Example  :** >nick @DINO Weebs")
+        em = nextcord.Embed(title = "Nick")
+        em.add_field(name = "Command", value = ">nick|>cn", inline = False)
+        em.add_field(name = "Description", value = "Change member's nickname", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Nicknames", inline = False)
+        em.add_field(name = "Usage", value = ">nick [member] [nickname]", inline = False)
+        em.add_field(name = "Example", value = ">nick @DINO Boomer", inline = False)
+        
         await ctx.send(embed = em)
 
     else:
@@ -954,7 +1018,13 @@ async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
 @commands.has_permissions(manage_channels = True)
 async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextChannel = None, *, name = None):
     if channel == None or name == None:
-        em = nextcord.Embed(title = "Change Text Channel Name", description = "**Command :** >changetextchannelname|>ctcn\n**Description :** Change the specified text channel name\n**Usage :** >changetextchannelname [channel] [name]\n**Example :** >changetextchannelname #general hangout")
+        em = nextcord.Embed(title = "Change Text Channel Name")
+        em.add_field(name = "Command", value = ">changetextchannelname|>ctcn", inline = False)
+        em.add_field(name = "Description", value = "Change text channel name", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Channels", inline = False)
+        em.add_field(name = "Usage", value = ">changetextchannelname [channel] [name]", inline = False)
+        em.add_field(name = "Example", value = ">changetextchannelname #general hangout", inline = False)
+        
         await ctx.send(embed = em)
     
     else:
@@ -979,7 +1049,13 @@ async def changetextchannelname(interaction: Interaction, channel: GuildChannel 
 @commands.has_permissions(manage_channels = True)
 async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceChannel = None, *, name = None):
     if channel == None or name == None:
-        em = nextcord.Embed(title = "Change Voice Channel Name", description = "**Command :** >changevoicechannelname|>cvcn\n**Description :** Change the specified voice channel name\n**Usage :** >changevoicechannelname [channel] [name]\n**Example :** >changevoicechannelname #Gaming Chill")
+        em = nextcord.Embed(title = "Change Voice Channel Name")
+        em.add_field(name = "Command", value = ">changevoicechannelname|>cvcn", inline = False)
+        em.add_field(name = "Description", value = "Change voice channel name", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Channels", inline = False)
+        em.add_field(name = "Usage", value = ">changetextchannelname [channel] [name]", inline = False)
+        em.add_field(name = "Example", value = ">changetextchannelname #General Chill", inline = False)
+        
         await ctx.send(embed = em)
 
     else:
@@ -1001,7 +1077,16 @@ async def changevoicechannelname(interaction: Interaction, channel: GuildChannel
 
 @moderation.command(aliases = ["ea", "eadd"])
 @commands.has_permissions(manage_emojis = True)
-async def emojiadd(ctx: commands.Context, url: str, *, name):
+async def emojiadd(ctx: commands.Context, url: str = None, *, name = None):
+    if url == None or name == None:
+        em = nextcord.Embed(title = "Emoji Add")
+        em.add_field(name = "Command", value = ">emojiadd|>ea|>eadd", inline = False)
+        em.add_field(name = "Description", value = "Add a custom emoji", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Emojis", inline = False)
+        em.add_field(name = "Usage", value = ">emojiadd [image url] [name]", inline = False)
+        em.add_field(name = "Example", value = ">emojiadd https://thisisexamplelink verycool", inline = False)
+        await ctx.send(embed = em)
+    
     guild = ctx.guild
     
     async with aiohttp.ClientSession() as ses:
@@ -1013,8 +1098,8 @@ async def emojiadd(ctx: commands.Context, url: str, *, name):
                 if r.status in range(200, 299):
                     emoji = await guild.create_custom_emoji(image = bValue, name = name)
                     
-                    em = nextcord.Embed(title = "Successfully added the emoji", color = 0x2ECC71)
-                    await ctx.reply(embed = em, mention_author = False)
+                    em2 = nextcord.Embed(title = "Successfully added the emoji", color = 0x2ECC71)
+                    await ctx.reply(embed = em2, mention_author = False)
                     await ses.close()
                 
                 else:
@@ -1258,7 +1343,13 @@ async def dice(interaction: Interaction):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def coinflip(ctx: commands.Context, choice = None):
     if choice == None:
-        em = nextcord.Embed(title = "**Coinflip**", description = "**Command :** >coinflip|>cf|>coin\n**Description :** Flip a coin and bet for heads/tails\n**Usage :** >cf [choices]\n**Example :** >cf tails")
+        em = nextcord.Embed(title = "Coinflip")
+        em.add_field(name = "Command", value = ">coinflip|>cf|>coin", inline = False)
+        em.add_field(name = "Description", value = "Flip a coin and bet for heads/tails", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">coinflip [choice]", inline = False)
+        em.add_field(name = "Example", value = ">coinflip tails", inline = False)
+        
         await ctx.send(embed = em)
     
     answer = choice.lower()
@@ -1308,7 +1399,13 @@ async def coinflip(interaction: Interaction, choice):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rps(ctx: commands.Context, choice = None):
     if choice == None:
-        em = nextcord.Embed(title = "**Rock Paper Scissors**", description = "**Command :** >rps\n**Description :** Rock paper scissors with the bot\n**Usage :** >rps [choice]\n**Example :** >rps rock")
+        em = nextcord.Embed(title = "Rock Paper Scissors")
+        em.add_field(name = "Command", value = ">rps", inline = False)
+        em.add_field(name = "Description", value = "Play rock paper scissors with the bot", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">rps [choice]", inline = False)
+        em.add_field(name = "Example", value = ">rps rock", inline = False)
+        
         await ctx.send(embed = em)
     
     answer = choice.lower()
@@ -1390,7 +1487,13 @@ async def rps(interaction: Interaction, choice):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rate(ctx: commands.Context, *, argument = None):
     if argument == None:
-        em = nextcord.Embed(title = "**Command :** >rate", description = "**Description :** Ask the bot to rate something\n**Usage :** >rate [argument]\n**Example :** >rate smart")
+        em = nextcord.Embed(title = "Rate")
+        em.add_field(name = "Command", value = ">rate", inline = False)
+        em.add_field(name = "Description", value = "Ask the bot to rate something", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">rate [argument]", inline = False)
+        em.add_field(name = "Example", value = ">rate smart", inline = False)
+        
         await ctx.send(embed = em)
     
     else:
@@ -1519,7 +1622,13 @@ async def say(ctx: commands.Context, *, text):
     funny_text = ["I'm stupid", "I'm Stupid", "i'm stupid", "Im stupid", "Im Stupid", "im stupid"]
 
     if text == None:
-        em = nextcord.Embed(title = "Say", description = "**Command :** >say\n**Description :** Ask the bot to say something\n**Usage :** >say [text]\n**Example :** >say Hello")
+        em = nextcord.Embed(title = "Say")
+        em.add_field(name = "Command", value = ">say", inline = False)
+        em.add_field(name = "Description", value = "Ask the bot to say something", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">say [text]", inline = False)
+        em.add_field(name = "Example", value = ">say Hello", inline = False)
+        
         await ctx.send(embed = em)
 
     elif text in funny_text:
@@ -3142,7 +3251,13 @@ async def ping(interaction: Interaction):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def weather(ctx: commands.Context, *, city: str = None):
     if city == None:
-        em = nextcord.Embed(title = "Weather", description = "**Command :** >weather\n**Description :** Shows weather information of a city\n**Usage :** >weather [city]\n**Example :** >weather Jakarta")
+        em = nextcord.Embed(title = "Weather")
+        em.add_field(name = "Command", value = ">weather", inline = False)
+        em.add_field(name = "Description", value = "Shows weather informations of a city", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">weather [city]", inline = False)
+        em.add_field(name = "Example", value = ">weather Medan", inline = False)
+        
         await ctx.send(embed = em)
 
     api_key = os.environ["WEATHER_API_KEY"]
@@ -3212,7 +3327,13 @@ async def weather(interaction: Interaction, *, city: str):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def movie(ctx: commands.Context, *, movie_name = None):
     if movie_name == None:
-        em = nextcord.Embed(title = "Movie", description = "**Command :** >movie|>imdb\n**Description :** Search for a movie\n**Usage :** >movie [name]\n**Example :** >movie Call Of The Wild (2020)")
+        em = nextcord.Embed(title = "Movie")
+        em.add_field(name = "Command", value = ">movie|>imdb", inline = Fales)
+        em.add_field(name = "Description", value = "Get a movie informations", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">movie [name]", inline = False)
+        em.add_field(name = "Example", value = ">movie Interstellar", inline = False)
+        
         await ctx.send(embed = em)
     
     moviesDB = IMDb()
@@ -3427,7 +3548,13 @@ async def cleardm(ctx: commands.Context, amount, arg: int = None):
 @cleardm.error
 async def cleardm_error(ctx: commands.Context, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        em = nextcord.Embed(title = "**Clear DM**", description = "**Command :** >cleardm|>cd\n**Description :** Delete bot response/message in your dm\n**Usage :** >cleardm [amount]\n**Example :** >cleardm 10")
+        em = nextcord.Embed(title = "Clear DM")
+        em.add_field(name = "Command", value = ">cleardm|>cd", inline = False)
+        em.add_field(name = "Description", value = "Delete bot response/message in your DM", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">cleardm [amount]", inline = False)
+        em.add_field(name = "Example", value = ">cleardm 10", inline = False)
+        
         await ctx.send(embed = em)
 
 @bot.command()
@@ -3684,16 +3811,23 @@ async def poll(ctx: commands.Context, *, argument):
 @commands.has_permissions(manage_messages = True)
 async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, *, message = None):
     if channel == None or message == None:
-      em = nextcord.Embed(title = "**Announce**", description = "**Command :** >announce\n**Description :** Announce a message to the specified channel\n**Usage :** >announce [channel] [message]\n**Example :** >announce #announcements Hi folks!")
-      await ctx.send(embed = em)
-    
+        em = nextcord.Embed(title = "Announce")
+        em.add_field(name = "Command", value = ">announce", inline = False)
+        em.add_field(name = "Description", value = "Announce a message to the specified channel", inline = False)
+        em.add_field(name = "Permissions Required", value = "Manage Messages", inline = False)
+        em.add_field(name = "Usage", value = ">announe [channel] [message]", inline = False)
+        em.add_field(name = "Example", value = ">announce #general Hi folks", inline = False)
+
+        await ctx.send(embed = em)
+
     else:
-      await ctx.reply("Announcement has been sent.", mention_author = False)
-      
-      em2 = nextcord.Embed(title = "New Announcement", description = f"{message}")
-      em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
-      em2.timestamp = ctx.message.created_at
-      await channel.send(embed = em2)
+        await ctx.reply("Announcement has been sent", mention_author = False)
+
+        em2 = nextcord.Embed(title = "New Announcement", description = f"{message}")
+        em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
+        em2.timestamp = ctx.message.created_at
+
+        await channel.send(embed = em2)
 
 
 @bot.slash_command(name = "announce", description = "Announce a message to the specified channel")
