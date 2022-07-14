@@ -576,7 +576,7 @@ async def help(ctx: commands.Context):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn", inline = False)
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
@@ -594,7 +594,7 @@ async def help(interaction: Interaction):
     view = Help()
     
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn", inline = False)
+    em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
@@ -997,6 +997,54 @@ async def changevoicechannelname(interaction: Interaction, channel: GuildChannel
 
     em = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
     await interaction.send(embed = em)
+
+
+@moderation.command(aliases = ["ea", "eadd"])
+async def emojiadd(ctx: commands.Context, url: str, *, name):
+    guild = ctx.guild
+    
+    async with aiohttp.ClientSession() as ses:
+        async with ses.get(url) as r:
+            try:
+                imgOrGIF = BytesIO(await r.read())
+                bValue = imgOrGIF.getvalue()
+                
+                if r.status in range(200, 299):
+                    emoji = await guild.create_custom_emoji(image = bValue, name = name)
+                    
+                    em = nextcord.Embed(title = "Successfully added the emoji", color = 0x2ECC71)
+                    await ctx.reply(embed = em, mention_author = False)
+                    await ses.close()
+                
+                else:
+                    await ctx.send(f"Error - `{r.status}`")
+            
+            except nextcord.HTTPException:
+                await ctx.reply("This file size is too big.", mention_author = False)
+
+
+@bot.slash_command(name = "emojiadd", description = "Add a custom emoji")
+async def emojiadd(interaction: Interaction, url: str, *, name):
+    guild = interaction.guild
+    
+    async with aiohttp.ClientSession() as ses:
+        async with ses.get(url) as r:
+            try:
+                imgOrGIF = BytesIO(await r.read())
+                bValue = imgOrGIF.getvalue()
+                
+                if r.status in range(200, 299):
+                    emoji = await guild.create_custom_emoji(image = bValue, name = name)
+                    
+                    em = nextcord.Embed(title = "Successfully added the emoji", color = 0x2ECC71)
+                    await interaction.send(embed = em)
+                    await ses.close()
+                
+                else:
+                    await interaction.send(f"Error - `{r.status}`", ephemeral = True)
+            
+            except nextcord.HTTPException:
+                await interaction.send("This file size is too big.", ephemeral = True)
 
 
 # Fun Command
@@ -3734,17 +3782,17 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
     can_use_emoji = "Everyone" if not emoji.roles else " ".join(role.name for role in emoji.roles)
 
     em = nextcord.Embed(title = f"`{emoji.name}` Emoji Informations")
-    em.add_field(name = "Name", value = emoji.name)
-    em.add_field(name = "ID", value = emoji.id)
-    em.add_field(name = "Emoji Guild Name", value = emoji.guild.name)
-    em.add_field(name = "Emoji Guild ID", value = emoji.guild.id)
-    em.add_field(name = "URL", value = emoji.url)
-    em.add_field(name = "Author", value = emoji.user.mention)
-    em.add_field(name = "Created At", value = created_time)
-    em.add_field(name = "Usable Status", value = can_use_emoji)
-    em.add_field(name = "Animated", value = is_animated)
-    em.add_field(name = "Managed", value = is_managed)
-    em.add_field(name = "Requires Colons", value = require_colons)
+    em.add_field(name = "Name", value = emoji.name, inline = False)
+    em.add_field(name = "ID", value = emoji.id, inline = False)
+    em.add_field(name = "Emoji Guild Name", value = emoji.guild.name, inline = False)
+    em.add_field(name = "Emoji Guild ID", value = emoji.guild.id, inline = False)
+    em.add_field(name = "URL", value = f"[Click Here]({str(emoji.url)})", inline = False)
+    em.add_field(name = "Author", value = emoji.user.mention, inline = False)
+    em.add_field(name = "Created At", value = created_time, inline = False)
+    em.add_field(name = "Usable Status", value = can_use_emoji, inline = False)
+    em.add_field(name = "Animated", value = is_animated, inline = False)
+    em.add_field(name = "Managed", value = is_managed, inline = False)
+    em.add_field(name = "Requires Colons", value = require_colons, inline = False)
 
     await ctx.send(embed = em)
 
