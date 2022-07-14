@@ -1003,7 +1003,7 @@ async def changevoicechannelname(interaction: Interaction, channel: GuildChannel
 @fun.command(aliases = ["meme"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx: commands.Context):
-    async with aiohttp.botSession() as cs:
+    async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
             res = await r.json()
             title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
@@ -1019,7 +1019,7 @@ async def memes(ctx: commands.Context):
 @bot.slash_command(name = "memes", description = "Get some random funny memes")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def memes(interaction: Interaction):
-    async with aiohttp.botSession() as cs:
+    async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
             res = await r.json()
             title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
@@ -2069,7 +2069,7 @@ async def character(interaction: Interaction, *, name):
 @anime.command(aliases = ["meme"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx: commands.Context):
-    async with aiohttp.botSession() as cs:
+    async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
             anime_memes = await r.json()
 
@@ -2083,7 +2083,7 @@ async def memes(ctx: commands.Context):
 @animeslash.subcommand(name = "memes", description = "Get some random funny anime memes")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def memes(interaction: Interaction):
-    async with aiohttp.botSession() as cs:
+    async with aiohttp.ClientSession() as cs:
         async with cs.get("https://www.reddit.com/r/animememes.json") as r:
             anime_memes = await r.json()
 
@@ -2438,10 +2438,11 @@ async def food(interaction: Interaction):
     await interaction.send(image_link)
 
 
+"""
 @bot.command(aliases = ["rok"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rock(ctx: commands.Context):
-    async with aiohttp.botSession() as ses:
+    async with aiohttp.ClientSession() as ses:
         async with ses.get("https://mrconos.pythonanywhere.com/rock/random") as api:
             data = await api.json()
 
@@ -2460,7 +2461,7 @@ async def rock(ctx: commands.Context):
 @bot.slash_command(name = "rock", description = "Get some random funny rock pictures")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def rock(Interaction: commands.Context):
-    async with aiohttp.botSession() as ses:
+    async with aiohttp.ClientSession() as ses:
         async with ses.get("https://mrconos.pythonanywhere.com/rock/random") as api:
             data = await api.json()
 
@@ -2474,6 +2475,7 @@ async def rock(Interaction: commands.Context):
                 em.set_image(url = rock_img)
 
             await Interaction.response.send_message(embed = em)
+"""
 
 
 # Music Command
