@@ -1000,6 +1000,7 @@ async def changevoicechannelname(interaction: Interaction, channel: GuildChannel
 
 
 @moderation.command(aliases = ["ea", "eadd"])
+@commands.has_permissions(manage_emojis = True)
 async def emojiadd(ctx: commands.Context, url: str, *, name):
     guild = ctx.guild
     
@@ -1024,6 +1025,7 @@ async def emojiadd(ctx: commands.Context, url: str, *, name):
 
 
 @bot.slash_command(name = "emojiadd", description = "Add a custom emoji")
+@application_checks.has_permissions(manage_emojis = True)
 async def emojiadd(interaction: Interaction, url: str, *, name):
     guild = interaction.guild
     
