@@ -3286,10 +3286,12 @@ async def afk(ctx: commands.Context, *, reason = None):
         if data:
             if data[0] == reason:
                 return await ctx.send("You've been AFK with the same reason.")
+            
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (ctx.author.id, ctx.guild.id,))
         
         else:
             await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (ctx.author.id, ctx.guild.id, reason))
+            
             em = nextcord.Embed(title = "AFK", description = f"{ctx.author.mention}, I set your AFK - `{reason}`")
             em.timestamp = ctx.message.created_at
             
