@@ -2485,7 +2485,7 @@ async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
 
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2545,7 +2545,7 @@ async def spotifyplay(ctx: commands.Context, *, url: str):
         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
     
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
     
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2624,10 +2624,10 @@ async def spotifyplay(interaction: Interaction, *, url: str):
 @music.command()
 async def pause(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.")
+        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
 
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2660,10 +2660,10 @@ async def pause(interaction: Interaction):
 @music.command(aliases = ["r"])
 async def resume(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.")
+        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
 
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2696,10 +2696,10 @@ async def resume(interaction: Interaction):
 @music.command(aliases = ["s"])
 async def stop(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.")
+        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
 
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2733,7 +2733,7 @@ async def stop(interaction: Interaction):
 @commands.has_permissions(administrator = True)
 async def disconnect(ctx: commands.Context):
     if not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2764,10 +2764,10 @@ async def disconnect(interaction: Interaction):
 @music.command()
 async def loop(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.")
+        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
     
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
     
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2820,10 +2820,10 @@ async def loop(interaction: Interaction):
 @music.command(aliases = ["q"])
 async def queue(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.")
+        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
     
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2873,10 +2873,10 @@ async def queue(interaction: Interaction):
 @music.command(aliases = ["vol"])
 async def volume(ctx: commands.Context, volume: int):
     if not ctx.voice_client:
-        return await ctx.reply(f"I'm not in a voice channel.")
+        return await ctx.reply(f"I'm not in a voice channel.", mention_author = False)
     
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
     
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2923,10 +2923,10 @@ async def volume(interaction: Interaction, volume: int):
 @music.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
 async def nowplaying(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in the voice channel.")
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
     
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -2965,10 +2965,10 @@ async def nowplaying(interaction: Interaction):
 @music.command(aliases = ["l"])
 async def lyrics(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in the voice channel.")
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
     
     elif not getattr(ctx.author.voice, "channel", None):
-        return await ctx.reply("You aren't connected to the voice channel.")
+        return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
     
     else:
         vc: wavelink.Player = ctx.voice_client
@@ -3903,14 +3903,14 @@ async def createinvite(ctx: commands.Context, guildid: int):
 
         while invitelink == "":
             channel = guild.text_channels[i]
-            link = await channel.create_invite(max_age=0, max_uses=0)
+            link = await channel.create_invite(max_age = 0, max_uses = 0)
             invitelink = str(link)
             i += 1
         
         await ctx.send(invitelink)
     
     except Exception:
-        await ctx.send("Something wrong")
+        await ctx.send("Something wrong.")
 
 
 @bot.command(pass_context = True)
@@ -3922,7 +3922,7 @@ async def join(ctx: commands.Context):
         await ctx.reply("Successfully joined the voice chat.")
     
     else:
-        await ctx.reply("**You are not in a voice channel. You must be in a voice channel to run this command.**")
+        await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
 
 @bot.command(pass_context = True)
