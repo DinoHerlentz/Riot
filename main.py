@@ -368,12 +368,81 @@ async def on_ready():
 
 	# Music
     bot.loop.create_task(node_connect())
-    
+
+    # Economy
+    bot.db = await aiosqlite.connect("bank.db")
+    await asyncio.sleep(3)
+
+    async with bot.db.cursor() as cursor:
+        await cursor.execute("CREATE TABLE IF NOT EXISTS bank (wallet INTEGER, bank INTEGER, maxbank INTEGER, user INTEGER)")
+
+    await bot.db.commit()
+    print("Database is ready")
+
+    """
     # AFK
-    setattr(bot, "db", await aiosqlite.connect("main.db"))
+    setattr(bot, "db", await aiosqlite.connect("afk.db"))
     
     async with bot.db.cursor() as cursor:
         await cursor.execute("CREATE TABLE IF NOT EXISTS afk (user INTEGER, guild INTEGER, reason TEXT)")
+    """
+
+
+async def create_balance(user):
+    async with bot.db.cursor() as cursor:
+        await cursor.execute("INSERT INTO bank VALUES (?, ?, ?, ?)", (0, 100, 500, user.id))
+    
+    await bot.db.commit()
+    return
+
+
+async def get_balance(user):
+    async with bot.db.cursor() as cursor:
+        await cursor.execute("SELECT wallet, bank, maxbank FROM bank WHERE user = ?", (user.id,))
+        data = await cursor.fetchone()
+        
+        if data is None:
+            await create_balance(user)
+            return 0, 100, 500
+        
+        wallet, bank, maxbank = data[0], data[1], data[2]
+        return bank, wallet, maxbank
+
+
+async def update_wallet(user, amount: int):
+    async with bot.db.cursor() as cursor:
+        await cursor.execute("SELECT wallet FROM bank WHERE user = ?", (user.id))
+        data = await cursor.fetchone()
+        
+        if data is None:
+            await create_balance(user)
+            return 0
+        
+        await cursor.execute("UPDATE bank SET wallet = ? WHERE user = ?", (data[0] + amount, user.id))
+    
+    await bot.db.commit()
+
+
+async def update_bank(user, amount):
+    async with bot.db.cursor() as cursor:
+        await cursor.execute("SELECT wallet, bank, maxbank FROM bank WHERE user = ?", (user.id))
+        data = await cursor.fetchone()
+        
+        if data is None:
+            await create_balance(user)
+            return 0
+        
+        capacity = int(data[2] - data[1])
+        
+        if amount.lower() == "max" or amount.lower == "all":
+            amount = capacity
+        
+        elif amount > capacity:
+            return 1
+        
+        await cursor.execute("UPDATE bank SET wallet = ? AND bank = ? WHERE user = ?", (data[0] - amount, data[1] + amount,  user.id))
+    
+    await bot.db.commit()
 
 
 @bot.event
@@ -419,6 +488,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         await interaction.send(embed = em2)
 
 
+"""
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -442,6 +512,7 @@ async def on_message(message):
     
     await bot.db.commit()
     await bot.process_commands(message)
+"""
 
 
 @bot.event
@@ -580,10 +651,11 @@ async def help(ctx: commands.Context):
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
+    em.add_field(name = "Economy", value = "balance", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
     
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -598,10 +670,11 @@ async def help(interaction: Interaction):
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
+    em.add_field(name = "Economy", value = "balance", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
     
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2482,6 +2555,40 @@ async def cringe(ctx: commands.Context):
     res = requests.get("https://api.waifu.pics/sfw/cringe")
     image_link = res.json()["url"]
     await ctx.send(image_link)
+
+
+# Economy Command
+@bot.command()
+async def balance(ctx: commands.Context, member: nextcord.Member = None):
+    if member == None:
+        member = ctx.author
+
+    wallet, bank, maxbank = await get_balance(member)
+
+    em = nextcord.Embed(title = f"{member.name}'s balance")
+    em.add_field(name = "Wallet", value = wallet, inline = False)
+    em.add_field(name = "Bank", value = f"{bank}/{maxbank}", inline = False)
+
+    await ctx.send(embed = em)
+
+
+"""
+@bot.command()
+# @commands.cooldown(1, 30, commands.BucketType.user)
+async def beg(ctx: commands.Context):
+    chances = random.randint(1, 4)
+    
+    if chances == 1:
+        return await ctx.reply("LMAO you got nothing .c", mention_author = False)
+    
+    amount = random.randint(5, 300)
+    res = await update_wallet(ctx.author, amount)
+    
+    if res == 0:
+        return await ctx.reply("You have no account, so we created one for you. Please run the command again.")
+    
+    await ctx.reply(f"You got `{amount}` coins.", mention_author = False)
+"""
 
 
 # Image Command
