@@ -1084,7 +1084,7 @@ async def emojiadd(ctx: commands.Context, url: str = None, *, name = None):
         em.add_field(name = "Description", value = "Add a custom emoji", inline = False)
         em.add_field(name = "Permissions Required", value = "Manage Emojis", inline = False)
         em.add_field(name = "Usage", value = ">emojiadd [image url] [name]", inline = False)
-        em.add_field(name = "Example", value = ">emojiadd https://thisisexamplelink verycool", inline = False)
+        em.add_field(name = "Example", value = ">emojiadd https://imagelink verycool", inline = False)
         await ctx.send(embed = em)
     
     guild = ctx.guild
