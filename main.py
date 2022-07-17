@@ -924,7 +924,7 @@ async def slowmode(ctx: commands.Context, seconds: int = None):
     if seconds == None:
         em = nextcord.Embed(title = "Slowmode")
         em.add_field(name = "Command", value = ">slowmode|>sm", inline = False)
-        em.add_field(name = "Description", value = "Set a slowmode to the current channel", inlnie = False)
+        em.add_field(name = "Description", value = "Set a slowmode to the current channel", inline = False)
         em.add_field(name = "Permissions Required", value = "Manage Channels", inline = False)
         em.add_field(name = "Usage", value = ">slowmode [duration (second)]", inline = False)
         em.add_field(name = "Example", value = ">slowmode 5", inline = False)
@@ -3781,22 +3781,28 @@ async def timer(interaction: Interaction, seconds):
 
 @bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def poll(ctx: commands.Context, *, argument):
+async def poll(ctx: commands.Context, *, argument = None):
+    if argument == None:
+        em = nextcord.Embed(title = "Poll")
+        em.add_field(name = "Command", value = ">poll", inline = False)
+        em.add_field(name = "Description", value = "Create a poll", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">poll [argument]", inline = False)
+        em.add_field(name = "Example", value = ">poll Am I Handsome?", inline = False)
 
-    icon_url = ctx.author.avatar.url
+        await ctx.send(embed = em)
 
-    em = nextcord.Embed(title = f"New Poll", description = f"{argument}")
-
-    em.set_footer(text = f"Poll by {ctx.author}", icon_url = ctx.author.avatar.url)
-
-    em.timestamp = ctx.message.created_at
-
-    # await ctx.message.delete()
-
-    poll_msg = await ctx.send(embed = em)
-
-    await poll_msg.add_reaction("👍")
-    await poll_msg.add_reaction("👎")
+    else:
+        em2 = nextcord.Embed(title = f"New Poll", description = f"{argument}")
+        em2.set_footer(text = f"Poll by {ctx.author}", icon_url = ctx.author.avatar.url)
+        em2.timestamp = ctx.message.created_at
+    
+        # await ctx.message.delete()
+    
+        poll_msg = await ctx.send(embed = em2)
+    
+        await poll_msg.add_reaction("👍")
+        await poll_msg.add_reaction("👎")
 
 
 @bot.command()
