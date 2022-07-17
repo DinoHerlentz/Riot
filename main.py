@@ -2793,7 +2793,7 @@ async def pause(ctx: commands.Context):
 
     await vc.pause()
 
-    em = nextcord.Embed(title = "Music Pause", description = "Successfully paused the music")
+    em = nextcord.Embed(title = "Music Pause", description = "Successfully paused the music", color = 0x2CCE71)
     em.timestamp = ctx.message.created_at
     await ctx.send(embed = em)
 
@@ -2811,7 +2811,7 @@ async def pause(interaction: Interaction):
 
     await vc.pause()
 
-    em = nextcord.Embed(title = "Music Pause", description = "Successfully paused the music")
+    em = nextcord.Embed(title = "Music Pause", description = "Successfully paused the music", color = 0x2CCE71)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
 
@@ -2829,7 +2829,7 @@ async def resume(ctx: commands.Context):
 
     await vc.resume()
 
-    em = nextcord.Embed(title = "Music Resume", description = "Successfully resumed the music")
+    em = nextcord.Embed(title = "Music Resume", description = "Successfully resumed the music", color = 0x2CCE71)
     em.timestamp = ctx.message.created_at
     await ctx.send(embed = em)
 
@@ -2847,7 +2847,7 @@ async def resume(interaction: Interaction):
 
     await vc.resume()
     
-    em = nextcord.Embed(title = "Music Resume", description = "Successfully resumed the music")
+    em = nextcord.Embed(title = "Music Resume", description = "Successfully resumed the music", color = 0x2CCE71)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
 
@@ -2865,7 +2865,7 @@ async def stop(ctx: commands.Context):
 
     await vc.stop()
 
-    em = nextcord.Embed(title = "Music Stop", description = "Successfully stop the music")
+    em = nextcord.Embed(title = "Music Stop", description = "Successfully stop the music", color = 0x2CCE71)
     em.timestamp = ctx.message.created_at
     await ctx.send(embed = em)
 
@@ -2883,7 +2883,7 @@ async def stop(interaction: Interaction):
 
     await vc.stop()
     
-    em = nextcord.Embed(title = "Music Stop", description = "Successfully stop the music")
+    em = nextcord.Embed(title = "Music Stop", description = "Successfully stop the music", color = 0x2CCE71)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
 
@@ -2899,7 +2899,7 @@ async def disconnect(ctx: commands.Context):
 
     await vc.disconnect()
 
-    em = nextcord.Embed(title = "Disconnected", description = "Successfully left the voice channel")
+    em = nextcord.Embed(title = "Disconnected", description = "Successfully left the voice channel", color = 0x2CCE71)
     em.timestamp = ctx.message.created_at
     await ctx.send(embed = em)
 
@@ -2915,7 +2915,7 @@ async def disconnect(interaction: Interaction):
 
     await vc.disconnect()
     
-    em = nextcord.Embed(title = "Disconnected", description = "Successfully left the voice channel")
+    em = nextcord.Embed(title = "Disconnected", description = "Successfully left the voice channel", color = 0x2CCE71)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
 
@@ -2938,12 +2938,12 @@ async def loop(ctx: commands.Context):
         setattr(vc, "loop", False)
 
     if vc.loop:
-        em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled")
+        em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled", color = 0x2CCE71)
         em.timestamp = ctx.message.created_at
         await ctx.send(embed = em)
     
     else:
-        em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled")
+        em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled", color = 0x2CCE71)
         em2.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed = em2)
 
@@ -2966,12 +2966,12 @@ async def loop(interaction: Interaction):
         setattr(vc, "loop", False)
 
     if vc.loop:
-        em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled")
+        em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled", color = 0x2CCE71)
         em.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em)
     
     else:
-        em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled")
+        em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled", color = 0x2CCE71)
         em2.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em2)
 
@@ -3044,7 +3044,7 @@ async def volume(ctx: commands.Context, volume: int):
 
         await vc.set_volume(volume = volume)
 
-        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`")
+        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
         em.timestamp = ctx.message.created_at
 
         await ctx.send(embed = em)
@@ -3066,7 +3066,7 @@ async def volume(interaction: Interaction, volume: int):
 
         await vc.set_volume(volume = volume)
 
-        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`")
+        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
         em.timestamp = datetime.datetime.utcnow()
 
         await interaction.send(embed = em)
@@ -3653,14 +3653,14 @@ async def userinfo(ctx: commands.Context, member: nextcord.Member = None):
     embed.set_author(name = f"User Info - {member}")
     embed.set_thumbnail(url = member.avatar.url)
     embed.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar.url)
-    embed.add_field(name = "ID", value = member.id)
-    embed.add_field(name = "Server Nickname", value = member.display_name)
-    embed.add_field(name = "Created At", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"))
-    embed.add_field(name = "Joined At", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"))
-    embed.add_field(name = "Join Position", value = str(members.index(member)+1))
-    embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]))
-    embed.add_field(name = "Top Role", value = member.top_role.mention)
-    embed.add_field(name = "Bot", value = member.bot)
+    embed.add_field(name = "ID", value = member.id, inline = False)
+    embed.add_field(name = "Server Nickname", value = member.display_name, inline = False)
+    embed.add_field(name = "Created At", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
+    embed.add_field(name = "Joined At", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
+    embed.add_field(name = "Join Position", value = str(members.index(member)+1), inline = False)
+    embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
+    embed.add_field(name = "Top Role", value = member.top_role.mention, inline = False)
+    embed.add_field(name = "Bot", value = member.bot, inline = False)
 
     await ctx.send(embed = embed)
 
@@ -3679,14 +3679,14 @@ async def userinfo(interaction: Interaction, member: nextcord.Member = None):
     embed.set_author(name = f"User Info - {member}")
     embed.set_thumbnail(url = member.avatar.url)
     embed.set_footer(text = f"Requested by {interaction.user}", icon_url = interaction.user.avatar.url)
-    embed.add_field(name = "ID : ", value = member.id)
-    embed.add_field(name = "Server Nickname : ", value = member.display_name)
-    embed.add_field(name = "Created At : ", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"))
-    embed.add_field(name = "Joined At : ", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"))
-    embed.add_field(name = "Join Position", value = str(members.index(member)+1))
-    embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]))
-    embed.add_field(name = "Top Role : ", value = member.top_role.mention)
-    embed.add_field(name = "Bot", value = member.bot)
+    embed.add_field(name = "ID : ", value = member.id, inline = False)
+    embed.add_field(name = "Server Nickname : ", value = member.display_name, inline = False)
+    embed.add_field(name = "Created At : ", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
+    embed.add_field(name = "Joined At : ", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
+    embed.add_field(name = "Join Position", value = str(members.index(member)+1), inline = False)
+    embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
+    embed.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
+    embed.add_field(name = "Bot", value = member.bot, inline = False)
 
     await interaction.send(embed = embed)
 
