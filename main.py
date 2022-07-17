@@ -571,7 +571,7 @@ async def on_error(event, *args, **kwargs):
 
 
 # Help Command
-@bot.command(aliases = [">", "?", "halp", "riot"])
+@bot.command(aliases = [">", "?", "halp", "riot", "vote", "invite"])
 async def help(ctx: commands.Context):
     view = Help()
     
@@ -2783,7 +2783,7 @@ async def spotifyplay(interaction: Interaction, *, url: str):
 @music.command()
 async def pause(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2819,7 +2819,7 @@ async def pause(interaction: Interaction):
 @music.command(aliases = ["r"])
 async def resume(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2855,7 +2855,7 @@ async def resume(interaction: Interaction):
 @music.command(aliases = ["s"])
 async def stop(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2923,7 +2923,7 @@ async def disconnect(interaction: Interaction):
 @music.command()
 async def loop(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2948,10 +2948,10 @@ async def loop(ctx: commands.Context):
         await ctx.send(embed = em2)
 
 
-@bot.slash_command(name = "loop", description = "Loop current playing music")
+@bot.slash_command(name = "loop", description = "Toggle music loop")
 async def loop(interaction: Interaction):
     if not interaction.guild.voice_client:
-        return await interaction.send("I'm not in a voice channel.", ephemeral = True)
+        return await interaction.send("I'm not in the voice channel.", ephemeral = True)
     
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
@@ -2979,7 +2979,7 @@ async def loop(interaction: Interaction):
 @music.command(aliases = ["q"])
 async def queue(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in a voice channel.", mention_author = False)
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
     
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -3028,55 +3028,48 @@ async def queue(interaction: Interaction):
         await interaction.send(embed = em)
 
 
-"""
 @music.command(aliases = ["vol"])
 async def volume(ctx: commands.Context, volume: int):
     if not ctx.voice_client:
-        return await ctx.reply(f"I'm not in a voice channel.", mention_author = False)
-    
+        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
+
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
-    
+
     else:
         vc: wavelink.Player = ctx.voice_client
 
-    if volume > 100:
-        return await ctx.reply("Maximum volume is 100.")
-    
-    elif volume < 0:
-        return await ctx.reply("Minimum volume is 0.")
+    if isinstance(volume, int) and 0 <= volume <= 200:
+        volume /= 200
 
-    await vc.set_volume(volume)
+        await vc.set_volume(volume = volume)
 
-    em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}`%")
-    em.timestamp = ctx.message.created_at
-    await ctx.send(embed = em)
+        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`")
+        em.timestamp = ctx.message.created_at
+
+        await ctx.send(embed = em)
 
 
 @bot.slash_command(name = "volume", description = "Change music volume")
 async def volume(interaction: Interaction, volume: int):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
-    if volume > 100:
-        return await interaction.send("Maximum volume is 100.")
-    
-    elif volume < 0:
-        return await interaction.send("Minimum volume is 0.")
-    
+    if isinstance(volume, int) and 0 <= volume <= 200:
+        volume /= 200
 
-    await vc.set_volume(volume)
-    
-    em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}`%")
-    em.timestamp = datetime.datetime.utcnow()
-    await interaction.send(embed = em)
-"""
+        await vc.set_volume(volume = volume)
+
+        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`")
+        em.timestamp = datetime.datetime.utcnow()
+
+        await interaction.send(embed = em)
 
 
 @music.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
@@ -4118,7 +4111,7 @@ async def left(ctx: commands.Context):
         await ctx.reply("Successfully left the voice channel.")
     
     else:
-        await ctx.reply("I'm not in a voice channel.")
+        await ctx.reply("I'm not in the voice channel.")
 
 
 @bot.command(aliases = ["e"])
