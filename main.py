@@ -1550,16 +1550,23 @@ async def guess(ctx: commands.Context):
 
 
 @fun.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def hug(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
-      await ctx.reply("Question : Who do you want to hug?")
+        em = nextcord.Embed(title = "Hug")
+        em.add_field(name = "Command", value = ">hug", inline = False)
+        em.add_field(name = "Description", value = "Hug someone", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">hug [member]", inline = False)
+        em.add_field(name = "Example", value = ">hug @DINO", inline = False)
+
+        await ctx.send(embed = em)
 
     elif member == ctx.author:
-        await ctx.reply("**You can't hug yourself.**")
-    
+        em2 = nextcord.Embed(title = "Error", description = "You can't hug yourself", color = nextcord.Color.red())
+        await ctx.reply(embed = em, mention_author = False)
+
     else:
-        await ctx.send(f"{ctx.author.name} hug {member.name}\n{(random.choice(hugs[ctx: commands.Context.invoked_with]))}")
+        await ctx.send(f"{ctx.author.name} hug {member.name}\n{(random.choice(hugs[ctx.invoked_with]))}")
 
 
 @bot.slash_command(name = "hug", description = "Hug someone")
@@ -1578,7 +1585,7 @@ async def kiss(ctx: commands.Context, member: nextcord.Member = None):
         await ctx.reply("You can't kiss yourself.", mention_author = False)
 
     else:
-        await ctx.send(f"{ctx.author.name} kiss {member.name}\n{(random.choice(kiss[ctx: commands.Context.invoked_with]))}")
+        await ctx.send(f"{ctx.author.name} kiss {member.name}\n{(random.choice(kiss[ctx.invoked_with]))}")
 
 
 @bot.slash_command(name = "kiss", description = "Kiss someone")
@@ -1599,7 +1606,14 @@ async def slap(ctx: commands.Context, member: nextcord.Member = None):
     image_link = res.json()["url"]
     
     if member == None:
-        await ctx.reply("Question : Who do you want to slap?")
+        em = nextcord.Embed(title = "Slap")
+        em.add_field(name = "Command", value = ">slap", inline = False)
+        em.add_field(name = "Description", value = "Slap someone", inline = False)
+        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Usage", value = ">slap [member]", inline = False)
+        em.add_field(name = "Example", value = ">slap @DINO", inline = False)
+
+        await ctx.send(embed = em)
     
     elif member == ctx.author:
         await ctx.reply("That would be hurt.")
@@ -1613,6 +1627,7 @@ async def slap(ctx: commands.Context, member: nextcord.Member = None):
 async def slap(interaction: Interaction, member: nextcord.Member):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
+    
     await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
 
 
