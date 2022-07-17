@@ -1346,7 +1346,7 @@ async def coinflip(ctx: commands.Context, choice = None):
         em = nextcord.Embed(title = "Coinflip")
         em.add_field(name = "Command", value = ">coinflip|>cf|>coin", inline = False)
         em.add_field(name = "Description", value = "Flip a coin and bet for heads/tails", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">coinflip [choice]", inline = False)
         em.add_field(name = "Example", value = ">coinflip tails", inline = False)
         
@@ -1402,7 +1402,7 @@ async def rps(ctx: commands.Context, choice = None):
         em = nextcord.Embed(title = "Rock Paper Scissors")
         em.add_field(name = "Command", value = ">rps", inline = False)
         em.add_field(name = "Description", value = "Play rock paper scissors with the bot", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">rps [choice]", inline = False)
         em.add_field(name = "Example", value = ">rps rock", inline = False)
         
@@ -1490,7 +1490,7 @@ async def rate(ctx: commands.Context, *, argument = None):
         em = nextcord.Embed(title = "Rate")
         em.add_field(name = "Command", value = ">rate", inline = False)
         em.add_field(name = "Description", value = "Ask the bot to rate something", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">rate [argument]", inline = False)
         em.add_field(name = "Example", value = ">rate smart", inline = False)
         
@@ -1555,7 +1555,7 @@ async def hug(ctx: commands.Context, member: nextcord.Member = None):
         em = nextcord.Embed(title = "Hug")
         em.add_field(name = "Command", value = ">hug", inline = False)
         em.add_field(name = "Description", value = "Hug someone", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">hug [member]", inline = False)
         em.add_field(name = "Example", value = ">hug @DINO", inline = False)
 
@@ -1609,7 +1609,7 @@ async def slap(ctx: commands.Context, member: nextcord.Member = None):
         em = nextcord.Embed(title = "Slap")
         em.add_field(name = "Command", value = ">slap", inline = False)
         em.add_field(name = "Description", value = "Slap someone", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">slap [member]", inline = False)
         em.add_field(name = "Example", value = ">slap @DINO", inline = False)
 
@@ -1640,7 +1640,7 @@ async def say(ctx: commands.Context, *, text):
         em = nextcord.Embed(title = "Say")
         em.add_field(name = "Command", value = ">say", inline = False)
         em.add_field(name = "Description", value = "Ask the bot to say something", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">say [text]", inline = False)
         em.add_field(name = "Example", value = ">say Hello", inline = False)
         
@@ -3262,7 +3262,7 @@ async def weather(ctx: commands.Context, *, city: str = None):
         em = nextcord.Embed(title = "Weather")
         em.add_field(name = "Command", value = ">weather", inline = False)
         em.add_field(name = "Description", value = "Shows weather informations of a city", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">weather [city]", inline = False)
         em.add_field(name = "Example", value = ">weather Medan", inline = False)
         
@@ -3338,7 +3338,7 @@ async def movie(ctx: commands.Context, *, movie_name = None):
         em = nextcord.Embed(title = "Movie")
         em.add_field(name = "Command", value = ">movie|>imdb", inline = Fales)
         em.add_field(name = "Description", value = "Get a movie informations", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">movie [name]", inline = False)
         em.add_field(name = "Example", value = ">movie Interstellar", inline = False)
         
@@ -3559,7 +3559,7 @@ async def cleardm_error(ctx: commands.Context, error):
         em = nextcord.Embed(title = "Clear DM")
         em.add_field(name = "Command", value = ">cleardm|>cd", inline = False)
         em.add_field(name = "Description", value = "Delete bot response/message in your DM", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">cleardm [amount]", inline = False)
         em.add_field(name = "Example", value = ">cleardm 10", inline = False)
         
@@ -3605,21 +3605,28 @@ async def serverreport(interaction: Interaction):
     await interaction.response.send_modal(ServerReport())
 
 
-@bot.command()
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def wsay(ctx: commands.Context, *, message = None):
+@bot.command(aliases = ["wsay"])
+async def webhooksay(ctx: commands.Context, *, message = None):
     author = ctx.author
+    
     if message == None:
-        await ctx.reply("Please provide a message")
-        return
+        em = nextcord.Embed(title = "Webhooksay")
+        em.add_field(name = "Command", value = ">webhooksay|>wsay", inline = False)
+        em.add_field(name = "Description", value = "Say something with webhook", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
+        em.add_field(name = "Usage", value = ">webhooksay [message]", inline = False)
+        em.add_field(name = "Example", value = ">webhooksay Hello", inline = False)
+        
+        await ctx.send(embed = em)
 
-    webhook = await ctx.channel.create_webhook(name = author.name)
-    await webhook.send(str(message), username = author.name, avatar_url = author.avatar.url)
-    await ctx.message.delete()
-
-    webhooks = await ctx.channel.webhooks()
-    for webhook in webhooks:
-        await webhook.delete()
+    else:
+        webhook = await ctx.channel.create_webhook(name = author.name)
+        await webhook.send(str(message), username = author.name, avatar_url = author.avatar.url)
+        await ctx.message.delete()
+    
+        webhooks = await ctx.channel.webhooks()
+        for webhook in webhooks:
+            await webhook.delete()
 
 
 @bot.command(aliases = ["avatar"])
@@ -3801,7 +3808,7 @@ async def poll(ctx: commands.Context, *, argument = None):
         em = nextcord.Embed(title = "Poll")
         em.add_field(name = "Command", value = ">poll", inline = False)
         em.add_field(name = "Description", value = "Create a poll", inline = False)
-        em.add_field(name = "Permissions Required", value = "None", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">poll [argument]", inline = False)
         em.add_field(name = "Example", value = ">poll Am I Handsome?", inline = False)
 
