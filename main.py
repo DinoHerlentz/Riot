@@ -148,7 +148,7 @@ class Suggest(nextcord.ui.Modal):
         author = interaction.user
         sug = self.emSug.value
 
-        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n`{sug}`")
+        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n```py\n{sug}\n```")
         em.timestamp = datetime.datetime.utcnow()
         
         return await channel.send(embed = em)
@@ -166,7 +166,7 @@ class Report(nextcord.ui.Modal):
         author = interaction.user
         msg = self.emMsg.value
 
-        em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n`{msg}`", color = nextcord.Color.red())
+        em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n```py\n{msg}```", color = nextcord.Color.red())
         em.timestamp = datetime.datetime.utcnow()
         
         return await channel.send(embed = em)
@@ -184,7 +184,7 @@ class ServerReport(nextcord.ui.Modal):
         author = interaction.user
         msg = self.emMsg.value
 
-        em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n`{msg}`", color = nextcord.Color.red())
+        em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n```py\n{msg}```", color = nextcord.Color.red())
         em.timestamp = datetime.datetime.utcnow()
         
         return await channel.send(embed = em)
@@ -611,7 +611,7 @@ async def help(interaction: Interaction):
 @moderation.command(aliases = ["b"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(ban_members = True)
-async def ban(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
+async def ban(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Ban")
         em.add_field(name = "Command", value = ">ban|>b", inline = False)
@@ -643,7 +643,7 @@ async def ban(ctx: commands.Context, member: nextcord.Member = None, *, reason =
 @bot.slash_command(name = "ban", description = "Ban a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(ban_members = True)
-async def ban(interaction: Interaction, member: nextcord.Member, *, reason):
+async def ban(interaction: Interaction, member: nextcord.User, *, reason):
     if member.id == interaction.user.id:
         await interaction.send("❌ You can't ban yourself.", ephemeral = True)
 
@@ -707,7 +707,7 @@ async def unban(interaction: Interaction, member, *, reason):
 @moderation.command(aliases = ["to", "mute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
-async def timeout(ctx: commands.Context, member: nextcord.Member = None, time = None, *, reason = None):
+async def timeout(ctx: commands.Context, member: nextcord.User = None, time = None, *, reason = None):
     if member == None or time == None:
         em = nextcord.Embed(title = "Timeout")
         em.add_field(name = "Command", value = ">timeout|>to|>mute", inline = False)
@@ -740,7 +740,7 @@ async def timeout(ctx: commands.Context, member: nextcord.Member = None, time = 
 @bot.slash_command(name = "timeout", description = "Timeout a member so they can't chat/speak/react to a message")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(moderate_members = True)
-async def timeout(interaction: Interaction, member: nextcord.Member, time, *, reason):
+async def timeout(interaction: Interaction, member: nextcord.User, time, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't mute yourself.", ephemeral = True)
 
@@ -761,7 +761,7 @@ async def timeout(interaction: Interaction, member: nextcord.Member, time, *, re
 @moderation.command(aliases = ["rt", "unmute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(moderate_members = True)
-async def removetimeout(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
+async def removetimeout(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Remove Timeout")
         em.add_field(name = "Command", value = ">removetimeout|>rt|>unmute", inline = False)
@@ -788,7 +788,7 @@ async def removetimeout(ctx: commands.Context, member: nextcord.Member = None, *
 @bot.slash_command(name = "removetimeout", description = "Remove timeout from a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(moderate_members = True)
-async def removetimeout(interaction: Interaction, member: nextcord.Member, *, reason):
+async def removetimeout(interaction: Interaction, member: nextcord.User, *, reason):
     if member.top_role >= interaction.user.top_role:
         await interaction.send("❌ You can only moderate members below your role.", ephemeral = True)
 
@@ -804,7 +804,7 @@ async def removetimeout(interaction: Interaction, member: nextcord.Member, *, re
 @moderation.command(aliases = ["k"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(kick_members = True)
-async def kick(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
+async def kick(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Kick")
         em.add_field(name = "Command", value = ">kick|>k", inline = False)
@@ -836,7 +836,7 @@ async def kick(ctx: commands.Context, member: nextcord.Member = None, *, reason 
 @bot.slash_command(name = "kick", description = "Kick a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(kick_members = True)
-async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
+async def kick(interaction: Interaction, member: nextcord.User, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't kick yourself.", ephemeral = True)
 
@@ -854,7 +854,7 @@ async def kick(interaction: Interaction, member: nextcord.Member, *, reason):
 
 
 @moderation.command()
-async def warn(ctx: commands.Context, member: nextcord.Member = None, *, reason = None):
+async def warn(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Warn")
         em.add_field(name = "Command", value = ">warn", inline = False)
@@ -884,7 +884,7 @@ async def warn(ctx: commands.Context, member: nextcord.Member = None, *, reason 
 @bot.slash_command(name = "warn", description = "Warn a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_messages = True)
-async def warn(interaction: Interaction, member: nextcord.Member, *, reason):
+async def warn(interaction: Interaction, member: nextcord.User, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't warn yourself.", ephemeral = True)
 
@@ -949,7 +949,7 @@ async def slowmode(interaction: Interaction, seconds: int):
 @moderation.command(aliases = ["ar"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
-async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
+async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Add Role")
         em.add_field(name = "Command", value = ">addrole|>ar", inline = False)
@@ -969,7 +969,7 @@ async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: 
 @moderation.command(aliases = ["rr"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_roles = True)
-async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.Member = None):
+async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Remove Role")
         em.add_field(name = "Command", value = ">removerole|>rr", inline = False)
@@ -989,7 +989,7 @@ async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, membe
 @moderation.command(aliases = ["cn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_nicknames = True)
-async def nick(ctx: commands.Context, member: nextcord.Member = None, *, nickname = None):
+async def nick(ctx: commands.Context, member: nextcord.User = None, *, nickname = None):
     if member == None or nickname == None:
         em = nextcord.Embed(title = "Nick")
         em.add_field(name = "Command", value = ">nick|>cn", inline = False)
@@ -1008,7 +1008,7 @@ async def nick(ctx: commands.Context, member: nextcord.Member = None, *, nicknam
 @bot.slash_command(name = "nick", description = "Change server member's nickname")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_nicknames = True)
-async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
+async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
     await member.edit(nick = nickname)
     await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
 
@@ -1257,7 +1257,7 @@ async def eightball(interaction: Interaction, *, question):
 
 @fun.command(aliases = ["covidtest", "swabtest", "pcr"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def cvtest(ctx: commands.Context, member: nextcord.Member = None):
+async def cvtest(ctx: commands.Context, member: nextcord.User = None):
     cvRes = ["positive", "negative"]
 
     if member == None:
@@ -1277,7 +1277,7 @@ async def cvtest(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "covidtest", description = "Do a swab test")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def cvtest(interaction: Interaction, member: nextcord.Member = None):
+async def cvtest(interaction: Interaction, member: nextcord.User = None):
     cvRes = ["positive", "negative"]
 
     if member == None:
@@ -1297,7 +1297,7 @@ async def cvtest(interaction: Interaction, member: nextcord.Member = None):
 
 @fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def temperature(ctx: commands.Context, member: nextcord.Member = None):
+async def temperature(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
       message = await ctx.reply("Analyzing your body temperature...")
       await asyncio.sleep(3)
@@ -1311,7 +1311,7 @@ async def temperature(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "temperature", description = "Check user body temperature")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def temperature(interaction: Interaction, member: nextcord.Member = None):
+async def temperature(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         original_message = await interaction.send("Analyzing your body temperature...")
         await asyncio.sleep(3)
@@ -1550,7 +1550,7 @@ async def guess(ctx: commands.Context):
 
 
 @fun.command()
-async def hug(ctx: commands.Context, member: nextcord.Member = None):
+async def hug(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         em = nextcord.Embed(title = "Hug")
         em.add_field(name = "Command", value = ">hug", inline = False)
@@ -1571,14 +1571,14 @@ async def hug(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "hug", description = "Hug someone")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def hug(interaction: Interaction, member: nextcord.Member):
+async def hug(interaction: Interaction, member: nextcord.User):
     await interaction.send(f"{interaction.user.name} hug {member.name}\n{(random.choice(hugs[interaction.invoked_with]))}")
 
 
 """
 @fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def kiss(ctx: commands.Context, member: nextcord.Member = None):
+async def kiss(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         pass
     elif member == ctx.author:
@@ -1590,7 +1590,7 @@ async def kiss(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "kiss", description = "Kiss someone")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def kiss(interaction: Interaction, member: nextcord.Member):
+async def kiss(interaction: Interaction, member: nextcord.User):
     if member == interaction.user:
         await interaction.send("You can't kiss yourself")
 
@@ -1601,7 +1601,7 @@ async def kiss(interaction: Interaction, member: nextcord.Member):
 
 @fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def slap(ctx: commands.Context, member: nextcord.Member = None):
+async def slap(ctx: commands.Context, member: nextcord.User = None):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
     
@@ -1624,7 +1624,7 @@ async def slap(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "slap", description = "Slap someone")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def slap(interaction: Interaction, member: nextcord.Member):
+async def slap(interaction: Interaction, member: nextcord.User):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
     
@@ -1727,7 +1727,7 @@ async def emojify(interaction: Interaction, *, text):
 
 @fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def handsome(ctx: commands.Context, member: nextcord.Member = None):
+async def handsome(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         em = nextcord.Embed(title = "Handsome Parameter", description = f"You are **{random.randrange(100)}%** handsome.")
         em.timestamp = ctx.message.created_at
@@ -1741,7 +1741,7 @@ async def handsome(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "handsome", description = "Handsome parameter")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def handsome(interaction: Interaction, member: nextcord.Member = None):
+async def handsome(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         em = nextcord.Embed(title = "Handsome Parameter", description = f"You are **{random.randrange(100)}%** handsome.")
         em.timestamp = datetime.datetime.utcnow()
@@ -1755,7 +1755,7 @@ async def handsome(interaction: Interaction, member: nextcord.Member = None):
 
 @fun.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def beautiful(ctx: commands.Context, member: nextcord.Member = None):
+async def beautiful(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         em = nextcord.Embed(title = "Beautiful Parameter", description = f"You are **{random.randrange(100)}%** beautiful.")
         em.timestamp = ctx.message.created_at
@@ -1770,7 +1770,7 @@ async def beautiful(ctx: commands.Context, member: nextcord.Member = None):
 @bot.slash_command(name = "beautiful", description = "Beautiful parameter")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def beautiful(interaction: Interaction, member: nextcord.Member = None):
+async def beautiful(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         em = nextcord.Embed(title = "Beautiful Parameter", description = f"You are **{random.randrange(100)}%** beautiful.")
         em.timestamp = datetime.datetime.utcnow()
@@ -3571,10 +3571,10 @@ async def suggest(ctx: commands.Context, *, suggestion):
     author = ctx.author
     channel = bot.get_channel(976437035504128011)
     
-    em = nextcord.Embed(title = "Suggestions", description = f"**{author}** send a suggestions\n\nMessage :\n\n`{suggestion}`")
+    em = nextcord.Embed(title = "Suggestions", description = f"**{author}** send a suggestions\n\nMessage :\n\n```py\n{suggestion}```")
     em.timestamp = datetime.datetime.utcnow()
 
-    await ctx.reply("Your suggestions has been sent. (Any troll message will be ignored, and you might be blocked)", mention_author = False)
+    await ctx.reply("Your suggestions has been sent. Any troll message will be ignored, and you might be blocked.", mention_author = False)
     await channel.send(embed = em)
 
 
@@ -3582,27 +3582,30 @@ async def suggest(ctx: commands.Context, *, suggestion):
 @cooldowns.cooldown(1, 3600, bucket = cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
     await interaction.response.send_modal(Suggest())
+    await interaction.send("Your suggestions has been sent. Any troll message will be ignored, and you might be blocked.", ephemeral = True)
 
 @bot.command()
 async def report(ctx: commands.Context, *, message):
     author = ctx.author
     channel = bot.get_channel(976502829546086440)
 
-    em = nextcord.Embed(title = "Report", description = f"**{author}** send a report message\n\nMessage :\n\n`{message}`", color = nextcord.Color.red())
+    em = nextcord.Embed(title = "Report", description = f"**{author}** send a report message\n\nMessage :\n\n```py\n{message}```", color = nextcord.Color.red())
     em.timestamp = datetime.datetime.utcnow()
     
-    await ctx.reply("Your report message has been sent. (Any false report will be ignored, and you might be blocked)", mention_author = False)
+    await ctx.reply("Your report message has been sent. Any false report will be ignored, and you might be blocked.", mention_author = False)
     await channel.send(embed = em)
 
 
 @bot.slash_command(name = "report", description = "Report an issue")
 async def report(interaction: Interaction):
     await interaction.response.send_modal(Report())
+    await interaction.send("Your report has been sent. Any false report will be ignored, and you might be blocked.", ephemeral = True)
 
 
 @bot.slash_command(name = "serverreport", description = "Report an issue from this server", guild_ids = [server_id])
 async def serverreport(interaction: Interaction):
     await interaction.response.send_modal(ServerReport())
+    await interaction.send("Your report has been sent. Any false report will be ignored, and you might be blocked.", ephemeral = True)
 
 
 @bot.command(aliases = ["wsay"])
@@ -3631,7 +3634,7 @@ async def webhooksay(ctx: commands.Context, *, message = None):
 
 @bot.command(aliases = ["avatar"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def av(ctx: commands.Context, member: nextcord.Member = None):
+async def av(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         member = ctx.author
 
@@ -3647,7 +3650,7 @@ async def av(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "avatar", description = "Shows user avatar")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def av(interaction: Interaction, member: nextcord.Member = None):
+async def av(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         member = interaction.user
     
@@ -3663,7 +3666,7 @@ async def av(interaction: Interaction, member: nextcord.Member = None):
 
 @bot.command(aliases = ["whois", "w", "ui", "info"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def userinfo(ctx: commands.Context, member: nextcord.Member = None):
+async def userinfo(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         member = ctx.author
 
@@ -3689,7 +3692,7 @@ async def userinfo(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "userinfo", description = "Shows some information of user")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def userinfo(interaction: Interaction, member: nextcord.Member = None):
+async def userinfo(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         member = interaction.user
     
@@ -3898,7 +3901,7 @@ async def servericon(interaction: Interaction):
 
 @bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def id(ctx: commands.Context, member: nextcord.Member = None):
+async def id(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         await ctx.reply(ctx.author.id, mention_author = False)
     
@@ -3908,7 +3911,7 @@ async def id(ctx: commands.Context, member: nextcord.Member = None):
 
 @bot.slash_command(name = "id", description = "Get user ID")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def id(interaction: Interaction, member: nextcord.Member):
+async def id(interaction: Interaction, member: nextcord.User):
     await interaction.send(member.id)
 
 
@@ -4053,7 +4056,7 @@ async def toggle(ctx: commands.Context, *, command):
 
 @bot.command()
 @commands.is_owner()
-async def act(ctx: commands.Context, member: nextcord.Member = None, *, message = None):
+async def act(ctx: commands.Context, member: nextcord.User = None, *, message = None):
     if member == None:
         await ctx.reply("Please mention a member.", mention_author = False)
 
