@@ -29,16 +29,15 @@ from nextcord.abc import GuildChannel
 from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissions, MissingRequiredArgument, BotMissingPermissions, CommandOnCooldown, DisabledCommand, MemberNotFound
 from keep_alive import keep_alive
 
-
 intents = nextcord.Intents.default()
 intents.members = True
 intents.message_content = True
-bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
+bot = commands.Bot(command_prefix=">", intents=intents, case_insensitive=True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 hugs = json.load(open("hugs.json"))
 kiss = json.load(open("kiss.json"))
-lyrics_url = "https://some-random-api.ml/lyrics?title="
+lyrics_url = "https://some-random-api.ml/lyrics?title = "
 server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
@@ -48,7 +47,7 @@ snipe_message_author = None
 def clean_code(content):
     if content.startswith("```") and content.endswith("```"):
         return "\n".join(content.split("\n")[1:])[:-3]
-    
+
     else:
         return content
 
@@ -56,12 +55,12 @@ def clean_code(content):
 def is_me():
     def predicate(interaction: Interaction):
         return interaction.user.id == 55058884670678630
-    
+
     return application_checks.check(predicate)
 
 
 # Group Command
-@bot.group(invoke_without_command = True, aliases = ["mod"])
+@bot.group(invoke_without_command=True, aliases = ["mod"])
 async def moderation(ctx: commands.Context):
     em = nextcord.Embed(title = "Moderation Command (>moderation [command])")
     em.add_field(name = "Command", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn")
@@ -69,19 +68,19 @@ async def moderation(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.group(invoke_without_command = True, aliases = ["f"])
+@bot.group(invoke_without_command=True, aliases = ["f"])
 async def fun(ctx: commands.Context):
     em = nextcord.Embed(title = "Fun Command (>fun [command])")
-    em.add_field(name = "Command", value = "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
+    em.add_field(name = "Command",  value =  "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
 
     await ctx.send(embed = em)
 
 
-@bot.group(invoke_without_command = True)
+@bot.group(invoke_without_command=True)
 async def anime(ctx: commands.Context):
     em = nextcord.Embed(title = "Anime Command (>anime [command])")
     em.add_field(name = "Commands", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe")
-    
+
     await ctx.send(embed = em)
 
 
@@ -90,7 +89,7 @@ async def animeslash(interaction: Interaction):
     return
 
 
-@bot.group(invoke_without_command = True, aliases = ["m"])
+@bot.group(invoke_without_command=True, aliases = ["m"])
 async def music(ctx: commands.Context):
     em = nextcord.Embed(title = "Music Command (>music [command])")
     em.add_field(name = "Command", value = "play, splay, pause, resume, stop, disconnect, loop, queue, nowplaying, lyrics")
@@ -98,11 +97,11 @@ async def music(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.group(invoke_without_command = True, aliases = ["c"])
+@bot.group(invoke_without_command=True, aliases = ["c"])
 async def capybara(ctx: commands.Context):
     em = nextcord.Embed(title = "Capybara Command (>capybara [command])")
     em.add_field(name = "Commands", value = "large, medium, small, original, facts")
-    
+
     await ctx.send(embed = em)
 
 
@@ -132,7 +131,7 @@ class Embed(nextcord.ui.Modal):
 
         em = nextcord.Embed(title = title, description = desc)
         em.timestamp = datetime.datetime.utcnow()
-        
+
         return await interaction.response.send_message(embed = em)
 
 
@@ -150,7 +149,7 @@ class Suggest(nextcord.ui.Modal):
 
         em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n```py\n{sug}\n```")
         em.timestamp = datetime.datetime.utcnow()
-        
+
         return await channel.send(embed = em)
 
 
@@ -168,7 +167,7 @@ class Report(nextcord.ui.Modal):
 
         em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n```py\n{msg}```", color = nextcord.Color.red())
         em.timestamp = datetime.datetime.utcnow()
-        
+
         return await channel.send(embed = em)
 
 
@@ -176,7 +175,7 @@ class ServerReport(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Server Report Forum")
 
-        self.emMsg = nextcord.ui.TextInput(label = "Server Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
+        self.emMsg = nextcord.ui.TextInput( label = "Server Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emMsg)
 
     async def callback(self, interaction: Interaction) -> None:
@@ -186,7 +185,7 @@ class ServerReport(nextcord.ui.Modal):
 
         em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n```py\n{msg}```", color = nextcord.Color.red())
         em.timestamp = datetime.datetime.utcnow()
-        
+
         return await channel.send(embed = em)
 
 
@@ -239,43 +238,43 @@ class Pet(nextcord.ui.Select):
             nextcord.SelectOption(label = "Panda", description = "Big boy panda."),
             nextcord.SelectOption(label = "Capybara", description = "Ok I pull up.")
         ]
-        
+
         super().__init__(placeholder = "Buy a pet", min_values=1, max_values=1, options = options)
 
     async def callback(self, interaction: Interaction):
         if self.values[0] == "Dog":
             await interaction.send("You bought Dog. It's a smart dog.", ephemeral = True)
-        
+
         elif self.values[0] == "Cat":
             await interaction.send("You bought Cat. Hope it doesn't steal your fish, if you have any.", ephemeral = True)
-        
+
         elif self.values[0] == "Hamster":
             await interaction.send("You bought Hampter. Wise choice.", ephemeral = True)
-        
+
         elif self.values[0] == "Bird":
             await interaction.send("You bought Bird. This bird might be your morning alarm.", ephemeral = True)
-        
+
         elif self.values[0] == "Snake":
             await interaction.send("You bought Snake. Hope it doesn't kill you.", ephemeral = True)
-        
+
         elif self.values[0] == "Dragon":
             await interaction.send("You bought Dragon. What food will you give to this dragon?", ephemeral = True)
-        
+
         elif self.values[0] == "Chameleon":
             await interaction.send("You bought Chameleon. Hope you don't lost it.", ephemeral = True)
-        
+
         elif self.values[0] == "Iguana":
             await interaction.send("You bought Iguana. I think this is the most beautiful iguana in the world.", ephemeral = True)
-        
+
         elif self.values[0] == "Piranha":
             await interaction.send("You bought Piranha. Hope it doesn't bite you.", ephemeral = True)
-        
+
         elif self.values[0] == "Dolphin":
             await interaction.send("You bought Dolphin. Is this dolphin fit in your aquarium?", ephemeral = True)
-        
+
         elif self.values[0] == "Panda":
             await interaction.send("You bought Panda. He eats a lot.", ephemeral = True)
-        
+
         elif self.values[0] == "Capybara":
             await interaction.send("You bought Capybara. He's ready to pullin' up.", ephemeral = True)
 
@@ -363,15 +362,15 @@ class WordSnacksGame(nextcord.ui.View):
 # Event Decorator
 @bot.event
 async def on_ready():
-    await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Game(">help"))
+    await bot.change_presence(status=nextcord.Status.online, activity = nextcord.Game(">help"))
     print("We have logged in as {0.user}".format(bot))
 
-	# Music
+    # Music
     bot.loop.create_task(node_connect())
-    
+
     # AFK
     setattr(bot, "db", await aiosqlite.connect("afk.db"))
-    
+
     async with bot.db.cursor() as cursor:
         await cursor.execute("CREATE TABLE IF NOT EXISTS afk (user INTEGER, guild INTEGER, reason TEXT)")
 
@@ -379,6 +378,7 @@ async def on_ready():
 @bot.event
 async def on_wavelink_node_ready(node: wavelink.Node):
     print(f"Node {node.identifier} is ready")
+
 
 async def node_connect():
     await bot.wait_until_ready()
@@ -390,7 +390,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
     try:
         ctx: commands.Context = player.ctx
         vc: player = ctx.voice_client
-    
+
     except nextcord.HTTPException:
         interaction = player.interaction
         vc: player = interaction.guild.voice_client
@@ -404,7 +404,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
     try:
         next_song = vc.queue.get()
         await vc.play(next_song)
-    
+
     except wavelink.errors.QueueEmpty:
         pass
 
@@ -412,7 +412,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
         em.timestamp = ctx.message.created_at
         await ctx.send(embed = em)
-    
+
     except nextcord.HTTPException:
         em2 = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
         em2.timestamp = datetime.datetime.utcnow()
@@ -423,14 +423,16 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
 async def on_message(message):
     if message.author == bot.user:
         return
-    
+
     async with bot.db.cursor() as cursor:
         await cursor.execute("SELECT reason FROM afk WHERE user = ? AND guild = ?", (message.author.id, message.guild.id,))
         data = await cursor.fetchone()
 
         if data:
-            await message.channel.send(f"{message.author.mention} is no longer AFK.", delete_after=5)
-            await cursor.execute("DELETE FROM afk WHERE user = ? AND guild = ?", (message.author.id, message.guild.id,))
+            await message.channel.send(
+                f"{message.author.mention} is no longer AFK.", delete_after=5)
+            await cursor.execute(
+                "DELETE FROM afk WHERE user = ? AND guild = ?", (message.author.id, message.guild.id,))
 
         if message.mentions:
             for mention in message.mentions:
@@ -439,7 +441,7 @@ async def on_message(message):
 
                 if data2 and mention.id != message.author.id:
                     await message.channel.send(f"`{mention.name}` is AFK - `{data2[0]}`",)
-    
+
     await bot.db.commit()
     await bot.process_commands(message)
 
@@ -451,9 +453,9 @@ async def on_message_delete(message):
 
     snipe_message_content = message.content
     snipe_message_author = message.author.name
-    
+
     await asyncio.sleep(60)
-    
+
     snipe_message_author = None
     snipe_message_content = None
 
@@ -463,29 +465,29 @@ async def on_command_error(ctx: commands.Context, error):
     if isinstance(error, CommandNotFound):
         em = nextcord.Embed(title = "Invalid Command", description = "Type `>help` to see available commands")
         await ctx.send(embed = em)
-    
+
     elif isinstance(error, MissingRequiredArgument):
         pass
-    
+
     elif isinstance(error, MissingPermissions):
         pass
-    
+
     elif isinstance(error, BadArgument):
         pass
-    
+
     elif isinstance(error, BotMissingPermissions):
         botDel = await ctx.reply("Bot missing required permissions")
         await asyncio.sleep(3)
         await botDel.delete()
-    
+
     elif isinstance(error, CommandOnCooldown):
         cdDel = await ctx.reply("This command is still on cooldown. Try again in `{:.2f}` seconds.".format(error.retry_after))
         await asyncio.sleep(3)
         await cdDel.delete()
-    
+
     elif isinstance(error, DisabledCommand):
-      await ctx.reply("This command is disabled.", mention_author = False)
-    
+        await ctx.reply("This command is disabled.", mention_author = False)
+
     elif isinstance(error, MemberNotFound):
         pass
 
@@ -563,7 +565,7 @@ async def on_application_command_error(interaction: Interaction, error):
 @bot.event
 async def on_error(event, *args, **kwargs):
     info = await bot.application_info()
-    
+
     em = nextcord.Embed(title = ":x: Error :x:", description = "```py\n%s\n```" % traceback.format_exc(), color = nextcord.Color.red())
     em.add_field(name = "Event", value = event)
     em.timestamp = datetime.datetime.utcnow()
@@ -574,7 +576,7 @@ async def on_error(event, *args, **kwargs):
 @bot.command(aliases = [">", "?", "halp", "riot", "vote", "invite"])
 async def help(ctx: commands.Context):
     view = Help()
-    
+
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
@@ -584,7 +586,7 @@ async def help(ctx: commands.Context):
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands", value = "embed", inline = False)
     em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
-    
+
     await ctx.send(embed = em, view = view)
     await view.wait()
 
@@ -592,7 +594,7 @@ async def help(ctx: commands.Context):
 @bot.slash_command(name = "help", description = "Get some informations about the bot command")
 async def help(interaction: Interaction):
     view = Help()
-    
+
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
@@ -602,7 +604,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands", value = "embed", inline = False)
     em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
-    
+
     await interaction.send(embed = em, view = view)
     await view.wait()
 
@@ -610,7 +612,7 @@ async def help(interaction: Interaction):
 # Moderation Command
 @moderation.command(aliases = ["b"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(ban_members = True)
+@commands.has_permissions(ban_members=True)
 async def ban(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Ban")
@@ -619,7 +621,7 @@ async def ban(ctx: commands.Context, member: nextcord.User = None, *, reason = N
         em.add_field(name = "Permissions Required", value = "Ban Members", inline = False)
         em.add_field(name = "Usage", value = ">ban [member] (reason)", inline = False)
         em.add_field(name = "Example", value = ">ban @DINO sending phising links", inline = False)
-        
+
         await ctx.send(embed = em)
 
     elif member.id == ctx.author.id:
@@ -632,7 +634,7 @@ async def ban(ctx: commands.Context, member: nextcord.User = None, *, reason = N
 
     else:
         await member.ban(reason = reason)
-        
+
         em4 = nextcord.Embed(title = "Ban", description = f"You've been banned from **{ctx.guild.name}**\nReason : {reason}", color = nextcord.Color.red())
         await member.send(embed = em4)
 
@@ -642,7 +644,7 @@ async def ban(ctx: commands.Context, member: nextcord.User = None, *, reason = N
 
 @bot.slash_command(name = "ban", description = "Ban a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(ban_members = True)
+@application_checks.has_permissions(ban_members=True)
 async def ban(interaction: Interaction, member: nextcord.User, *, reason):
     if member.id == interaction.user.id:
         await interaction.send("❌ You can't ban yourself.", ephemeral = True)
@@ -652,7 +654,7 @@ async def ban(interaction: Interaction, member: nextcord.User, *, reason):
 
     else:
         await member.ban(reason = reason)
-        
+
         em = nextcord.Embed(title = "Ban", description = f"You've been banned from **{interaction.guild.name}**\nReason : {reason}", color = nextcord.Color.red())
         await member.send(embed = em)
 
@@ -662,7 +664,7 @@ async def ban(interaction: Interaction, member: nextcord.User, *, reason):
 
 @moderation.command(aliases = ["uba", "u"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(ban_members = True)
+@commands.has_permissions(ban_members=True)
 async def unban(ctx: commands.Context, member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Unban")
@@ -671,7 +673,7 @@ async def unban(ctx: commands.Context, member = None, *, reason = None):
         em.add_field(name = "Permissions Required", value = "Ban Members", inline = False)
         em.add_field(name = "Usage", value = ">uba [member] (reason)", inline = False)
         em.add_field(name = "Example", value = ">uba @DINO#9967 Appealed", inline = False)
-        
+
         await ctx.send(embed = em)
 
     banned_users = await ctx.guild.bans()
@@ -689,7 +691,7 @@ async def unban(ctx: commands.Context, member = None, *, reason = None):
 
 @bot.slash_command(name = "unban", description = "Unban a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(ban_members = True)
+@application_checks.has_permissions(ban_members=True)
 async def unban(interaction: Interaction, member, *, reason):
     banned_users = await interaction.guild.bans()
     member_name, member_discriminator = member.split("#")
@@ -706,7 +708,7 @@ async def unban(interaction: Interaction, member, *, reason):
 
 @moderation.command(aliases = ["to", "mute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(moderate_members = True)
+@commands.has_permissions(moderate_members=True)
 async def timeout(ctx: commands.Context, member: nextcord.User = None, time = None, *, reason = None):
     if member == None or time == None:
         em = nextcord.Embed(title = "Timeout")
@@ -715,7 +717,7 @@ async def timeout(ctx: commands.Context, member: nextcord.User = None, time = No
         em.add_field(name = "Permissions Required", value = "Timeout Members", inline = False)
         em.add_field(name = "Usage", value = ">timeout [member] [duration] (reason)", inline = False)
         em.add_field(name = "Example", value = ">timeout @DINO 10m Annoying", inline = False)
-        
+
         await ctx.send(embed = em)
 
     if member == ctx.author:
@@ -737,9 +739,11 @@ async def timeout(ctx: commands.Context, member: nextcord.User = None, time = No
         await member.send(embed = em5)
 
 
-@bot.slash_command(name = "timeout", description = "Timeout a member so they can't chat/speak/react to a message")
+@bot.slash_command(
+    name = "timeout",
+    description = "Timeout a member so they can't chat/speak/react to a message")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(moderate_members = True)
+@application_checks.has_permissions(moderate_members=True)
 async def timeout(interaction: Interaction, member: nextcord.User, time, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't mute yourself.", ephemeral = True)
@@ -760,7 +764,7 @@ async def timeout(interaction: Interaction, member: nextcord.User, time, *, reas
 
 @moderation.command(aliases = ["rt", "unmute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(moderate_members = True)
+@commands.has_permissions(moderate_members=True)
 async def removetimeout(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Remove Timeout")
@@ -769,7 +773,7 @@ async def removetimeout(ctx: commands.Context, member: nextcord.User = None, *, 
         em.add_field(name = "Permissions Required", value = "Timeout Members", inline = False)
         em.add_field(name = "Usage", value = ">removetimeout [member] (reason)", inline = False)
         em.add_field(name = "Example", value = ">removetimeout @DINO Appealed", inline = False)
-        
+
         await ctx.send(embed = em)
 
     if member.top_role >= ctx.author.top_role:
@@ -787,7 +791,7 @@ async def removetimeout(ctx: commands.Context, member: nextcord.User = None, *, 
 
 @bot.slash_command(name = "removetimeout", description = "Remove timeout from a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(moderate_members = True)
+@application_checks.has_permissions(moderate_members=True)
 async def removetimeout(interaction: Interaction, member: nextcord.User, *, reason):
     if member.top_role >= interaction.user.top_role:
         await interaction.send("❌ You can only moderate members below your role.", ephemeral = True)
@@ -803,7 +807,7 @@ async def removetimeout(interaction: Interaction, member: nextcord.User, *, reas
 
 @moderation.command(aliases = ["k"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(kick_members = True)
+@commands.has_permissions(kick_members=True)
 async def kick(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Kick")
@@ -812,7 +816,7 @@ async def kick(ctx: commands.Context, member: nextcord.User = None, *, reason = 
         em.add_field(name = "Permissions Required", value = "Kick Members")
         em.add_field(name = "Usage", value = ">kick [member] (reason)", inline = False)
         em.add_field(name = "Example", value = ">kick @DINO Annoying", inline = False)
-        
+
         await ctx.send(embed = em)
 
     if member == ctx.author:
@@ -825,17 +829,17 @@ async def kick(ctx: commands.Context, member: nextcord.User = None, *, reason = 
 
     else:
         await member.kick(reason = reason)
-        
+
         em4 = nextcord.Embed(title = "Kick", description = f"{ctx.author.mention} has kicked {member.mention}\nReason : {reason}", color = nextcord.Color.red())
         await ctx.send(embed = em4)
-        
+
         em5 = nextcord.Embed(title = "Kick", description = f"You've been kicked from **{ctx.guild.name}**\nReason : {reason}", color = nextcord.Color.red())
         await member.send(embed = em5)
 
 
 @bot.slash_command(name = "kick", description = "Kick a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(kick_members = True)
+@application_checks.has_permissions(kick_members=True)
 async def kick(interaction: Interaction, member: nextcord.User, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't kick yourself.", ephemeral = True)
@@ -845,10 +849,10 @@ async def kick(interaction: Interaction, member: nextcord.User, *, reason):
 
     else:
         await member.kick(reason = reason)
-        
+
         em = nextcord.Embed(title = "Kick", description = f"{interaction.user.mention} has kicked {member.mention}\nReason : {reason}", color = nextcord.Color.red())
         await interaction.send(embed = em)
-        
+
         em2 = nextcord.Embed(title = "Kick", description = f"You've been kicked from **{interaction.guild.name}**\nReason : {reason}", color = nextcord.Color.red())
         await member.send(embed = em2)
 
@@ -883,7 +887,7 @@ async def warn(ctx: commands.Context, member: nextcord.User = None, *, reason = 
 
 @bot.slash_command(name = "warn", description = "Warn a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_messages = True)
+@application_checks.has_permissions(manage_messages=True)
 async def warn(interaction: Interaction, member: nextcord.User, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't warn yourself.", ephemeral = True)
@@ -901,7 +905,7 @@ async def warn(interaction: Interaction, member: nextcord.User, *, reason):
 
 @moderation.command(aliases = ["clear", "cls"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-@commands.has_permissions(manage_messages = True)
+@commands.has_permissions(manage_messages=True)
 async def purge(ctx: commands.Context, amount = None, arg: str = None):
     if amount == None:
         em = nextcord.Embed(title = "Purge")
@@ -910,16 +914,16 @@ async def purge(ctx: commands.Context, amount = None, arg: str = None):
         em.add_field(name = "Permissions Required", value = "Manage Messages", inline = False)
         em.add_field(name = "Usage", value = ">purge [amount]", inline = False)
         em.add_field(name = "Example", value = ">purge 10", inline = False)
-        
+
         await ctx.send(embed = em)
-    
+
     await ctx.message.delete()
-    await ctx.channel.purge(limit = int(amount))
+    await ctx.channel.purge(limit=int(amount))
 
 
 @moderation.command(aliases = ["sm"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_channels = True)
+@commands.has_permissions(manage_channels=True)
 async def slowmode(ctx: commands.Context, seconds: int = None):
     if seconds == None:
         em = nextcord.Embed(title = "Slowmode")
@@ -928,27 +932,27 @@ async def slowmode(ctx: commands.Context, seconds: int = None):
         em.add_field(name = "Permissions Required", value = "Manage Channels", inline = False)
         em.add_field(name = "Usage", value = ">slowmode [duration (second)]", inline = False)
         em.add_field(name = "Example", value = ">slowmode 5", inline = False)
-        
+
         await ctx.send(embed = em)
 
     else:
-        await ctx.channel.edit(slowmode_delay = seconds)
+        await ctx.channel.edit(slowmode_delay=seconds)
         em2 = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
         await ctx.reply(embed = em2, mention_author = False)
 
 
 @bot.slash_command(name = "slowmode", description = "Set a slowmode to the current channel")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_channels = True)
+@application_checks.has_permissions(manage_channels=True)
 async def slowmode(interaction: Interaction, seconds: int):
-    await interaction.channel.edit(slowmode_delay = seconds)
+    await interaction.channel.edit(slowmode_delay=seconds)
     em = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
     await interaction.send(embed = em)
 
 
 @moderation.command(aliases = ["ar"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_roles = True)
+@commands.has_permissions(manage_roles=True)
 async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Add Role")
@@ -957,9 +961,9 @@ async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: 
         em.add_field(name = "Permissions Required", value = "Manage Roles", inline = False)
         em.add_field(name = "Usage", value = ">addrole [role] [member]", inline = False)
         em.add_field(name = "Example", value = ">addrole @Administrator @DINO", inline = False)
-        
+
         await ctx.send(embed = em)
-    
+
     else:
         await member.add_roles(role)
         em2 = nextcord.Embed(title = f"Successfully added {role.mention} to {member.mention}", color = 0x2ECC71)
@@ -968,7 +972,7 @@ async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: 
 
 @moderation.command(aliases = ["rr"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_roles = True)
+@commands.has_permissions(manage_roles=True)
 async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Remove Role")
@@ -977,7 +981,7 @@ async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, membe
         em.add_field(name = "Permissions Required", value = "Manage Roles", inline = False)
         em.add_field(name = "Usage", value = ">removerole [role] [member]", inline = False)
         em.add_field(name = "Example", value = ">removerole @Administrator @DINO", inline = False)
-        
+
         await ctx.send(embed = em)
 
     else:
@@ -988,7 +992,7 @@ async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, membe
 
 @moderation.command(aliases = ["cn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_nicknames = True)
+@commands.has_permissions(manage_nicknames=True)
 async def nick(ctx: commands.Context, member: nextcord.User = None, *, nickname = None):
     if member == None or nickname == None:
         em = nextcord.Embed(title = "Nick")
@@ -997,7 +1001,7 @@ async def nick(ctx: commands.Context, member: nextcord.User = None, *, nickname 
         em.add_field(name = "Permissions Required", value = "Manage Nicknames", inline = False)
         em.add_field(name = "Usage", value = ">nick [member] [nickname]", inline = False)
         em.add_field(name = "Example", value = ">nick @DINO Boomer", inline = False)
-        
+
         await ctx.send(embed = em)
 
     else:
@@ -1007,7 +1011,7 @@ async def nick(ctx: commands.Context, member: nextcord.User = None, *, nickname 
 
 @bot.slash_command(name = "nick", description = "Change server member's nickname")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_nicknames = True)
+@application_checks.has_permissions(manage_nicknames=True)
 async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
     await member.edit(nick = nickname)
     await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
@@ -1015,7 +1019,7 @@ async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
 
 @moderation.command(aliases = ["ctcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_channels = True)
+@commands.has_permissions(manage_channels=True)
 async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextChannel = None, *, name = None):
     if channel == None or name == None:
         em = nextcord.Embed(title = "Change Text Channel Name")
@@ -1024,19 +1028,19 @@ async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextCha
         em.add_field(name = "Permissions Required", value = "Manage Channels", inline = False)
         em.add_field(name = "Usage", value = ">changetextchannelname [channel] [name]", inline = False)
         em.add_field(name = "Example", value = ">changetextchannelname #general hangout", inline = False)
-        
+
         await ctx.send(embed = em)
-    
+
     else:
         await channel.edit(name = name)
-        
+
         em2 = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
         await ctx.reply(embed = em2, mention_author = False)
 
 
 @bot.slash_command(name = "changetextchannelname", description = "Change the specified text channel name")
 #@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_channels = True)
+@application_checks.has_permissions(manage_channels=True)
 async def changetextchannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select voice channel"), *, name):
     await channel.edit(name = name)
 
@@ -1046,7 +1050,7 @@ async def changetextchannelname(interaction: Interaction, channel: GuildChannel 
 
 @moderation.command(aliases = ["cvcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_channels = True)
+@commands.has_permissions(manage_channels=True)
 async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceChannel = None, *, name = None):
     if channel == None or name == None:
         em = nextcord.Embed(title = "Change Voice Channel Name")
@@ -1055,7 +1059,7 @@ async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceC
         em.add_field(name = "Permissions Required", value = "Manage Channels", inline = False)
         em.add_field(name = "Usage", value = ">changetextchannelname [channel] [name]", inline = False)
         em.add_field(name = "Example", value = ">changetextchannelname #General Chill", inline = False)
-        
+
         await ctx.send(embed = em)
 
     else:
@@ -1065,9 +1069,10 @@ async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceC
         await ctx.reply(embed = em2, mention_author = False)
 
 
-@bot.slash_command(name = "changevoicechannelname", description = "Change the specified voice channel name")
+@bot.slash_command(name = "changevoicechannelname",
+                   description = "Change the specified voice channel name")
 #@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_channels = True)
+@application_checks.has_permissions(manage_channels=True)
 async def changevoicechannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel"), *, name):
     await channel.edit(name = name)
 
@@ -1076,7 +1081,7 @@ async def changevoicechannelname(interaction: Interaction, channel: GuildChannel
 
 
 @moderation.command(aliases = ["ea", "eadd"])
-@commands.has_permissions(manage_emojis = True)
+@commands.has_permissions(manage_emojis=True)
 async def emojiadd(ctx: commands.Context, url: str = None, *, name = None):
     if url == None or name == None:
         em = nextcord.Embed(title = "Emoji Add")
@@ -1086,50 +1091,50 @@ async def emojiadd(ctx: commands.Context, url: str = None, *, name = None):
         em.add_field(name = "Usage", value = ">emojiadd [image url] [name]", inline = False)
         em.add_field(name = "Example", value = ">emojiadd https://imagelink verycool", inline = False)
         await ctx.send(embed = em)
-    
+
     guild = ctx.guild
-    
+
     async with aiohttp.ClientSession() as ses:
         async with ses.get(url) as r:
             try:
                 imgOrGIF = BytesIO(await r.read())
                 bValue = imgOrGIF.getvalue()
-                
+
                 if r.status in range(200, 299):
                     emoji = await guild.create_custom_emoji(image = bValue, name = name)
-                    
+
                     em2 = nextcord.Embed(title = "Successfully added the emoji", color = 0x2ECC71)
                     await ctx.reply(embed = em2, mention_author = False)
                     await ses.close()
-                
+
                 else:
                     await ctx.send(f"Error - `{r.status}`")
-            
+
             except nextcord.HTTPException:
                 await ctx.reply("This file size is too big.", mention_author = False)
 
 
 @bot.slash_command(name = "emojiadd", description = "Add a custom emoji")
-@application_checks.has_permissions(manage_emojis = True)
+@application_checks.has_permissions(manage_emojis=True)
 async def emojiadd(interaction: Interaction, url: str, *, name):
     guild = interaction.guild
-    
+
     async with aiohttp.ClientSession() as ses:
         async with ses.get(url) as r:
             try:
                 imgOrGIF = BytesIO(await r.read())
                 bValue = imgOrGIF.getvalue()
-                
+
                 if r.status in range(200, 299):
                     emoji = await guild.create_custom_emoji(image = bValue, name = name)
-                    
+
                     em = nextcord.Embed(title = "Successfully added the emoji", color = 0x2ECC71)
                     await interaction.send(embed = em)
                     await ses.close()
-                
+
                 else:
                     await interaction.send(f"Error - `{r.status}`", ephemeral = True)
-            
+
             except nextcord.HTTPException:
                 await interaction.send("This file size is too big.", ephemeral = True)
 
@@ -1143,7 +1148,7 @@ async def memes(ctx: commands.Context):
             res = await r.json()
             title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
             url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
-            
+
             em = nextcord.Embed(title = f"{title}")
             em.set_image(url = f"{url}")
             em.timestamp = ctx.message.created_at
@@ -1159,7 +1164,7 @@ async def memes(interaction: Interaction):
             res = await r.json()
             title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
             url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
-            
+
             em = nextcord.Embed(title = f"{title}")
             em.set_image(url = f"{url}")
             em.timestamp = datetime.datetime.utcnow()
@@ -1224,7 +1229,7 @@ async def eightball(ctx: commands.Context, *, question = None):
 
     if question == None:
         await ctx.reply("Please provide a question.")
-    
+
     else:
         em = nextcord.Embed(title = ":8ball: 8ball :8ball:")
         em.add_field(name = "Question", value = question, inline = False)
@@ -1247,7 +1252,7 @@ async def eightball(interaction: Interaction, *, question):
         "My sources say no.", "Outlook not so good.", "Very doubtful.",
         "Maybe.", "Never."
     ]
-    
+
     em = nextcord.Embed(title = ":8ball: 8ball :8ball:")
     em.add_field(name = "Question", value = question, inline = False)
     em.add_field(name = "Answer", value = random.choice(responses), inline = False)
@@ -1261,18 +1266,18 @@ async def cvtest(ctx: commands.Context, member: nextcord.User = None):
     cvRes = ["positive", "negative"]
 
     if member == None:
-      message = await ctx.reply(f"Doing the swab test to {ctx.author.mention}...")
-      await asyncio.sleep(3)
-      await message.edit(content = "The swab test result is...")
-      await asyncio.sleep(3)
-      await message.edit(content = f"You are **__{random.choice(cvRes)}__** COVID-19.")
-    
+        message = await ctx.reply(f"Doing the swab test to {ctx.author.mention}...")
+        await asyncio.sleep(3)
+        await message.edit(content = "The swab test result is...")
+        await asyncio.sleep(3)
+        await message.edit(content = f"You are **__{random.choice(cvRes)}__** COVID-19.")
+
     else:
-      message = await ctx.reply(f"Doing the swab test to {member.mention}...")
-      await asyncio.sleep(3)
-      await message.edit(content = "The swab test result is...")
-      await asyncio.sleep(3)
-      await message.edit(content = f"{member.mention} is **__{random.choice(cvRes)}__** COVID-19.")
+        message = await ctx.reply(f"Doing the swab test to {member.mention}...")
+        await asyncio.sleep(3)
+        await message.edit(content = "The swab test result is...")
+        await asyncio.sleep(3)
+        await message.edit(content = f"{member.mention} is **__{random.choice(cvRes)}__** COVID-19.")
 
 
 @bot.slash_command(name = "covidtest", description = "Do a swab test")
@@ -1299,14 +1304,14 @@ async def cvtest(interaction: Interaction, member: nextcord.User = None):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def temperature(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
-      message = await ctx.reply("Analyzing your body temperature...")
-      await asyncio.sleep(3)
-      await message.edit(content = f"Your body temperature is **__{random.randint(1, 40)}°C__**")
-    
+        message = await ctx.reply("Analyzing your body temperature...")
+        await asyncio.sleep(3)
+        await message.edit(content = f"Your body temperature is **__{random.randint(1, 40)}°C__**")
+
     else:
-      message = await ctx.reply(f"Analyzing {member.mention}'s body temperature...")
-      await asyncio.sleep(3)
-      await message.edit(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
+        message = await ctx.reply(f"Analyzing {member.mention}'s body temperature...")
+        await asyncio.sleep(3)
+        await message.edit(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
 
 
 @bot.slash_command(name = "temperature", description = "Check user body temperature")
@@ -1320,7 +1325,7 @@ async def temperature(interaction: Interaction, member: nextcord.User = None):
     else:
         original_message = await interaction.send(f"Analyzing {member.mention}'s body temperature...")
         await asyncio.sleep(3)
-        await interaction.edit_original_message(content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
+        await interaction.edit_original_message( content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
 
 
 @fun.command(aliases = ["rolldice", "roll"])
@@ -1349,24 +1354,24 @@ async def coinflip(ctx: commands.Context, choice = None):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">coinflip [choice]", inline = False)
         em.add_field(name = "Example", value = ">coinflip tails", inline = False)
-        
+
         await ctx.send(embed = em)
-    
+
     answer = choice.lower()
     choices = ["head", "tail"]
     computers_answer = random.choice(choices)
-    
+
     if answer not in choices:
         await ctx.reply("**That is not a valid option. Please use one of these option : head, tail.**")
-    
+
     else:
         if computers_answer == answer:
             await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{answer}__**.")
-        
+
         if computers_answer == "head":
             if answer == "tail":
                 await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
-            
+
         if computers_answer == "tail":
             if answer == "head":
                 await ctx.reply(f"**{ctx.author.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
@@ -1378,18 +1383,18 @@ async def coinflip(interaction: Interaction, choice):
     answer = choice.lower()
     choices = ["head", "tail"]
     computers_answer = random.choice(choices)
-    
+
     if answer not in choices:
         await interaction.send("**That is not a valid option. Please use one of these option : head, tail.**")
-    
+
     else:
         if computers_answer == answer:
             await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{answer}__**.")
-        
+
         if computers_answer == "head":
             if answer == "tail":
                 await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
-            
+
         if computers_answer == "tail":
             if answer == "head":
                 await interaction.send(f"**{interaction.user.name}** bet for **{answer}**.\n\nIt was **__{computers_answer}__**.")
@@ -1405,40 +1410,40 @@ async def rps(ctx: commands.Context, choice = None):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">rps [choice]", inline = False)
         em.add_field(name = "Example", value = ">rps rock", inline = False)
-        
+
         await ctx.send(embed = em)
-    
+
     answer = choice.lower()
     choices = ["rock", "paper", "scissors"]
     computers_answer = random.choice(choices)
-    
+
     if answer not in choices:
         await ctx.reply("**That is not a valid option. Please use one of these options : rock, paper, scissors.**")
-    
+
     else:
         if computers_answer == answer:
             await ctx.reply(f"Tie! we both picked **__{answer}__**.")
-        
+
         if computers_answer == "rock":
             if answer == "paper":
                 await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "paper":
             if answer == "rock":
                 await ctx.reply(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "scissors":
             if answer == "rock":
                 await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "rock":
             if answer == "scissors":
                 await ctx.reply(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "paper":
             if answer == "scissors":
                 await ctx.reply(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "scissors":
             if answer == "paper":
                 await ctx.reply(f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**.")
@@ -1450,34 +1455,34 @@ async def rps(interaction: Interaction, choice):
     answer = choice.lower()
     choices = ["rock", "paper", "scissors"]
     computers_answer = random.choice(choices)
-    
+
     if answer not in choices:
         await interaction.send("**That is not a valid option. Please use one of these options : rock, paper, scissors.**")
-    
+
     else:
         if computers_answer == answer:
             await interaction.send(f"Tie! we both picked **__{answer}__**.")
-        
+
         if computers_answer == "rock":
             if answer == "paper":
                 await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "paper":
             if answer == "rock":
                 await interaction.send(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "scissors":
             if answer == "rock":
                 await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "rock":
             if answer == "scissors":
                 await interaction.send(f"I win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "paper":
             if answer == "scissors":
                 await interaction.send(f"You win! I picked **__{computers_answer}__** and you picked **__{answer}__**.")
-            
+
         if computers_answer == "scissors":
             if answer == "paper":
                 await interaction.send(f"I win! I picked __**{computers_answer}**__ and you picked **__{answer}__**.")
@@ -1493,9 +1498,9 @@ async def rate(ctx: commands.Context, *, argument = None):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">rate [argument]", inline = False)
         em.add_field(name = "Example", value = ">rate smart", inline = False)
-        
+
         await ctx.send(embed = em)
-    
+
     else:
         em2 = nextcord.Embed(title = "Rate Parameter", description = f"{argument} : **{random.randrange(100)}%**")
         await ctx.reply(embed = em2, mention_author = False)
@@ -1604,7 +1609,7 @@ async def kiss(interaction: Interaction, member: nextcord.User):
 async def slap(ctx: commands.Context, member: nextcord.User = None):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
-    
+
     if member == None:
         em = nextcord.Embed(title = "Slap")
         em.add_field(name = "Command", value = ">slap", inline = False)
@@ -1614,10 +1619,10 @@ async def slap(ctx: commands.Context, member: nextcord.User = None):
         em.add_field(name = "Example", value = ">slap @DINO", inline = False)
 
         await ctx.send(embed = em)
-    
+
     elif member == ctx.author:
         await ctx.reply("That would be hurt.")
-    
+
     else:
         await ctx.send(f"{ctx.author.name} slap {member.name}\n{image_link}")
 
@@ -1627,7 +1632,7 @@ async def slap(ctx: commands.Context, member: nextcord.User = None):
 async def slap(interaction: Interaction, member: nextcord.User):
     res = requests.get("https://waifu.pics/api/sfw/slap")
     image_link = res.json()["url"]
-    
+
     await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
 
 
@@ -1643,7 +1648,7 @@ async def say(ctx: commands.Context, *, text):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">say [text]", inline = False)
         em.add_field(name = "Example", value = ">say Hello", inline = False)
-        
+
         await ctx.send(embed = em)
 
     elif text in funny_text:
@@ -1660,7 +1665,7 @@ async def say(interaction: Interaction, *, text):
 
     if text in funny_text:
         await interaction.send("Yeah you are.")
-    
+
     else:
         await interaction.send(f"{text}\n\n**~ {interaction.user}**")
 
@@ -1669,7 +1674,7 @@ async def say(interaction: Interaction, *, text):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def emojify(ctx: commands.Context, *, text):
     emojis = []
-    
+
     for s in text.lower():
         if s.isdecimal():
             num2er = mo = {
@@ -1685,13 +1690,13 @@ async def emojify(ctx: commands.Context, *, text):
                 "9": "nine"
             }
             emojis.append(f":{num2er.get(s)}:")
-        
+
         elif s.isalpha():
             emojis.append(f":regional_indicator_{s}:")
-        
+
         else:
             emojis.append(s)
-    
+
     await ctx.send("".join(emojis))
 
 
@@ -1699,7 +1704,7 @@ async def emojify(ctx: commands.Context, *, text):
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def emojify(interaction: Interaction, *, text):
     emojis = []
-    
+
     for s in text.lower():
         if s.isdecimal():
             num2er = mo = {
@@ -1715,13 +1720,13 @@ async def emojify(interaction: Interaction, *, text):
                 "9": "nine"
             }
             emojis.append(f":{num2er.get(s)}:")
-        
+
         elif s.isalpha():
             emojis.append(f":regional_indicator_{s}:")
-        
+
         else:
             emojis.append(s)
-    
+
     await interaction.response.send_message("".join(emojis))
 
 
@@ -1736,7 +1741,7 @@ async def handsome(ctx: commands.Context, member: nextcord.User = None):
     else:
         em2 = nextcord.Embed(title = "Handsome Parameter", description = f"{member.mention} is **{random.randrange(100)}%** handsome.")
         em2.timestamp = ctx.message.created_at
-        await ctx.reply(embd = em2, mention_author = False)
+        await ctx.reply(embd=em2, mention_author = False)
 
 
 @bot.slash_command(name = "handsome", description = "Handsome parameter")
@@ -1762,7 +1767,7 @@ async def beautiful(ctx: commands.Context, member: nextcord.User = None):
         await ctx.reply(embed = em, mention_author = False)
 
     else:
-        em2 = nextcord.Embed(titel = "Beautiful Parameter", description = f"{member.mention} is **{random.randrange(100)}%** beautiful.")
+        em2 = nextcord.Embed(title = "Beautiful Parameter", description = f"{member.mention} is **{random.randrange(100)}%** beautiful.")
         em2.timestamp = ctx.message.created_at
         await ctx.reply(embed = em2, mention_author = False)
 
@@ -1782,7 +1787,7 @@ async def beautiful(interaction: Interaction, member: nextcord.User = None):
         await interaction.send(embed = em)
 
 
-# Game Command
+# Activity Command
 @bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def sketch(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
@@ -1790,31 +1795,33 @@ async def sketch(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
         return await ctx.send("Please select a voice channel.")
 
     try:
-        invite_link = await channel.create_activity_invite(activities.Activity.sketch)
-    
+        invite_link = await channel.create_activity_invite(
+            activities.Activity.sketch)
+
     except nextcord.HTTPException:
         return await ctx.send("Please mention a voice channel")
 
-    em = nextcord.Embed(title = "Sketch Game", description = f"{ctx.author.mention} has started Sketch Game in {channel.mention}")
+    em = nextcord.Embed(title = "Sketch Game", description = "{ctx.author.mention} has started Sketch Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Sketch Heads has two game modes: Classic and Blitz. Classic mode is a competitive battle against your friends where you take turns choosing a secret word to draw while everyone else competes to guess it as fast as possible! Blitz mode is a chaotic, cooperative race against the clock where you split into two teams, Drawers and Guessers. Drawers share a canvas and rapidly draw words while the Guessers guess as many as possible before the time runs out.\n\nIf you just wanna sketch around, try out Free Draw, where you can draw alone or with friends!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4503731144471/Discord_SketchHeads_Lobby.png")
-    
+
     await ctx.send(embed = em, view = SketchGame(invite_link))
 
 
-@bot.slash_command(name = "sketch", description = "Start sketch game in a voice channel")
+@bot.slash_command(name = "sketch",
+                   description = "Start sketch game in a voice channel")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def sketch(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.sketch)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel")
 
     em = nextcord.Embed(title = "Sketch Game", description = f"{interaction.user.mention} has started Sketch Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Sketch Heads has two game modes: Classic and Blitz. Classic mode is a competitive battle against your friends where you take turns choosing a secret word to draw while everyone else competes to guess it as fast as possible! Blitz mode is a chaotic, cooperative race against the clock where you split into two teams, Drawers and Guessers. Drawers share a canvas and rapidly draw words while the Guessers guess as many as possible before the time runs out.\n\nIf you just wanna sketch around, try out Free Draw, where you can draw alone or with friends!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4503731144471/Discord_SketchHeads_Lobby.png")
-    
+
     await interaction.send(embed = em, view = SketchGame(invite_link))
 
 
@@ -1826,7 +1833,7 @@ async def fishington(ctx: commands.Context, channel: nextcord.VoiceChannel = Non
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.fishington)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1837,12 +1844,13 @@ async def fishington(ctx: commands.Context, channel: nextcord.VoiceChannel = Non
     await ctx.send(embed = em, view = FishingGame(invite_link))
 
 
-@bot.slash_command(name = "fishington", description = "Start fishington.io game in a voice channel")
+@bot.slash_command(name = "fishington",
+                   description = "Start fishington.io game in a voice channel")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def fishington(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.fishington)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1861,7 +1869,7 @@ async def chess(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.chess)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1877,7 +1885,7 @@ async def chess(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 async def chess(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.chess)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1895,12 +1903,13 @@ async def checkers(ctx: commands.Context, channel: nextcord.VoiceChannel = None)
         await ctx.send("Please select a voice channel.")
 
     try:
-        invite_link = await channel.create_activity_invite(activities.Activity.checker)
-    
+        invite_link = await channel.create_activity_invite( activities.Activity.checker)
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Checkers Game", description = f"{ctx.author.mention} has started Checker Game in {channel.mention}")
+    em = nextcord.Embed(title = "Checkers Game",
+        description = f"{ctx.author.mention} has started Checker Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "This is a checkers game")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4413878201879/checkers_splash.png")
 
@@ -1912,7 +1921,7 @@ async def checkers(ctx: commands.Context, channel: nextcord.VoiceChannel = None)
 async def checkers(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.checker)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1931,7 +1940,7 @@ async def betrayal(ctx: commands.Context, channel: nextcord.VoiceChannel = None)
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.betrayal)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1947,7 +1956,7 @@ async def betrayal(ctx: commands.Context, channel: nextcord.VoiceChannel = None)
 async def betrayal(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.betrayal)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -1966,7 +1975,7 @@ async def spellcast(ctx: commands.Context, channel: nextcord.VoiceChannel = None
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.spellcast)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -1979,10 +1988,10 @@ async def spellcast(ctx: commands.Context, channel: nextcord.VoiceChannel = None
 
 @bot.slash_command(name = "spellcast", description = "Start spellcast game in voice channel")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def spellcast(interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
+async def spellcast(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.spellcast)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -2001,7 +2010,7 @@ async def poker(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.poker)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -2017,7 +2026,7 @@ async def poker(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 async def poker(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.poker)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -2036,7 +2045,7 @@ async def blazing(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.blazing)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -2052,7 +2061,7 @@ async def blazing(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 async def blazing(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.blazing)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -2071,14 +2080,13 @@ async def letterleague(ctx: commands.Context, channel: nextcord.VoiceChannel = N
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.letter_league)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
     em = nextcord.Embed(title = "Letter League Game", description = f"{ctx.author.mention} has started Letter League Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Letter League is a game where you and your friends take turns placing letters on a shared game board to create words in a crossword-style. Spelling words with high earning letters and placing letters on special spaces earn players more points, so get your dictionaries and thesauri ready!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4419631744535/LL_Lobby.png")
-
     await ctx.send(embed = em, view = LetterLeagueGame(invite_link))
 
 
@@ -2087,11 +2095,11 @@ async def letterleague(ctx: commands.Context, channel: nextcord.VoiceChannel = N
 async def letterleague(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.letter_league)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
-    em = nextcord.Embed(title = "Letter League Game", description = f"{interaction.user.mention} has started Letter League Game in {channel.mention}")
+    em = nextcord.Embed(title = "Letter League Game", description = "{interaction.user.mention} has started Letter League Game in {channel.mention}")
     em.add_field(name = "How To Play", value = "Letter League is a game where you and your friends take turns placing letters on a shared game board to create words in a crossword-style. Spelling words with high earning letters and placing letters on special spaces earn players more points, so get your dictionaries and thesauri ready!")
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4419631744535/LL_Lobby.png")
 
@@ -2105,8 +2113,8 @@ async def wordsnacks(ctx: commands.Context, channel: nextcord.VoiceChannel = Non
         await ctx.send("Please select a voice channel.")
 
     try:
-        invite_link = await channel.create_activity_invite(activities.Activity.word_snacks)
-    
+        invite_link = await channel.create_activity_invite(ctivities.Activity.word_snacks)
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -2119,10 +2127,10 @@ async def wordsnacks(ctx: commands.Context, channel: nextcord.VoiceChannel = Non
 
 @bot.slash_command(name = "wordsnacks", description = "Start word snacks game in a voice channel")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def wordsnacks(interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
+async def wordsnacks(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.word_snacks)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -2656,7 +2664,8 @@ async def rock(Interaction: commands.Context):
 @music.command(aliases = ["p"])
 async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
     if not ctx.voice_client:
-        vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
+        vc: wavelink.Player = await ctx.author.voice.channel.connect(
+            cls = wavelink.Player)
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2667,7 +2676,7 @@ async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
 
-        em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{query.title}`")
+        em = nextcord.Embed(title = "Music Play", iption = f"Now playing -> `{query.title}`")
         em.timestamp = ctx.message.created_at
         await ctx.send(embed = em)
 
@@ -2684,11 +2693,11 @@ async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
 
 @bot.slash_command(name = "play", description = "Play a music in a voice channel")
 async def play(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel"), query: str = SlashOption(description = "Enter music name")):
-    query = await wavelink.YouTubeTrack.search(query=query, return_first=True)
+    query = await wavelink.YouTubeTrack.search(query = query, return_first = True)
 
     if not interaction.guild.voice_client:
         vc: wavelink.Player = await channel.connect(cls = wavelink.Player)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
 
@@ -2697,14 +2706,14 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
 
     if vc.queue.is_empty and not vc.is_playing():
         await vc.play(query)
-        
+
         em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{query.title}`")
         em.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em)
 
     else:
         await vc.queue.put_wait(query)
-        
+
         em2 = nextcord.Embed(title = "Music Query Add", description = f"Added `{query.title}` to the queue")
         em2.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em2)
@@ -2716,11 +2725,12 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
 @music.command(aliases = ["spotify", "sp", "splay"])
 async def spotifyplay(ctx: commands.Context, *, url: str):
     if not ctx.voice_client:
-        vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
-    
+        vc: wavelink.Player = await ctx.author.voice.channel.connect(
+            cls = wavelink.Player)
+
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
-    
+
     else:
         vc: wavelink.Player = ctx.voice_client
 
@@ -2728,29 +2738,29 @@ async def spotifyplay(ctx: commands.Context, *, url: str):
         try:
             decodeURL = spotify.decode_url(url)
             track = await spotify.SpotifyTrack.search(query = decodeURL['id'], return_first = True)
-            
+
             await vc.play(track)
 
             em = nextcord.Embed(title = "Spotify Play", description = f"Now playing -> `{track.title}`")
             em.timestamp = ctx.message.created_at
             await ctx.send(embed = em)
-        
+
         except Exception as err:
             await ctx.reply("Please insert a spotify song URL.")
             print(err)
-    
+
     else:
         await vc.queue.put_wait(track)
 
         em2 = nextcord.Embed(title = "Music Query Add", description = f"Added `{track.title}` to the queue")
         em2.timestamp = ctx.message.created_at
         await ctx.send(embed = em2)
-    
+
     vc.ctx = ctx
-    
+
     if vc.loop:
         return
-    
+
     setattr(vc, "loop", False)
 
 
@@ -2758,10 +2768,10 @@ async def spotifyplay(ctx: commands.Context, *, url: str):
 async def spotifyplay(interaction: Interaction, *, url: str):
     if not interaction.guild.voice_client:
         vc: wavelink.Player = await interaction.user.voice.channel.connect(cls = wavelink.Player)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
@@ -2769,29 +2779,29 @@ async def spotifyplay(interaction: Interaction, *, url: str):
         try:
             decodeURL = spotify.decode_url(url)
             track = await spotify.SpotifyTrack.search(query = decodeURL['id'], return_first = True)
-            
+
             await vc.play(track)
-            
+
             em = nextcord.Embed(title = "Spotify Play", description = f"Now playing -> `{track.title}`")
             em.timestamp = datetime.datetime.utcnow()
             await interaction.send(embed = em)
-        
+
         except Exception as err:
             await interaction.send("Please insert a spotify song url.")
             print(err)
-    
+
     else:
         await vc.queue.put_wait(track)
 
         em2 = nextcord.Embed(title = "Music Query Add", description = f"Added `{track.title}` to the queue")
         em2.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em2)
-    
+
     vc.interaction = interaction
-    
+
     if vc.loop:
         return
-    
+
     setattr(vc, "loop", False)
 
 
@@ -2817,10 +2827,10 @@ async def pause(ctx: commands.Context):
 async def pause(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
@@ -2853,15 +2863,15 @@ async def resume(ctx: commands.Context):
 async def resume(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.resume()
-    
+
     em = nextcord.Embed(title = "Music Resume", description = "Successfully resumed the music", color = 0x2CCE71)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
@@ -2889,22 +2899,22 @@ async def stop(ctx: commands.Context):
 async def stop(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not connected to the voice channel.", ephemeral = True)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.stop()
-    
+
     em = nextcord.Embed(title = "Music Stop", description = "Successfully stop the music", color = 0x2CCE71)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
 
 
 @music.command(aliases = ["dc"])
-@commands.has_permissions(administrator = True)
+@commands.has_permissions(administrator=True)
 async def disconnect(ctx: commands.Context):
     if not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2919,17 +2929,18 @@ async def disconnect(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "disconnect", description = "Disconnect the bot from the voice channel.")
-@application_checks.has_permissions(administrator = True)
+@bot.slash_command(name = "disconnect",
+                   description = "Disconnect the bot from the voice channel.")
+@application_checks.has_permissions(administrator=True)
 async def disconnect(interaction: Interaction):
     if not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
     await vc.disconnect()
-    
+
     em = nextcord.Embed(title = "Disconnected", description = "Successfully left the voice channel", color = 0x2CCE71)
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
@@ -2939,16 +2950,16 @@ async def disconnect(interaction: Interaction):
 async def loop(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in the voice channel.", mention_author = False)
-    
+
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
-    
+
     else:
         vc: wavelink.Player = ctx.voice_client
 
     try:
         vc.loop ^= True
-    
+
     except Exception:
         setattr(vc, "loop", False)
 
@@ -2956,7 +2967,7 @@ async def loop(ctx: commands.Context):
         em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled", color = 0x2CCE71)
         em.timestamp = ctx.message.created_at
         await ctx.send(embed = em)
-    
+
     else:
         em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled", color = 0x2CCE71)
         em2.timestamp = datetime.datetime.utcnow()
@@ -2967,7 +2978,7 @@ async def loop(ctx: commands.Context):
 async def loop(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
 
@@ -2976,7 +2987,7 @@ async def loop(interaction: Interaction):
 
     try:
         vc.loop ^= True
-    
+
     except Exception:
         setattr(vc, "loop", False)
 
@@ -2984,7 +2995,7 @@ async def loop(interaction: Interaction):
         em = nextcord.Embed(title = "Music Loop", description = "Music loop has been enabled", color = 0x2CCE71)
         em.timestamp = datetime.datetime.utcnow()
         await interaction.send(embed = em)
-    
+
     else:
         em2 = nextcord.Embed(title = "Music Loop", description = "Music loop has been disabled", color = 0x2CCE71)
         em2.timestamp = datetime.datetime.utcnow()
@@ -2995,7 +3006,7 @@ async def loop(interaction: Interaction):
 async def queue(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in the voice channel.", mention_author = False)
-    
+
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
@@ -3004,16 +3015,16 @@ async def queue(ctx: commands.Context):
 
     if vc.queue.is_empty:
         await ctx.reply("The queue is empty.")
-    
+
     else:
         em = nextcord.Embed(title = "Queue")
         queue = vc.queue.copy()
         song_count = 0
-    
+
         for song in queue:
             song_count += 1
             em.add_field(name = f"Queue Number {str(song_count)}", value = f"{song}", inline = False)
-    
+
         await ctx.send(embed = em)
 
 
@@ -3021,16 +3032,16 @@ async def queue(ctx: commands.Context):
 async def queue(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not connected to the voice channel.", ephemeral = True)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
     if vc.queue.is_empty:
         await interaction.send("Queue is empty.")
-    
+
     else:
         em = nextcord.Embed(title = "Queue")
         queue = vc.queue.copy()
@@ -3057,7 +3068,7 @@ async def volume(ctx: commands.Context, volume: int):
     if isinstance(volume, int) and 0 <= volume <= 200:
         volume /= 200
 
-        await vc.set_volume(volume = volume)
+        await vc.set_volume(volume=volume)
 
         em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
         em.timestamp = ctx.message.created_at
@@ -3079,7 +3090,7 @@ async def volume(interaction: Interaction, volume: int):
     if isinstance(volume, int) and 0 <= volume <= 200:
         volume /= 200
 
-        await vc.set_volume(volume = volume)
+        await vc.set_volume(volume=volume)
 
         em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
         em.timestamp = datetime.datetime.utcnow()
@@ -3090,8 +3101,8 @@ async def volume(interaction: Interaction, volume: int):
 @music.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
 async def nowplaying(ctx: commands.Context):
     if not ctx.voice_client:
-        return await ctx.reply("I'm not in the voice channel.", mention_author = False)
-    
+        return await ctx.reply("I'm not in the voice channel.",ntion_author = False)
+
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
@@ -3100,10 +3111,10 @@ async def nowplaying(ctx: commands.Context):
 
     if not vc.is_playing():
         await ctx.reply("There is no current playing music.")
-    
+
     else:
         em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}")
-        em.add_field(name = "Duration", value = f"`{str(datetime.timedelta(seconds=vc.track.length))}`")
+        em.add_field(name = "Duration", value = f"`{str(datetime.timedelta(seconds = vc.track.length))}`")
         em.add_field(name = "Song Info", value = f"Song URL : [Click Here]({str(vc.track.uri)})")
         await ctx.send(embed = em)
 
@@ -3112,19 +3123,19 @@ async def nowplaying(ctx: commands.Context):
 async def nowplaying(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.", ephemeral = True)
-    
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
     if not vc.is_playing():
         await interaction.send("There is no current playing music.")
-    
+
     else:
         em = nextcord.Embed(title = f"Now Playing -> {vc.track.title}", description = f"Artist : {vc.track.author}")
-        em.add_field(name = "Duration", value = f"`{str(datetime.timedelta(seconds=vc.track.length))}`")
+        em.add_field( name = "Duration", value = f"`{str(datetime.timedelta(seconds = vc.track.length))}`")
         em.add_field(name = "Song Info", value = f"Song URL : [Click Here]({str(vc.track.uri)})")
         await interaction.send(embed = em)
 
@@ -3133,51 +3144,51 @@ async def nowplaying(interaction: Interaction):
 async def lyrics(ctx: commands.Context):
     if not ctx.voice_client:
         return await ctx.reply("I'm not in the voice channel.", mention_author = False)
-    
+
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
-    
+
     else:
         vc: wavelink.Player = ctx.voice_client
 
     song = vc.track.title
 
     async with ctx.typing():
-        async with aiohttp.request("GET", lyrics_url + song, headers = {}) as r:
+        async with aiohttp.request("GET", lyrics_url + song, headers={}) as r:
             if not 200 <= r.status <= 299:
                 raise NoLyricsFound
-    
+
             data = await r.json()
 
             await ctx.send(f"<{data['links']['genius']}>")
 
-            
             if len(data['lyrics']) > 2000:
                 await ctx.send(f"<{data['links']['genius']}>")
-            
+
             em = nextcord.Embed(title = data['title'], description = data['lyrics'])
             em.set_thumbnail(url = data['thumbnail']['genius'])
             em.set_author(name = data['author'])
             em.timestamp = ctx.message.created_at
-    
+
             await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "lyrics", description = "Get the current playing music lyrics")
+@bot.slash_command(name = "lyrics",
+                   description = "Get the current playing music lyrics")
 async def lyrics(interaction: Interaction):
     if not interaction.guild.voice_client:
-        return await interaction.send("I'm not in the voice channel.", ephemeral = True)
-    
+        return await interaction.send("I'm not in the voice channel.",ephemeral = True)
+
     elif not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
-    
+
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
     song = interaction.track.title
 
     async with interaction.channel.typing():
-        async with aiohttp.request("GET", lyrics_url + song, headers = {}) as r:
+        async with aiohttp.request("GET", lyrics_url + song, headers={}) as r:
             if not 200 <= r.status <= 299:
                 raise NoLyricsFound
 
@@ -3218,7 +3229,7 @@ async def youtube(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.youtube)
-    
+
     except nextcord.HTTPException:
         await ctx.send("Please mention a voice channel.")
 
@@ -3234,7 +3245,7 @@ async def youtube(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
 async def youtube(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
         invite_link = await channel.create_activity_invite(activities.Activity.youtube)
-    
+
     except nextcord.HTTPException:
         await interaction.send("Please mention a voice channel.")
 
@@ -3252,7 +3263,7 @@ async def ping(ctx: commands.Context):
 
 @bot.slash_command(name = "ping", description = "Shows the bot latency")
 async def ping(interaction: Interaction):
-  await interaction.response.send_message(f"{round(bot.latency * 1000)}ms")
+    await interaction.response.send_message(f"{round(bot.latency * 1000)}ms")
 
 
 @bot.command()
@@ -3265,12 +3276,12 @@ async def weather(ctx: commands.Context, *, city: str = None):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">weather [city]", inline = False)
         em.add_field(name = "Example", value = ">weather Medan", inline = False)
-        
+
         await ctx.send(embed = em)
 
     api_key = os.environ["WEATHER_API_KEY"]
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid=" + api_key + "&q=" + city
+    complete_url = base_url + "appid = " + api_key + "&q=" + city
     res = requests.get(complete_url)
     x = res.json()
 
@@ -3282,7 +3293,7 @@ async def weather(ctx: commands.Context, *, city: str = None):
         current_humidity = y["humidity"]
         z = x["weather"]
         weather_description = z[0]["description"]
-    
+
         em = nextcord.Embed(title = f"{city.title()} Weather Information")
         em.add_field(name = "Weather Description", value = f"**{weather_description.title()}**", inline = False)
         em.add_field(name = "Temperature (C)", value = f"**{current_temperature_celcius}°C**", inline = False)
@@ -3291,9 +3302,9 @@ async def weather(ctx: commands.Context, *, city: str = None):
         em.add_field(name = "Humidity (%)", value = f"{current_humidity}", inline = False)
         em.set_thumbnail(url = "https://i.ibb.co/CMrsxdX/weather.png")
         em.timestamp = ctx.message.created_at
-    
+
         await ctx.send(embed = em)
-    
+
     else:
         await ctx.send(f"No City Found - {city}")
 
@@ -3303,7 +3314,7 @@ async def weather(ctx: commands.Context, *, city: str = None):
 async def weather(interaction: Interaction, *, city: str):
     api_key = os.environ["WEATHER_API_KEY"]
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid=" + api_key + "&q=" + city
+    complete_url = base_url + "appid = " + api_key + "&q=" + city
     res = requests.get(complete_url)
     x = res.json()
 
@@ -3315,7 +3326,7 @@ async def weather(interaction: Interaction, *, city: str):
         current_humidity = y["humidity"]
         z = x["weather"]
         weather_description = z[0]["description"]
-    
+
         em = nextcord.Embed(title = f"{city.title()} Weather Information")
         em.add_field(name = "Weather Description", value = f"**{weather_description.title()}**", inline = False)
         em.add_field(name = "Temperature (C)", value = f"**{current_temperature_celcius}°C**", inline = False)
@@ -3324,9 +3335,9 @@ async def weather(interaction: Interaction, *, city: str):
         em.add_field(name = "Humidity (%)", value = f"{current_humidity}", inline = False)
         em.set_thumbnail(url = "https://i.ibb.co/CMrsxdX/weather.png")
         em.timestamp = datetime.datetime.utcnow()
-    
+
         await interaction.send(embed = em)
-    
+
     else:
         await interaction.send(f"No City Found - {city}")
 
@@ -3341,14 +3352,14 @@ async def movie(ctx: commands.Context, *, movie_name = None):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">movie [name]", inline = False)
         em.add_field(name = "Example", value = ">movie Interstellar", inline = False)
-        
+
         await ctx.send(embed = em)
-    
+
     moviesDB = IMDb()
-    
+
     try:
         movies = moviesDB.search_movie(movie_name)
-    
+
     except:
         await ctx.reply(f"No Movie Found - {movie_name.title()}", mention_author = False)
 
@@ -3376,10 +3387,10 @@ async def movie(ctx: commands.Context, *, movie_name = None):
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def movie(interaction: Interaction, *, movie_name):
     moviesDB = IMDb()
-    
+
     try:
         movies = moviesDB.search_movie(movie_name)
-    
+
     except:
         await interaction.send(f"No Movie Found - {movie_name.title()}")
 
@@ -3411,7 +3422,8 @@ async def cv(ctx: commands.Context, *, country):
     if r.status_code != 200:
         await ctx.reply(f"Request Failed - {r}")
 
-    found = list(filter(lambda entry: entry["Country"] == country, r.json()["Countries"]))
+    found = list(
+        filter(lambda entry: entry["Country"] == country, r.json()["Countries"]))
 
     if len(found) == 0:
         await ctx.reply(f"Invalid Country - {country.title()}")
@@ -3424,11 +3436,12 @@ async def cv(ctx: commands.Context, *, country):
     em.add_field(name = "New Confirmed", value = data["NewConfirmed"])
     em.add_field(name = "New Deaths", value = data["NewDeaths"])
     em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEmOzOKPIksnXgZ00ad4ktLbRg0MT7B-K-Eg>usqp=CAU")
-    
+
     await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "cv", description = "Get some country COVID-19 informations")
+@bot.slash_command(name = "cv",
+                   description = "Get some country COVID-19 informations")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def cv(interaction: Interaction, *, country):
     r = requests.get("https://api.covid19api.com/summary")
@@ -3436,7 +3449,8 @@ async def cv(interaction: Interaction, *, country):
     if r.status_code != 200:
         await interaction.send(f"Request Failed - {r}", mention_author = False)
 
-    found = list(filter(lambda entry: entry["Country"] == country, r.json()["Countries"]))
+    found = list(
+        filter(lambda entry: entry["Country"] == country, r.json()["Countries"]))
 
     if len(found) == 0:
         await interaction.reply(f"Invalid Country - {country.title()}")
@@ -3449,7 +3463,7 @@ async def cv(interaction: Interaction, *, country):
     em.add_field(name = "New Confirmed", value = data["NewConfirmed"])
     em.add_field(name = "New Deaths", value = data["NewDeaths"])
     em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEmOzOKPIksnXgZ00ad4ktLbRg0MT7B-K-Eg>usqp=CAU")
-    
+
     await interaction.send(embed = em)
 
 
@@ -3457,7 +3471,7 @@ async def cv(interaction: Interaction, *, country):
 async def afk(ctx: commands.Context, *, reason = None):
     if reason == None:
         reason = "AFK"
-    
+
     async with bot.db.cursor() as cursor:
         await cursor.execute("SELECT reason FROM afk WHERE user = ? AND guild = ?", (ctx.author.id, ctx.guild.id,))
         data = await cursor.fetchone()
@@ -3465,22 +3479,22 @@ async def afk(ctx: commands.Context, *, reason = None):
         if data:
             if data[0] == reason:
                 return await ctx.send("You've been AFK with the same reason.")
-            
+
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (ctx.author.id, ctx.guild.id,))
-        
+
         else:
             await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (ctx.author.id, ctx.guild.id, reason))
-            
+
             em = nextcord.Embed(title = "AFK", description = f"{ctx.author.mention}, I set your AFK - `{reason}`")
             em.timestamp = ctx.message.created_at
-            
+
             await ctx.send(embed = em)
-    
+
     await bot.db.commit()
 
 
 @bot.slash_command(name = "afk", description = "Go AFK")
-async def afk(interaction: Interaction, *, reason):    
+async def afk(interaction: Interaction, *, reason):
     async with bot.db.cursor() as cursor:
         await cursor.execute("SELECT reason FROM afk WHERE user = ? AND guild = ?", (interaction.user.id, interaction.guild.id,))
         data = await cursor.fetchone()
@@ -3489,14 +3503,14 @@ async def afk(interaction: Interaction, *, reason):
             if data[0] == reason:
                 return await interaction.send("You've been AFK with the same reason.")
             await cursor.execute("UPDATE afk SET reason = ? WHERE user = ? AND guild = ?", (interaction.user.id, interaction.guild.id,))
-        
+
         else:
             await cursor.execute("INSERT INTO afk (user, guild, reason) VALUES (?, ?, ?)", (interaction.user.id, interaction.guild.id, reason))
             em = nextcord.Embed(title = "AFK", description = f"{interaction.user.mention}, i set your AFK - `{reason}`")
             em.timestamp = datetime.datetime.utcnow()
-            
+
             await interaction.send(embed = em)
-    
+
     await bot.db.commit()
 
 
@@ -3548,8 +3562,8 @@ async def quote(interaction: Interaction):
 async def cleardm(ctx: commands.Context, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
     await ctx.reply(f"Successfully clear {amount} message(s) in your DMs.")
-    
-    async for message in dmchannel.history(limit = int(amount)):
+
+    async for message in dmchannel.history(limit=int(amount)):
         await message.delete()
 
 
@@ -3562,15 +3576,16 @@ async def cleardm_error(ctx: commands.Context, error):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">cleardm [amount]", inline = False)
         em.add_field(name = "Example", value = ">cleardm 10", inline = False)
-        
+
         await ctx.send(embed = em)
+
 
 @bot.command()
 @commands.cooldown(1, 3600, commands.BucketType.user)
 async def suggest(ctx: commands.Context, *, suggestion):
     author = ctx.author
     channel = bot.get_channel(976437035504128011)
-    
+
     em = nextcord.Embed(title = "Suggestions", description = f"**{author}** send a suggestions\n\nMessage :\n\n```py\n{suggestion}```")
     em.timestamp = datetime.datetime.utcnow()
 
@@ -3579,10 +3594,11 @@ async def suggest(ctx: commands.Context, *, suggestion):
 
 
 @bot.slash_command(name = "suggest", description = "Send suggestions")
-@cooldowns.cooldown(1, 3600, bucket = cooldowns.SlashBucket.author)
+@cooldowns.cooldown(1, 3600, bucket=cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
     await interaction.response.send_modal(Suggest())
     await interaction.send("Your suggestions has been sent. Any troll message will be ignored, and you might be blocked.", ephemeral = True)
+
 
 @bot.command()
 async def report(ctx: commands.Context, *, message):
@@ -3591,8 +3607,8 @@ async def report(ctx: commands.Context, *, message):
 
     em = nextcord.Embed(title = "Report", description = f"**{author}** send a report message\n\nMessage :\n\n```py\n{message}```", color = nextcord.Color.red())
     em.timestamp = datetime.datetime.utcnow()
-    
-    await ctx.reply("Your report message has been sent. Any false report will be ignored, and you might be blocked.", mention_author = False)
+
+    await ctx.reply("Your report message has been sent. Any false report will be ignored, and you might be blocked.",mention_author = False)
     await channel.send(embed = em)
 
 
@@ -3611,7 +3627,7 @@ async def serverreport(interaction: Interaction):
 @bot.command(aliases = ["wsay"])
 async def webhooksay(ctx: commands.Context, *, message = None):
     author = ctx.author
-    
+
     if message == None:
         em = nextcord.Embed(title = "Webhooksay")
         em.add_field(name = "Command", value = ">webhooksay|>wsay", inline = False)
@@ -3619,14 +3635,14 @@ async def webhooksay(ctx: commands.Context, *, message = None):
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">webhooksay [message]", inline = False)
         em.add_field(name = "Example", value = ">webhooksay Hello", inline = False)
-        
+
         await ctx.send(embed = em)
 
     else:
         webhook = await ctx.channel.create_webhook(name = author.name)
         await webhook.send(str(message), username = author.name, avatar_url = author.avatar.url)
         await ctx.message.delete()
-    
+
         webhooks = await ctx.channel.webhooks()
         for webhook in webhooks:
             await webhook.delete()
@@ -3653,7 +3669,7 @@ async def avatar(ctx: commands.Context, member: nextcord.User = None):
 async def avatar(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         member = interaction.user
-    
+
     icon_url = member.avatar.url
 
     em = nextcord.Embed()
@@ -3682,7 +3698,7 @@ async def userinfo(ctx: commands.Context, member: nextcord.User = None):
     embed.add_field(name = "Server Nickname", value = member.display_name, inline = False)
     embed.add_field(name = "Created At", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
     embed.add_field(name = "Joined At", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
-    embed.add_field(name = "Join Position", value = str(members.index(member)+1), inline = False)
+    embed.add_field(name = "Join Position", value = str(members.index(member) + 1), inline = False)
     embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
     embed.add_field(name = "Top Role", value = member.top_role.mention, inline = False)
     embed.add_field(name = "Bot", value = member.bot, inline = False)
@@ -3695,7 +3711,7 @@ async def userinfo(ctx: commands.Context, member: nextcord.User = None):
 async def userinfo(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         member = interaction.user
-    
+
     members = sorted(interaction.guild.members, key=lambda m: m.joined_at)
 
     roles = [role for role in member.roles[1:9]]
@@ -3708,7 +3724,7 @@ async def userinfo(interaction: Interaction, member: nextcord.User = None):
     embed.add_field(name = "Server Nickname : ", value = member.display_name, inline = False)
     embed.add_field(name = "Created At : ", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
     embed.add_field(name = "Joined At : ", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
-    embed.add_field(name = "Join Position", value = str(members.index(member)+1), inline = False)
+    embed.add_field(name = "Join Position", value = str(members.index(member) + 1), inline = False)
     embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
     embed.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
     embed.add_field(name = "Bot", value = member.bot, inline = False)
@@ -3762,7 +3778,7 @@ async def serverinfo(interaction: Interaction):
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def timer(ctx: commands.Context, seconds = None):
     if seconds == None:
-        em = nextcord.Embed(title = "Ban")
+        em = nextcord.Embed(title = "Timer")
         em.add_field(name = "Command", value = ">timer", inline = False)
         em.add_field(name = "Description", value = "Set a timer", inline = False)
         em.add_field(name = "Permissions Required", value = None, inline = False)
@@ -3770,10 +3786,10 @@ async def timer(ctx: commands.Context, seconds = None):
         em.add_field(name = "Example", value = ">timer 60", inline = False)
 
         await ctx.send(embed = em)
-    
+
     try:
         secondint = int(seconds)
-        
+
         if secondint <= 0:
             await ctx.reply("I don't think I can do negatives.", mention_author = False)
             raise BaseException
@@ -3782,26 +3798,26 @@ async def timer(ctx: commands.Context, seconds = None):
 
         while True:
             secondint -= 1
-            
+
             if secondint == 0:
                 await message.edit(content = "Ended.")
                 break
 
             await message.edit(content = f"Timer : {secondint}")
             await asyncio.sleep(1)
-        
+
         await ctx.send(f"{ctx.author.mention}, your countdown has been ended.")
-    
+
     except ValueError:
         await ctx.reply("Please enter a number.", mention_author = False)
 
 
 @bot.slash_command(name = "timer", description = "Set a timer")
-@cooldowns.cooldown(1, 10, bucket = cooldowns.SlashBucket.author)
+@cooldowns.cooldown(1, 10, bucket=cooldowns.SlashBucket.author)
 async def timer(interaction: Interaction, seconds):
     try:
         secondint = int(seconds)
-        
+
         if secondint <= 0:
             await interaction.send("I don't think I can do negatives.", ephemeral = True)
             raise BaseException
@@ -3810,16 +3826,16 @@ async def timer(interaction: Interaction, seconds):
 
         while True:
             secondint -= 1
-            
+
             if secondint == 0:
                 await interaction.edit_original_message(content = "Ended.")
                 break
 
             await interaction.edit_original_message(content = f"Timer : {secondint}")
             await asyncio.sleep(1)
-        
+
         await interaction.send(f"{interaction.user.mention}, your countdown has been ended.")
-    
+
     except ValueError:
         await interaction.send("Please enter a number.", ephemeral = True)
 
@@ -3841,18 +3857,18 @@ async def poll(ctx: commands.Context, *, argument = None):
         em2 = nextcord.Embed(title = f"New Poll", description = f"{argument}")
         em2.set_footer(text = f"Poll by {ctx.author}", icon_url = ctx.author.avatar.url)
         em2.timestamp = ctx.message.created_at
-    
+
         # await ctx.message.delete()
-    
+
         poll_msg = await ctx.send(embed = em2)
-    
+
         await poll_msg.add_reaction("👍")
         await poll_msg.add_reaction("👎")
 
 
 @bot.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_messages = True)
+@commands.has_permissions(manage_messages=True)
 async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, title = None, *, message = None):
     if channel == None or title == None or message == None:
         em = nextcord.Embed(title = "Announce")
@@ -3863,13 +3879,13 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
         em.add_field(name = "Example", value = ">announce #general Hi folks", inline = False)
 
         await ctx.send(embed = em)
-    
-    
+
     else:
         await ctx.reply("Announcement has been sent.", mention_author = False)
 
         em2 = nextcord.Embed(title = f"{title}", description = f"{message}")
-        em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
+        em2.set_footer(text = f"Announcement from {ctx.author}",
+                       icon_url = ctx.author.avatar.url)
         em2.timestamp = ctx.message.created_at
 
         await channel.send(embed = em2)
@@ -3877,7 +3893,7 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
 
 @bot.slash_command(name = "announce", description = "Announce a message to a specified channel")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_messages = True)
+@application_checks.has_permissions(manage_messages=True)
 async def announce(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel"), *, title, message):
     await interaction.send("Announcement has been sent.", ephemeral = True)
 
@@ -3917,7 +3933,7 @@ async def servericon(interaction: Interaction):
 async def id(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         await ctx.reply(ctx.author.id, mention_author = False)
-    
+
     else:
         await ctx.reply(member.id, mention_author = False)
 
@@ -3927,7 +3943,7 @@ async def id(ctx: commands.Context, member: nextcord.User = None):
 async def id(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         await interaction.send(ctx.author.id)
-    
+
     else:
         await interaction.send(member.id)
 
@@ -3956,7 +3972,7 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 
     try:
         emoji = await emoji.guild.fetch_emoji(emoji.id)
-    
+
     except nextcord.NotFound:
         await ctx.reply("Couldn't find the emoji.")
 
@@ -3990,10 +4006,10 @@ async def dm(ctx: commands.Context, member: nextcord.User, *, content):
 
     try:
         await user.send(content)
-    
+
     except nextcord.Forbidden:
         await ctx.reply("Couldn't DM that user.")
-    
+
     await ctx.reply("Message has been sent.")
 
 
@@ -4046,7 +4062,7 @@ async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
 
     try:
         await channel.send(f"{msg}")
-    
+
     except nextcord.Forbidden:
         await ctx.reply("I don't have permissions to send a message in that channel.")
 
@@ -4068,7 +4084,6 @@ async def toggle(ctx: commands.Context, *, command):
 
         em = nextcord.Embed(title = "Command Toggle", description = f"Successfully {ternary} command {command.qualified_name}", color = 0x2CCE71)
         await ctx.send(embed = em)
-        
 
 
 @bot.command()
@@ -4096,7 +4111,8 @@ async def creator(ctx: commands.Context):
 
 @bot.command(aliases = ["born"])
 async def created(ctx: commands.Context):
-    await ctx.reply("I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
+    await ctx.reply(
+        "I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
 
 
 @bot.command(aliases = ["ver", "__ver__" "__version__"])
@@ -4136,12 +4152,12 @@ async def createinvite(ctx: commands.Context, guildid: int):
 
         while invitelink == "":
             channel = guild.text_channels[i]
-            link = await channel.create_invite(max_age = 0, max_uses = 0)
+            link = await channel.create_invite(max_age=0, max_uses=0)
             invitelink = str(link)
             i += 1
-        
+
         await ctx.send(invitelink)
-    
+
     except Exception:
         await ctx.send("Something wrong.")
 
@@ -4153,7 +4169,7 @@ async def join(ctx: commands.Context):
         channel = ctx.message.author.voice.channel
         await channel.connect()
         await ctx.reply("Successfully joined the voice chat.")
-    
+
     else:
         await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
 
@@ -4164,7 +4180,7 @@ async def left(ctx: commands.Context):
     if (ctx.voice_client):
         await ctx.guild.voice_bot.disconnect()
         await ctx.reply("Successfully left the voice channel.")
-    
+
     else:
         await ctx.reply("I'm not in the voice channel.")
 
@@ -4178,7 +4194,7 @@ async def eval(ctx: commands.Context, *, code):
     try:
         with contextlib.redirect_stdout(str_obj):
             exec(code)
-    
+
     except Exception as err:
         return await ctx.send(f"```py\n{err.__class__.__name__}: {err}```")
 
@@ -4194,7 +4210,7 @@ async def eval(interaction: Interaction, *, code):
     try:
         with contextlib.redirect_stdout(str_obj):
             exec(code)
-    
+
     except Exception as err:
         return await interaction.send(f"```py\n{err.__class__.__name__}: {err}```")
 
