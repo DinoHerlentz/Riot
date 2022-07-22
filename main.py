@@ -345,7 +345,7 @@ class BlazingGame(nextcord.ui.View):
 class YouTubeGame(nextcord.ui.View):
     def __init__(self, link: str):
         super().__init__()
-        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:yt:995156093770666074>"))
+        self.add_item(nextcord.ui.Button(style = nextcord.ButtonStyle.link, url = f"{link}", label = "Click here to join", emoji = "<:yt:999934151262208040>"))
 
 
 class LetterLeagueGame(nextcord.ui.View):
