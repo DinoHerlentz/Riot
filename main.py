@@ -64,7 +64,7 @@ def is_me():
 @bot.group(invoke_without_command = True, aliases = ["mod"])
 async def moderation(ctx: commands.Context):
     em = nextcord.Embed(title = "Moderation Command (>moderation [command])")
-    em.add_field(name = "Command", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, changetextchannelname")
+    em.add_field(name = "Command", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn")
 
     await ctx.send(embed = em)
 
