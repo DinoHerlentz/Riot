@@ -3632,9 +3632,9 @@ async def webhooksay(ctx: commands.Context, *, message = None):
             await webhook.delete()
 
 
-@bot.command(aliases = ["avatar"])
+@bot.command(aliases = ["av"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def av(ctx: commands.Context, member: nextcord.User = None):
+async def avatar(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         member = ctx.author
 
@@ -3650,7 +3650,7 @@ async def av(ctx: commands.Context, member: nextcord.User = None):
 
 @bot.slash_command(name = "avatar", description = "Shows user avatar")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def av(interaction: Interaction, member: nextcord.User = None):
+async def avatar(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         member = interaction.user
     
@@ -3762,29 +3762,38 @@ async def serverinfo(interaction: Interaction):
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def timer(ctx: commands.Context, seconds = None):
     if seconds == None:
-        timer_delete = await ctx.send("**Please enter a number of timer countdown (second).**")
-        await asyncio.sleep(3)
-        await timer_delete.delete()
+        em = nextcord.Embed(title = "Ban")
+        em.add_field(name = "Command", value = ">timer", inline = False)
+        em.add_field(name = "Description", value = "Set a timer", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
+        em.add_field(name = "Usage", value = ">timer [seconds]", inline = False)
+        em.add_field(name = "Example", value = ">timer 60", inline = False)
+
+        await ctx.send(embed = em)
     
     try:
         secondint = int(seconds)
+        
         if secondint <= 0:
-            await ctx.send("I don't think I can do negatives.")
+            await ctx.reply("I don't think I can do negatives.", mention_author = False)
             raise BaseException
 
         message = await ctx.send(f"Timer : {seconds}")
 
         while True:
             secondint -= 1
+            
             if secondint == 0:
-                await message.edit(content = "Ended!")
+                await message.edit(content = "Ended.")
                 break
 
             await message.edit(content = f"Timer : {secondint}")
             await asyncio.sleep(1)
-        await ctx.send(f"{ctx.author.mention}, your countdown has been ended!")
+        
+        await ctx.send(f"{ctx.author.mention}, your countdown has been ended.")
+    
     except ValueError:
-        await ctx.reply("**Please enter a number.**")
+        await ctx.reply("Please enter a number.", mention_author = False)
 
 
 @bot.slash_command(name = "timer", description = "Set a timer")
@@ -3792,23 +3801,27 @@ async def timer(ctx: commands.Context, seconds = None):
 async def timer(interaction: Interaction, seconds):
     try:
         secondint = int(seconds)
+        
         if secondint <= 0:
-            await interaction.send("I don't think I can do negatives.")
+            await interaction.send("I don't think I can do negatives.", ephemeral = True)
             raise BaseException
 
         original_message = await interaction.send(f"Timer : {seconds}")
 
         while True:
             secondint -= 1
+            
             if secondint == 0:
-                await interaction.edit_original_message(content = "Ended!")
+                await interaction.edit_original_message(content = "Ended.")
                 break
 
             await interaction.edit_original_message(content = f"Timer : {secondint}")
             await asyncio.sleep(1)
-        await interaction.send(f"{interaction.user.mention}, your countdown has been ended!")
+        
+        await interaction.send(f"{interaction.user.mention}, your countdown has been ended.")
+    
     except ValueError:
-        await interaction.send("**Please enter a number.**")
+        await interaction.send("Please enter a number.", ephemeral = True)
 
 
 @bot.command()
@@ -3911,8 +3924,12 @@ async def id(ctx: commands.Context, member: nextcord.User = None):
 
 @bot.slash_command(name = "id", description = "Get user ID")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def id(interaction: Interaction, member: nextcord.User):
-    await interaction.send(member.id)
+async def id(interaction: Interaction, member: nextcord.User = None):
+    if member == None:
+        await interaction.send(ctx.author.id)
+    
+    else:
+        await interaction.send(member.id)
 
 
 @bot.command(aliases = ["mc"])
