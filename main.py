@@ -16,6 +16,7 @@ import animec
 import aiosqlite
 import aiohttp
 import psutil
+from traceback import format_exception
 from imdb import IMDb
 from wavelink.ext import spotify
 from async_timeout import timeout
@@ -4164,8 +4165,9 @@ async def eval(ctx: commands.Context, *, code):
         with contextlib.redirect_stdout(str_obj):
             exec(code)
 
-    except Exception as err:
-        return await ctx.send(f"```py\n{err.__class__.__name__}: {err}```")
+    except Exception as e:
+        em = nextcord.Embed(title = "❌ Error ❌", description = "```py\n" + "".join(format_exception(e.__class__, e, e.__traceback__)) + "```", color = nextcord.Color.red())
+        return await ctx.send(embed = em)
 
     await ctx.send(f"```py\n{str_obj.getvalue()}```")
 
@@ -4180,8 +4182,9 @@ async def eval(interaction: Interaction, *, code):
         with contextlib.redirect_stdout(str_obj):
             exec(code)
 
-    except Exception as err:
-        return await interaction.send(f"```py\n{err.__class__.__name__}: {err}```")
+    except Exception as e:
+        em = nextcord.Embed(title = "❌ Error ❌", description = "```py\n" + "".join(format_exception(e.__class__, e, e.__traceback__)) + "```", color = nextcord.Color.red())
+        return await interaction.send(embed = em)
 
     await interaction.send(f"```py\n{str_obj.getvalue()}```")
 
