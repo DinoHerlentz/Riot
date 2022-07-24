@@ -3942,7 +3942,7 @@ async def id(ctx: commands.Context, member: nextcord.User = None):
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def id(interaction: Interaction, member: nextcord.User = None):
     if member == None:
-        await interaction.send(ctx.author.id)
+        await interaction.send(interaction.user.id)
 
     else:
         await interaction.send(member.id)
