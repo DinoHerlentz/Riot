@@ -30,9 +30,7 @@ from nextcord.abc import GuildChannel
 from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissions, MissingRequiredArgument, BotMissingPermissions, CommandOnCooldown, DisabledCommand, MemberNotFound
 from keep_alive import keep_alive
 
-intents = nextcord.Intents.default()
-intents.members = True
-intents.message_content = True
+intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix=">", intents=intents, case_insensitive=True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
@@ -4170,23 +4168,6 @@ async def eval(ctx: commands.Context, *, code):
         return await ctx.send(embed = em)
 
     await ctx.send(f"```py\n{str_obj.getvalue()}```")
-
-
-@bot.slash_command(name = "eval", description = "Run python code (owner only)")
-@application_checks.is_owner()
-async def eval(interaction: Interaction, *, code):
-    code = clean_code(code)
-    str_obj = io.StringIO()
-
-    try:
-        with contextlib.redirect_stdout(str_obj):
-            exec(code)
-
-    except Exception as e:
-        em = nextcord.Embed(title = "❌ Error ❌", description = "```py\n" + "".join(format_exception(e.__class__, e, e.__traceback__)) + "```", color = nextcord.Color.red())
-        return await interaction.send(embed = em)
-
-    await interaction.send(f"```py\n{str_obj.getvalue()}```")
 
 
 keep_alive()
