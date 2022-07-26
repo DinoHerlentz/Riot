@@ -31,7 +31,7 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 from keep_alive import keep_alive
 
 intents = nextcord.Intents.all()
-bot = commands.Bot(command_prefix=">", intents=intents, case_insensitive=True)
+bot = commands.Bot(command_prefix=">", intents=intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 hugs = json.load(open("hugs.json"))
@@ -59,7 +59,7 @@ def is_me():
 
 
 # Group Command
-@bot.group(invoke_without_command=True, aliases = ["mod"])
+@bot.group(invoke_without_command = True, aliases = ["mod"])
 async def moderation(ctx: commands.Context):
     em = nextcord.Embed(title = "Moderation Command (>moderation [command])")
     em.add_field(name = "Command", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn")
@@ -67,7 +67,7 @@ async def moderation(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.group(invoke_without_command=True, aliases = ["f"])
+@bot.group(invoke_without_command = True, aliases = ["f"])
 async def fun(ctx: commands.Context):
     em = nextcord.Embed(title = "Fun Command (>fun [command])")
     em.add_field(name = "Command",  value =  "memes, game, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, ping, emojify, handsome, beautiful")
@@ -75,7 +75,7 @@ async def fun(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.group(invoke_without_command=True)
+@bot.group(invoke_without_command = True)
 async def anime(ctx: commands.Context):
     em = nextcord.Embed(title = "Anime Command (>anime [command])")
     em.add_field(name = "Commands", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe")
@@ -88,7 +88,7 @@ async def animeslash(interaction: Interaction):
     return
 
 
-@bot.group(invoke_without_command=True, aliases = ["m"])
+@bot.group(invoke_without_command = True, aliases = ["m"])
 async def music(ctx: commands.Context):
     em = nextcord.Embed(title = "Music Command (>music [command])")
     em.add_field(name = "Command", value = "play, splay, pause, resume, stop, disconnect, loop, queue, nowplaying, lyrics")
@@ -96,7 +96,7 @@ async def music(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.group(invoke_without_command=True, aliases = ["c"])
+@bot.group(invoke_without_command = True, aliases = ["c"])
 async def capybara(ctx: commands.Context):
     em = nextcord.Embed(title = "Capybara Command (>capybara [command])")
     em.add_field(name = "Commands", value = "large, medium, small, original, facts")
@@ -580,7 +580,7 @@ async def help(interaction: Interaction):
 # Moderation Command
 @moderation.command(aliases = ["b"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(ban_members=True)
+@commands.has_permissions(ban_members = True)
 async def ban(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Ban")
@@ -612,7 +612,7 @@ async def ban(ctx: commands.Context, member: nextcord.User = None, *, reason = N
 
 @bot.slash_command(name = "ban", description = "Ban a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(ban_members=True)
+@application_checks.has_permissions(ban_members = True)
 async def ban(interaction: Interaction, member: nextcord.User, *, reason):
     if member.id == interaction.user.id:
         await interaction.send("❌ You can't ban yourself.", ephemeral = True)
@@ -632,7 +632,7 @@ async def ban(interaction: Interaction, member: nextcord.User, *, reason):
 
 @moderation.command(aliases = ["uba", "u"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(ban_members=True)
+@commands.has_permissions(ban_members = True)
 async def unban(ctx: commands.Context, member = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Unban")
@@ -659,7 +659,7 @@ async def unban(ctx: commands.Context, member = None, *, reason = None):
 
 @bot.slash_command(name = "unban", description = "Unban a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(ban_members=True)
+@application_checks.has_permissions(ban_members = True)
 async def unban(interaction: Interaction, member, *, reason):
     banned_users = await interaction.guild.bans()
     member_name, member_discriminator = member.split("#")
@@ -676,7 +676,7 @@ async def unban(interaction: Interaction, member, *, reason):
 
 @moderation.command(aliases = ["to", "mute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(moderate_members=True)
+@commands.has_permissions(moderate_members = True)
 async def timeout(ctx: commands.Context, member: nextcord.User = None, time = None, *, reason = None):
     if member == None or time == None:
         em = nextcord.Embed(title = "Timeout")
@@ -709,7 +709,7 @@ async def timeout(ctx: commands.Context, member: nextcord.User = None, time = No
 
 @bot.slash_command(name = "timeout", description = "Timeout a member so they can't chat/speak/react to a message")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(moderate_members=True)
+@application_checks.has_permissions(moderate_members = True)
 async def timeout(interaction: Interaction, member: nextcord.User, time, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't mute yourself.", ephemeral = True)
@@ -730,7 +730,7 @@ async def timeout(interaction: Interaction, member: nextcord.User, time, *, reas
 
 @moderation.command(aliases = ["rt", "unmute"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(moderate_members=True)
+@commands.has_permissions(moderate_members = True)
 async def removetimeout(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Remove Timeout")
@@ -757,7 +757,7 @@ async def removetimeout(ctx: commands.Context, member: nextcord.User = None, *, 
 
 @bot.slash_command(name = "removetimeout", description = "Remove timeout from a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(moderate_members=True)
+@application_checks.has_permissions(moderate_members = True)
 async def removetimeout(interaction: Interaction, member: nextcord.User, *, reason):
     if member.top_role >= interaction.user.top_role:
         await interaction.send("❌ You can only moderate members below your role.", ephemeral = True)
@@ -773,7 +773,7 @@ async def removetimeout(interaction: Interaction, member: nextcord.User, *, reas
 
 @moderation.command(aliases = ["k"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(kick_members=True)
+@commands.has_permissions(kick_members = True)
 async def kick(ctx: commands.Context, member: nextcord.User = None, *, reason = None):
     if member == None:
         em = nextcord.Embed(title = "Kick")
@@ -805,7 +805,7 @@ async def kick(ctx: commands.Context, member: nextcord.User = None, *, reason = 
 
 @bot.slash_command(name = "kick", description = "Kick a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(kick_members=True)
+@application_checks.has_permissions(kick_members = True)
 async def kick(interaction: Interaction, member: nextcord.User, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't kick yourself.", ephemeral = True)
@@ -853,7 +853,7 @@ async def warn(ctx: commands.Context, member: nextcord.User = None, *, reason = 
 
 @bot.slash_command(name = "warn", description = "Warn a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_messages=True)
+@application_checks.has_permissions(manage_messages = True)
 async def warn(interaction: Interaction, member: nextcord.User, *, reason):
     if member == interaction.user:
         await interaction.send("❌ You can't warn yourself.", ephemeral = True)
@@ -871,7 +871,7 @@ async def warn(interaction: Interaction, member: nextcord.User, *, reason):
 
 @moderation.command(aliases = ["clear", "cls"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-@commands.has_permissions(manage_messages=True)
+@commands.has_permissions(manage_messages = True)
 async def purge(ctx: commands.Context, amount = None, arg: str = None):
     if amount == None:
         em = nextcord.Embed(title = "Purge")
@@ -889,7 +889,7 @@ async def purge(ctx: commands.Context, amount = None, arg: str = None):
 
 @moderation.command(aliases = ["sm"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_channels=True)
+@commands.has_permissions(manage_channels = True)
 async def slowmode(ctx: commands.Context, seconds: int = None):
     if seconds == None:
         em = nextcord.Embed(title = "Slowmode")
@@ -909,7 +909,7 @@ async def slowmode(ctx: commands.Context, seconds: int = None):
 
 @bot.slash_command(name = "slowmode", description = "Set a slowmode to the current channel")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_channels=True)
+@application_checks.has_permissions(manage_channels = True)
 async def slowmode(interaction: Interaction, seconds: int):
     await interaction.channel.edit(slowmode_delay=seconds)
     em = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
@@ -918,7 +918,7 @@ async def slowmode(interaction: Interaction, seconds: int):
 
 @moderation.command(aliases = ["ar"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_roles=True)
+@commands.has_permissions(manage_roles = True)
 async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Add Role")
@@ -938,7 +938,7 @@ async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: 
 
 @moderation.command(aliases = ["rr"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_roles=True)
+@commands.has_permissions(manage_roles = True)
 async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
     if role == None or member == None:
         em = nextcord.Embed(title = "Remove Role")
@@ -958,7 +958,7 @@ async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, membe
 
 @moderation.command(aliases = ["cn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_nicknames=True)
+@commands.has_permissions(manage_nicknames = True)
 async def nick(ctx: commands.Context, member: nextcord.User = None, *, nickname = None):
     if member == None or nickname == None:
         em = nextcord.Embed(title = "Nick")
@@ -977,7 +977,7 @@ async def nick(ctx: commands.Context, member: nextcord.User = None, *, nickname 
 
 @bot.slash_command(name = "nick", description = "Change server member's nickname")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_nicknames=True)
+@application_checks.has_permissions(manage_nicknames = True)
 async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
     await member.edit(nick = nickname)
     await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
@@ -985,7 +985,7 @@ async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
 
 @moderation.command(aliases = ["ctcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_channels=True)
+@commands.has_permissions(manage_channels = True)
 async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextChannel = None, *, name = None):
     if channel == None or name == None:
         em = nextcord.Embed(title = "Change Text Channel Name")
@@ -1006,7 +1006,7 @@ async def changetextchannelname(ctx: commands.Context, channel: nextcord.TextCha
 
 @bot.slash_command(name = "changetextchannelname", description = "Change the specified text channel name")
 #@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_channels=True)
+@application_checks.has_permissions(manage_channels = True)
 async def changetextchannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select voice channel"), *, name):
     await channel.edit(name = name)
 
@@ -1016,7 +1016,7 @@ async def changetextchannelname(interaction: Interaction, channel: GuildChannel 
 
 @moderation.command(aliases = ["cvcn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_channels=True)
+@commands.has_permissions(manage_channels = True)
 async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceChannel = None, *, name = None):
     if channel == None or name == None:
         em = nextcord.Embed(title = "Change Voice Channel Name")
@@ -1038,7 +1038,7 @@ async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceC
 @bot.slash_command(name = "changevoicechannelname",
                    description = "Change the specified voice channel name")
 #@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_channels=True)
+@application_checks.has_permissions(manage_channels = True)
 async def changevoicechannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel"), *, name):
     await channel.edit(name = name)
 
@@ -1047,7 +1047,7 @@ async def changevoicechannelname(interaction: Interaction, channel: GuildChannel
 
 
 @moderation.command(aliases = ["ea", "eadd"])
-@commands.has_permissions(manage_emojis=True)
+@commands.has_permissions(manage_emojis = True)
 async def emojiadd(ctx: commands.Context, url: str = None, *, name = None):
     if url == None or name == None:
         em = nextcord.Embed(title = "Emoji Add")
@@ -1081,7 +1081,7 @@ async def emojiadd(ctx: commands.Context, url: str = None, *, name = None):
 
 
 @bot.slash_command(name = "emojiadd", description = "Add a custom emoji")
-@application_checks.has_permissions(manage_emojis=True)
+@application_checks.has_permissions(manage_emojis = True)
 async def emojiadd(interaction: Interaction, url: str, *, name):
     guild = interaction.guild
 
@@ -2878,7 +2878,7 @@ async def stop(interaction: Interaction):
 
 
 @music.command(aliases = ["dc"])
-@commands.has_permissions(administrator=True)
+@commands.has_permissions(administrator = True)
 async def disconnect(ctx: commands.Context):
     if not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2895,7 +2895,7 @@ async def disconnect(ctx: commands.Context):
 
 @bot.slash_command(name = "disconnect",
                    description = "Disconnect the bot from the voice channel.")
-@application_checks.has_permissions(administrator=True)
+@application_checks.has_permissions(administrator = True)
 async def disconnect(interaction: Interaction):
     if not getattr(interaction.user.voice, "channel", None):
         return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
@@ -3832,7 +3832,7 @@ async def poll(ctx: commands.Context, *, argument = None):
 
 @bot.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_messages=True)
+@commands.has_permissions(manage_messages = True)
 async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, title = None, *, message = None):
     if channel == None or title == None or message == None:
         em = nextcord.Embed(title = "Announce")
@@ -3857,7 +3857,7 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
 
 @bot.slash_command(name = "announce", description = "Announce a message to a specified channel")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_messages=True)
+@application_checks.has_permissions(manage_messages = True)
 async def announce(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel"), *, title, message):
     await interaction.send("Announcement has been sent.", ephemeral = True)
 
