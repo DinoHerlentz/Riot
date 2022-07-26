@@ -1763,8 +1763,7 @@ async def sketch(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
         return await ctx.send("Please select a voice channel.")
 
     try:
-        invite_link = await channel.create_activity_invite(
-            activities.Activity.sketch)
+        invite_link = await channel.create_activity_invite(activities.Activity.sketch)
 
     except nextcord.HTTPException:
         return await ctx.send("Please mention a voice channel")
@@ -1812,8 +1811,7 @@ async def fishington(ctx: commands.Context, channel: nextcord.VoiceChannel = Non
     await ctx.send(embed = em, view = FishingGame(invite_link))
 
 
-@bot.slash_command(name = "fishington",
-                   description = "Start fishington.io game in a voice channel")
+@bot.slash_command(name = "fishington", description = "Start fishington.io game in a voice channel")
 # @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def fishington(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
