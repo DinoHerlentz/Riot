@@ -707,9 +707,7 @@ async def timeout(ctx: commands.Context, member: nextcord.User = None, time = No
         await member.send(embed = em5)
 
 
-@bot.slash_command(
-    name = "timeout",
-    description = "Timeout a member so they can't chat/speak/react to a message")
+@bot.slash_command(name = "timeout", description = "Timeout a member so they can't chat/speak/react to a message")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(moderate_members=True)
 async def timeout(interaction: Interaction, member: nextcord.User, time, *, reason):
