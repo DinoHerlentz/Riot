@@ -2628,8 +2628,7 @@ async def rock(Interaction: commands.Context):
 @music.command(aliases = ["p"])
 async def play(ctx: commands.Context, *, query: wavelink.YouTubeTrack):
     if not ctx.voice_client:
-        vc: wavelink.Player = await ctx.author.voice.channel.connect(
-            cls = wavelink.Player)
+        vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -2689,8 +2688,7 @@ async def play(interaction: Interaction, channel: GuildChannel = SlashOption(cha
 @music.command(aliases = ["spotify", "sp", "splay"])
 async def spotifyplay(ctx: commands.Context, *, url: str):
     if not ctx.voice_client:
-        vc: wavelink.Player = await ctx.author.voice.channel.connect(
-            cls = wavelink.Player)
+        vc: wavelink.Player = await ctx.author.voice.channel.connect(cls = wavelink.Player)
 
     elif not getattr(ctx.author.voice, "channel", None):
         return await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
@@ -3485,7 +3483,7 @@ async def snipe(ctx: commands.Context):
 
     else:
         em = nextcord.Embed(title = f"Last deleted message in #{ctx.channel.name}", description = f"{snipe_message_content}")
-        em.set_footer(text = f"Deleted by {ctx.author}", icon_url = ctx.author.avatar.url)
+        em.set_footer(text = f"Sniped by {ctx.author} | Deleted by {snipe_message_author}", icon_url = ctx.author.avatar.url)
         em.timestamp = ctx.message.created_at
 
         await ctx.send(embed = em)
@@ -3498,7 +3496,7 @@ async def snipe(interaction: Interaction):
 
     else:
         em = nextcord.Embed(title = f"Last deleted message in #{interaction.channel.name}", description = f"{snipe_message_content}")
-        em.set_footer(text = f"Deleted by {interaction.user}", icon_url = interaction.user.avatar.url)
+        em.set_footer(text = f"Sniped by {interaction.user} | Deleted by {snipe_message_author}", icon_url = interaction.user.avatar.url)
         em.timestamp = datetime.datetime.utcnow()
 
         await interaction.send(embed = em)
