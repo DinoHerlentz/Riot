@@ -198,6 +198,92 @@ class ControlPanel(nextcord.ui.View):
         await interaction.message.edit(content = "Successfully left the voice channel.", view = self)
 
 
+class ControlPanelII(nextcord.ui.View):
+    def __init__(self, vc, interaction: Interaction):
+        super().__init__()
+        self.vc = vc
+        self.interaction = interaction
+    
+    
+    @nextcord.ui.button(label = "Resume/Pause", style = nextcord.ButtonStyle.blurple)
+    async def resume_and_pause(self, button: nextcord.ui.Button, interaction: Interaction):
+        if not interaction.user == self.interaction.user:
+            return await interaction.user.send_message("This panel isn't yours.", ephemeral = True)
+        
+        for child in self.children:
+            child.disabled = False
+        
+        if self.vc.is_paused():
+            await self.vc.resume()
+            await interaction.message.edit(content = "Resumed", view = self)
+        
+        else:
+            await self.vc.pause()
+            await interaction.message.edit(content = "Paused", view = self)
+    
+    
+    @nextcord.ui.button(label = "Queue", style = nextcord.ButtonStyle.blurple)
+    async def queue(self, button: nextcord.ui.Button, interaction: Interaction):
+        if not interaction.user == self.interaction.user:
+            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
+        
+        for child in self.children:
+            child.disabled = False
+        
+        button.disabled = True
+        
+        if self.vc.queue.is_empty:
+            return await interaction.response.send_message("The queue is empty.", ephemeral = True)
+        
+        em = nextcord.Embed(title = "Queue")
+        queue = self.vc.queue.copy()
+        songCount = 0
+        
+        for song in queue:
+            songCount += 1
+            em.add_field(name = f"Queue number {str(songCount)}", value = f"{song}", inline = False)
+        
+        await interaction.message.edit(embed = em, view = self)
+    
+    
+    """
+    @nextcord.ui.button(label = "Skip", style = nextcord.ButtonStyle.blurple)
+    async def skip(self, button: nextcord.ui.Button, interaction: Interaction):
+        if not interaction.user == self.interaction.user:
+            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
+        
+        for child in self.children:
+            child.disabled = False
+        
+        button.disabled = True
+        
+        
+        if self.vc.queue.is_empty and not self.vc.is_playing():
+            return await interaction.response.send_message("The queue is empty.", ephemeral = True)
+        
+        try:
+            next_song = self.vc.queue.get()
+            await self.vc.play(next_song)
+            
+            await interaction.message.edit(content = f"Now playing -> `{next_song}`", view = self)
+        
+        except Exception:
+            return await interaction.response.send_message("The queue is empty.", ephemeral = True)
+    """
+    
+    
+    @nextcord.ui.button(label = "Disconnect", style = nextcord.ButtonStyle.red)
+    async def disconnect(self, button: nextcord.ui.Button, interaction: Interaction):
+        if not interaction.user == self.interaction.user:
+            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
+        
+        for child in self.children:
+            child.disabled = True
+        
+        await self.vc.disconnect()
+        await interaction.message.edit(content = "Successfully left the voice channel.", view = self)
+
+
 class Embed(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Embed Maker")
@@ -2727,6 +2813,23 @@ async def panel(ctx: commands.Context):
     view = ControlPanel(vc, ctx)
     
     await ctx.send(embed = em, view = view)
+
+
+@bot.slash_command(name = "panel", description = "Control the music with button interaction")
+async def panel(interaction: Interaction):
+    if not interaction.guild.voice_client:
+        vc: wavelink.Player = await interaction.user.voice.channel.connect(cls = wavelink.Player)
+    
+    elif not getattr(interaction.user.voice, "channel", None):
+        return await interaction.send("You aren't connected to the voice channel.", ephemeral = True)
+    
+    else:
+        vc: wavelink.Player = interaction.guild.voice_client
+    
+    em = nextcord.Embed(title = "Music Panel", description = "Control the music with button interaction")
+    view = ControlPanelII(vc, interaction)
+    
+    await interaction.send(embed = em, view = view)
 
 
 @music.command(aliases = ["p"])
