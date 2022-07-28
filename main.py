@@ -635,8 +635,8 @@ async def help(ctx: commands.Context):
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
-    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Application Commands", value = "embed", inline = False)
+    em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
+    em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
     em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
@@ -653,8 +653,8 @@ async def help(interaction: Interaction):
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
-    em.add_field(name = "Music", value = "play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Application Commands", value = "embed", inline = False)
+    em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
+    em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
     em.add_field(name = "Miscellaneous", value = "youtube, ping, weather, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
