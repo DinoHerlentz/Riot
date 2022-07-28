@@ -91,7 +91,7 @@ async def animeslash(interaction: Interaction):
 @bot.group(invoke_without_command = True, aliases = ["m"])
 async def music(ctx: commands.Context):
     em = nextcord.Embed(title = "Music Command (>music [command])")
-    em.add_field(name = "Command", value = "play, splay, pause, resume, stop, disconnect, loop, queue, nowplaying, lyrics")
+    em.add_field(name = "Command", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, nowplaying, lyrics")
 
     await ctx.send(embed = em)
 
