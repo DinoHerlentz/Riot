@@ -728,7 +728,7 @@ async def help(ctx: commands.Context):
 
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
@@ -746,7 +746,7 @@ async def help(interaction: Interaction):
 
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, slap, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
