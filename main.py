@@ -31,7 +31,7 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 from keep_alive import keep_alive
 
 intents = nextcord.Intents.all()
-bot = commands.Bot(command_prefix=">", intents=intents, case_insensitive = True)
+bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 lyrics_url = "https://some-random-api.ml/lyrics?title="
