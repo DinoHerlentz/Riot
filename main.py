@@ -1216,8 +1216,7 @@ async def changevoicechannelname(ctx: commands.Context, channel: nextcord.VoiceC
         await ctx.reply(embed = em2, mention_author = False)
 
 
-@bot.slash_command(name = "changevoicechannelname",
-                   description = "Change the specified voice channel name")
+@bot.slash_command(name = "changevoicechannelname", description = "Change the specified voice channel name")
 #@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_channels = True)
 async def changevoicechannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel"), *, name):
@@ -1831,8 +1830,7 @@ async def sketch(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
     await ctx.send(embed = em, view = SketchGame(invite_link))
 
 
-@bot.slash_command(name = "sketch",
-                   description = "Start sketch game in a voice channel")
+@bot.slash_command(name = "sketch", description = "Start sketch game in a voice channel")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def sketch(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
     try:
@@ -2552,10 +2550,10 @@ async def gif(ctx: commands.Context):
         for value in dropdown.values:
             await ctx.send(random.choice(dogs[value]))
 
-    op1 = nextcord.SelectOption(label = "GIF", value = "gif", description = "Random dog GIFs")
-    op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing dog GIFs")
-    op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating dog GIFs")
-    op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping dog GIFs")
+    op1 = nextcord.SelectOption(label = "GIF", value = "gif", description = "Random dog GIFs", emoji = "🐶")
+    op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing dog GIFs", emoji = "😎")
+    op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating dog GIFs", emoji = "🥫")
+    op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping dog GIFs", emoji = "😴")
     dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 4)
 
     dropdown.callback = dropdown_callback
@@ -2572,10 +2570,10 @@ async def gif(interaction: Interaction):
         for value in dropdown.values:
             await interaction.send(random.choice(dogs[value]))
 
-    op1 = nextcord.SelectOption(label = "GIF", value = "gif", description = "Random dog GIFs")
-    op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing dog GIFs")
-    op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating dog GIFs")
-    op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping dog GIFs")
+    op1 = nextcord.SelectOption(label = "GIF", value = "gif", description = "Random dog GIFs", emoji = "🐶")
+    op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing dog GIFs", emoji = "😎")
+    op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating dog GIFs", emoji = "🥫")
+    op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping dog GIFs", emoji = "😴")
     dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 4)
 
     dropdown.callback = dropdown_callback
@@ -3025,8 +3023,7 @@ async def disconnect(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "disconnect",
-                   description = "Disconnect the bot from the voice channel.")
+@bot.slash_command(name = "disconnect", description = "Disconnect the bot from the voice channel.")
 @application_checks.has_permissions(administrator = True)
 async def disconnect(interaction: Interaction):
     if not getattr(interaction.user.voice, "channel", None):
@@ -3269,8 +3266,7 @@ async def lyrics(ctx: commands.Context):
             await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "lyrics",
-                   description = "Get the current playing music lyrics")
+@bot.slash_command(name = "lyrics", description = "Get the current playing music lyrics")
 async def lyrics(interaction: Interaction):
     if not interaction.guild.voice_client:
         return await interaction.send("I'm not in the voice channel.",ephemeral = True)
@@ -3570,8 +3566,7 @@ async def cv(ctx: commands.Context, *, country):
     await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "cv",
-                   description = "Get some country COVID-19 informations")
+@bot.slash_command(name = "cv", description = "Get some country COVID-19 informations")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def cv(interaction: Interaction, *, country):
     r = requests.get("https://api.covid19api.com/summary")
@@ -3691,7 +3686,7 @@ async def quote(interaction: Interaction):
 @bot.command(aliases = ["cd"])
 async def cleardm(ctx: commands.Context, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
-    await ctx.reply(f"Successfully clear {amount} message(s) in your DMs.")
+    await ctx.message.add_reaction("✅")
 
     async for message in dmchannel.history(limit=int(amount)):
         await message.delete()
@@ -4011,11 +4006,10 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
         await ctx.send(embed = em)
 
     else:
-        await ctx.reply("Announcement has been sent.", mention_author = False)
+        await ctx.message.add_reaction("✅")
 
         em2 = nextcord.Embed(title = f"{title}", description = f"{message}")
-        em2.set_footer(text = f"Announcement from {ctx.author}",
-                       icon_url = ctx.author.avatar.url)
+        em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
         em2.timestamp = ctx.message.created_at
 
         await channel.send(embed = em2)
@@ -4140,7 +4134,7 @@ async def dm(ctx: commands.Context, member: nextcord.User, *, content):
     except nextcord.Forbidden:
         await ctx.reply("Couldn't DM that user.")
 
-    await ctx.reply("Message has been sent.")
+    await ctx.message.add_reaction("✅")
 
 
 @bot.command(aliases = ["statistic", "stat"])
@@ -4156,7 +4150,7 @@ async def stats(ctx: commands.Context):
 @commands.is_owner()
 async def status(ctx: commands.Context, *, activity):
     await bot.change_presence(activity = nextcord.Game(activity))
-    await ctx.reply(f"My activity has been set to **{activity}**")
+    await ctx.message.add_reaction("✅")
 
 
 @bot.command(aliases = ["ln"])
@@ -4169,7 +4163,7 @@ async def leaveservername(ctx: commands.Context, *, guild_name):
 
     else:
         await guildName.leave()
-        await ctx.reply(f"Successfully leave {guild_name}", mention_author = False)
+        await ctx.message.add_reaction("✅")
 
 
 @bot.command(aliases = ["lid"])
@@ -4182,13 +4176,13 @@ async def leaveserverid(ctx: commands.Context, *, guild_id):
 
     else:
         await guildID.leave()
-        await ctx.reply(f"Successfully leave {guild_id}", mention_author = False)
+        await ctx.message.add_reaction("✅")
 
 
 @bot.command(aliases = ["message"])
 @commands.is_owner()
 async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
-    # await ctx.reply("Successfully sent the message.")
+    await ctx.message.add_reaction("✅")
 
     try:
         await channel.send(f"{msg}")
@@ -4241,8 +4235,7 @@ async def creator(ctx: commands.Context):
 
 @bot.command(aliases = ["born"])
 async def created(ctx: commands.Context):
-    await ctx.reply(
-        "I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
+    await ctx.reply("I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
 
 
 @bot.command(aliases = ["ver", "__ver__" "__version__"])
