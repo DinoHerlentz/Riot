@@ -734,7 +734,7 @@ async def help(ctx: commands.Context):
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -752,7 +752,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -3805,13 +3805,43 @@ async def avatar(interaction: Interaction, member: nextcord.User = None):
     await interaction.send(embed = em)
 
 
+@bot.command(aliases = ['ci'])
+async def channelinfo(ctx: commands.Context, channel: nextcord.VoiceChannel):
+    em = nextcord.Embed(title = f"Channel Info - {channel}")
+    em.add_field(name = "ID", description = channel.id, inline = False)
+    em.add_field(name = "Topic", value = f"{channel.topic if channel.topic else None}", inline = False)
+    em.add_field(name = "Position", value = channel.position, inline = False)
+    em.add_field(name = "Slowmode", value = f"{channel.slowmode_delay}s", inline = False)
+    em.add_field(name = "News Channel", value = channel.is_nsfw, inline = False)
+    em.add_field(name = "News Channel", value = channel.is_news(), inline = False)
+    em.add_field(name = "Created At", value = channel.created_at, inline = False)
+    em.add_field(name = "Permissions Synced", value = channel.permissions_synced, inline = False)
+    
+    await ctx.send(embed = em)
+
+
+@bot.slash_command(name = "channelinfo", description = "Shows text channel informations")
+async def channelinfo(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel")):
+    em = nextcord.Embed(title = f"Channel Info - {channel}")
+    em.add_field(name = "ID", description = channel.id, inline = False)
+    em.add_field(name = "Topic", value = f"{channel.topic if channel.topic else None}", inline = False)
+    em.add_field(name = "Position", value = channel.position, inline = False)
+    em.add_field(name = "Slowmode", value = f"{channel.slowmode_delay}s", inline = False)
+    em.add_field(name = "News Channel", value = channel.is_nsfw, inline = False)
+    em.add_field(name = "News Channel", value = channel.is_news(), inline = False)
+    em.add_field(name = "Created At", value = channel.created_at, inline = False)
+    em.add_field(name = "Permissions Synced", value = channel.permissions_synced, inline = False)
+
+    await interaction.send(embed = em)
+
+
 @bot.command(aliases = ["whois", "w", "ui", "info"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def userinfo(ctx: commands.Context, member: nextcord.User = None):
     if member == None:
         member = ctx.author
 
-    members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
+    members = sorted(ctx.guild.members, key = lambda m: m.joined_at)
 
     roles = [role for role in member.roles[1:9]]
 
@@ -3831,13 +3861,13 @@ async def userinfo(ctx: commands.Context, member: nextcord.User = None):
     await ctx.send(embed = embed)
 
 
-@bot.slash_command(name = "userinfo", description = "Shows some information of user")
+@bot.slash_command(name = "userinfo", description = "Shows user informations")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def userinfo(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         member = interaction.user
 
-    members = sorted(interaction.guild.members, key=lambda m: m.joined_at)
+    members = sorted(interaction.guild.members, key = lambda m: m.joined_at)
 
     roles = [role for role in member.roles[1:9]]
 
@@ -3878,7 +3908,7 @@ async def serverinfo(ctx: commands.Context):
     await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "serverinfo", description = "Get some informations about current server")
+@bot.slash_command(name = "serverinfo", description = "Shows server informations")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def serverinfo(interaction: Interaction):
     role_count = len(interaction.guild.roles)
