@@ -108,7 +108,7 @@ async def dogslash(interaction: Interaction):
     return
 
 
-@bot.command(invoke_without_command = True)
+@bot.group(invoke_without_command = True)
 async def cat(ctx: commands.Context):
     em = nextcord.Embed(title = "Cat Command (>cat [command])")
     em.add_field(name = "Commands", value = "image, gif")
