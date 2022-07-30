@@ -34,6 +34,7 @@ intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
+cats = json.load(open("cat_gifs.json"))
 lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
 snipe_message_content = None
@@ -104,6 +105,19 @@ async def dog(ctx: commands.Context):
 
 @bot.slash_command(name = "dog", description = "Dog slash command")
 async def dogslash(interaction: Interaction):
+    return
+
+
+@bot.command(invoke_without_command = True)
+async def cat(ctx: commands.Context):
+    em = nextcord.Embed(title = "Cat Command (>cat [command])")
+    em.add_field(name = "Commands", value = "image, gif")
+
+    await ctx.send(embed = em)
+
+
+@bot.slash_command(name = "cat", description = "Cat slash command")
+async def catslash(interaction: Interaction):
     return
 
 
@@ -731,7 +745,7 @@ async def help(ctx: commands.Context):
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
-    em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
+    em.add_field(name = "Images", value = "dog, cat, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
     em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
@@ -749,7 +763,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
-    em.add_field(name = "Images", value = "dog, capybara, food, rock", inline = False)
+    em.add_field(name = "Images", value = "dog, cat, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
     em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
@@ -2528,7 +2542,7 @@ async def cringe(ctx: commands.Context):
 
 
 # Image Command
-@dog.command()
+@dog.command(aliases = ["img"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def image(ctx: commands.Context):
     res = requests.get("https://dog.ceo/api/breeds/image/random")
@@ -2560,7 +2574,7 @@ async def gif(ctx: commands.Context):
     view = nextcord.ui.View(timeout = None)
     view.add_item(dropdown)
 
-    await ctx.send("Here's some of the dog GIFs", view = view)
+    await ctx.send("Here's some of the dog GIFs.", view = view)
 
 
 @dogslash.subcommand(name = "gif", description = "Get some random cute dog GIFs")
@@ -2580,7 +2594,59 @@ async def gif(interaction: Interaction):
     view = nextcord.ui.View(timeout = None)
     view.add_item(dropdown)
 
-    await interaction.send("Here's some of the dog GIFs", view = view)
+    await interaction.send("Here's some of the dog GIFs.", view = view)
+
+
+@cat.command(aliases = ["img"])
+async def image(ctx: commands.Context):
+    res = requests.get("https://aws.random.cat/meow")
+    image_link = res.json()["file"]
+    await ctx.send(image_link)
+
+
+@catslash.subcommand(name = "image", description = "Get some random cute cat pictures")
+async def image(interaction: Interaction):
+    res = requests.get("https://aws.random.cat/meow")
+    image_link = res.json()["file"]
+    await interaction.send(image_link)
+
+
+@cat.command()
+async def gif(ctx: commands.Context):
+    async def dropdown_callback(interaction):
+        for value in dropdown.values:
+            await ctx.send(random.choice(cats[value]))
+    
+    op1 = nextcord.SelectOption(label = "GIF", value = "gif", description = "Random cat GIFs", emoji = "🐱")
+    op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing cat GIFs", emoji = "😎")
+    op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating cat GIFs", emoji = "🥫")
+    op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping cat GIFs", emoji = "😴")
+    dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 4)
+    
+    dropdown.callback = dropdown_callback
+    view = nextcord.ui.View(timeout = None)
+    view.add_item(dropdown)
+    
+    await ctx.send("Here's some of the cat GIFs.", view = view)
+
+
+@catslash.subcommand(name = "gif", description = "Get some random cute cat GIFs")
+async def gif(interaction: Interaction):
+    async def dropdown_callback(interaction):
+        for value in dropdown.values:
+            await interaction.send(random.choice(cats[value]))
+    
+    op1 = nextcord.SelectOption(label = "GIF", value = "gif", description = "Random cat GIFs", emoji = "🐱")
+    op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing cat GIFs", emoji = "😎")
+    op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating cat GIFs", emoji = "🥫")
+    op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping cat GIFs", emoji = "😴")
+    dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 4)
+    
+    dropdown.callback = dropdown_callback
+    view = nextcord.ui.View(timeout = None)
+    view.add_item(dropdown)
+
+    await interaction.esnd("Here's some of the cat GIFs.", view = view)
 
 
 @capybara.command()
