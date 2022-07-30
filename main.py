@@ -2559,6 +2559,7 @@ async def image(interaction: Interaction):
 
 
 @dog.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def gif(ctx: commands.Context):
     async def dropdown_callback(interaction):
         for value in dropdown.values:
@@ -2598,6 +2599,7 @@ async def gif(interaction: Interaction):
 
 
 @cat.command(aliases = ["img"])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def image(ctx: commands.Context):
     res = requests.get("https://aws.random.cat/meow")
     image_link = res.json()["file"]
@@ -2605,6 +2607,7 @@ async def image(ctx: commands.Context):
 
 
 @catslash.subcommand(name = "image", description = "Get some random cute cat pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def image(interaction: Interaction):
     res = requests.get("https://aws.random.cat/meow")
     image_link = res.json()["file"]
@@ -2612,6 +2615,7 @@ async def image(interaction: Interaction):
 
 
 @cat.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def gif(ctx: commands.Context):
     async def dropdown_callback(interaction):
         for value in dropdown.values:
@@ -2631,22 +2635,23 @@ async def gif(ctx: commands.Context):
 
 
 @catslash.subcommand(name = "gif", description = "Get some random cute cat GIFs")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def gif(interaction: Interaction):
     async def dropdown_callback(interaction):
         for value in dropdown.values:
             await interaction.send(random.choice(cats[value]))
-    
+
     op1 = nextcord.SelectOption(label = "GIF", value = "gif", description = "Random cat GIFs", emoji = "🐱")
     op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing cat GIFs", emoji = "😎")
     op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating cat GIFs", emoji = "🥫")
     op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping cat GIFs", emoji = "😴")
     dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 4)
-    
+
     dropdown.callback = dropdown_callback
     view = nextcord.ui.View(timeout = None)
     view.add_item(dropdown)
 
-    await interaction.esnd("Here's some of the cat GIFs.", view = view)
+    await interaction.send("Here's some of the cat GIFs.", view = view)
 
 
 @capybara.command()
