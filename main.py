@@ -3927,23 +3927,22 @@ async def userinfo(ctx: commands.Context, member: nextcord.User = None):
         member = ctx.author
 
     members = sorted(ctx.guild.members, key = lambda m: m.joined_at)
-
     roles = [role for role in member.roles[1:9]]
 
-    embed = nextcord.Embed(color = member.color, timestamp = ctx.message.created_at)
-    embed.set_author(name = f"User Info - {member}")
-    embed.set_thumbnail(url = member.avatar.url)
-    embed.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar.url)
-    embed.add_field(name = "ID", value = member.id, inline = False)
-    embed.add_field(name = "Server Nickname", value = member.display_name, inline = False)
-    embed.add_field(name = "Created At", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
-    embed.add_field(name = "Joined At", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
-    embed.add_field(name = "Join Position", value = str(members.index(member) + 1), inline = False)
-    embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
-    embed.add_field(name = "Top Role", value = member.top_role.mention, inline = False)
-    embed.add_field(name = "Bot", value = member.bot, inline = False)
+    em = nextcord.Embed(color = member.color, timestamp = ctx.message.created_at)
+    em.set_author(name = f"User Info - {member}")
+    em.set_thumbnail(url = member.avatar.url)
+    em.add_field(name = "ID : ", value = member.id, inline = False)
+    em.add_field(name = "Server Nickname", value = member.dislay_name, inline = False)
+    em.add_field(name = "Created At", value = member.created_at.strftime("%a, %#d, %B  %Y, %I:%M %p UTC"), inline = False)
+    em.add_field(name = "Joined At", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
+    em.add_field(name = "Join Position", value = str(member.index(member) + 1), inline = False)
+    em.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
+    em.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
+    em.add_field(name = "Bot", value = member.bot, inline = False)
+    em.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar.url)
 
-    await ctx.send(embed = embed)
+    await ctx.send(embed = em)
 
 
 @bot.slash_command(name = "userinfo", description = "Shows user informations")
@@ -3953,23 +3952,22 @@ async def userinfo(interaction: Interaction, member: nextcord.User = None):
         member = interaction.user
 
     members = sorted(interaction.guild.members, key = lambda m: m.joined_at)
-
     roles = [role for role in member.roles[1:9]]
 
-    embed = nextcord.Embed(color = member.color, timestamp = datetime.datetime.utcnow())
-    embed.set_author(name = f"User Info - {member}")
-    embed.set_thumbnail(url = member.avatar.url)
-    embed.set_footer(text = f"Requested by {interaction.user}", icon_url = interaction.user.avatar.url)
-    embed.add_field(name = "ID : ", value = member.id, inline = False)
-    embed.add_field(name = "Server Nickname : ", value = member.display_name, inline = False)
-    embed.add_field(name = "Created At : ", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
-    embed.add_field(name = "Joined At : ", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
-    embed.add_field(name = "Join Position", value = str(members.index(member) + 1), inline = False)
-    embed.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
-    embed.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
-    embed.add_field(name = "Bot", value = member.bot, inline = False)
+    em = nextcord.Embed(color = member.color, timestamp = datetime.datetime.utcnow())
+    em.set_author(name = f"User Info - {member}")
+    em.set_thumbnail(url = member.avatar.url)
+    em.add_field(name = "ID : ", value = member.id, inline = False)
+    em.add_field(name = "Server Nickname : ", value = member.display_name, inline = False)
+    em.add_field(name = "Created At : ", value = member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
+    em.add_field(name = "Joined At : ", value = member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
+    em.add_field(name = "Join Position", value = str(members.index(member) + 1), inline = False)
+    em.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
+    em.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
+    em.add_field(name = "Bot", value = member.bot, inline = False)
+    em.set_footer(text = f"Requested by {interaction.user}", icon_url = interaction.user.avatar.url)
 
-    await interaction.send(embed = embed)
+    await interaction.send(embed = em)
 
 
 @bot.command(aliases = ["si"])
