@@ -3798,7 +3798,7 @@ async def suggest(ctx: commands.Context, *, suggestion):
     em = nextcord.Embed(title = "Suggestions", description = f"**{author}** send a suggestions\n\nMessage :\n\n```py\n{suggestion}```")
     em.timestamp = datetime.datetime.utcnow()
 
-    await ctx.reply("Your suggestions has been sent. Any troll message will be ignored, and you might be blocked.", mention_author = False)
+    await ctx.message.add_reaction("✅")
     await channel.send(embed = em)
 
 
@@ -3817,7 +3817,7 @@ async def report(ctx: commands.Context, *, message):
     em = nextcord.Embed(title = "Report", description = f"**{author}** send a report message\n\nMessage :\n\n```py\n{message}```", color = nextcord.Color.red())
     em.timestamp = datetime.datetime.utcnow()
 
-    await ctx.reply("Your report message has been sent. Any false report will be ignored, and you might be blocked.",mention_author = False)
+    await ctx.message.add_reaction("✅")
     await channel.send(embed = em)
 
 
@@ -3982,7 +3982,9 @@ async def serverinfo(ctx: commands.Context):
     em.set_thumbnail(url = ctx.guild.icon)
     em.add_field(name = "Server Name", value = f"{ctx.guild.name}", inline = False)
     em.add_field(name = "ID", value = f"{ctx.guild.id}", inline = False)
+    em.add_field(name = "Description", value = f"{ctx.guild.description}", inline = False)
     em.add_field(name = "Owner", value = ctx.guild.owner, inline = False)
+    em.add_field(name = "Channels", value = len(ctx.guild.channels), inline = False)
     em.add_field(name = "Members", value = ctx.guild.member_count, inline = False)
     em.add_field(name = "Created At", value = ctx.guild.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
     em.add_field(name = "Verification Level", value = str(ctx.guild.verification_level), inline = False)
@@ -4003,7 +4005,9 @@ async def serverinfo(interaction: Interaction):
     em.set_thumbnail(url = interaction.guild.icon)
     em.add_field(name = "Server Name", value = f"{interaction.guild.name}", inline = False)
     em.add_field(name = "ID", value = f"{interaction.guild.id}", inline = False)
+    em.add_field(name = "Description", value = f"{interaction.guild.description}", inline = False)
     em.add_field(name = "Owner", value = interaction.guild.owner, inline = False)
+    em.add_field(name = "Channels", value = len(interaction.guild.channels), inline = False)
     em.add_field(name = "Members", value = interaction.guild.member_count, inline = False)
     em.add_field(name = "Created At", value = interaction.guild.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline = False)
     em.add_field(name = "Verification Level", value = str(interaction.guild.verification_level), inline = False)
@@ -4437,7 +4441,8 @@ async def eval(ctx: commands.Context, *, code):
         em = nextcord.Embed(title = "❌ Error ❌", description = "```py\n" + "".join(format_exception(e.__class__, e, e.__traceback__)) + "```", color = nextcord.Color.red())
         return await ctx.send(embed = em)
 
-    await ctx.send(f"```py\n{str_obj.getvalue()}```")
+    msg = await ctx.send(f"```py\n{str_obj.getvalue()}```")
+    await msg.add_reaction("✅")
 
 
 keep_alive()
