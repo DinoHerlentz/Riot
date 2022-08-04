@@ -755,13 +755,13 @@ async def help(ctx: commands.Context):
 
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "Fun", value = "pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "Images", value = "dog, cat, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -773,13 +773,13 @@ async def help(interaction: Interaction):
 
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "Moderation", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "Fun", value = "memes, pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "Fun", value = "pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "Images", value = "dog, cat, capybara, food, rock", inline = False)
     em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Application Commands (/)", value = "embed", inline = False)
-    em.add_field(name = "Miscellaneous", value = "youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "Miscellaneous", value = "memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1313,38 +1313,6 @@ async def emojiadd(interaction: Interaction, url: str, *, name):
 
 
 # Fun Command
-@fun.command(aliases = ["meme"])
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def memes(ctx: commands.Context):
-    async with aiohttp.ClientSession() as cs:
-        async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
-            res = await r.json()
-            title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
-            url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
-
-            em = nextcord.Embed(title = f"{title}")
-            em.set_image(url = f"{url}")
-            em.timestamp = ctx.message.created_at
-
-            await ctx.send(embed = em)
-
-
-@bot.slash_command(name = "memes", description = "Get some random funny memes")
-@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def memes(interaction: Interaction):
-    async with aiohttp.ClientSession() as cs:
-        async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
-            res = await r.json()
-            title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
-            url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
-
-            em = nextcord.Embed(title = f"{title}")
-            em.set_image(url = f"{url}")
-            em.timestamp = datetime.datetime.utcnow()
-
-            await interaction.send(embed = em)
-
-
 @fun.command()
 async def pet(ctx: commands.Context):
     view = PetView()
@@ -3397,6 +3365,38 @@ async def forum(interaction: Interaction):
 
 
 # Miscellaneous Command
+@bot.command(aliases = ["meme", "mem"])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def memes(ctx: commands.Context):
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
+            res = await r.json()
+            title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
+            url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
+
+            em = nextcord.Embed(title = f"{title}")
+            em.set_image(url = f"{url}")
+            em.timestamp = ctx.message.created_at
+
+            await ctx.send(embed = em)
+
+
+@bot.slash_command(name = "memes", description = "Get some random funny memes")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def memes(interaction: Interaction):
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get("https://www.reddit.com/r/memes/hot.json") as r:
+            res = await r.json()
+            title = res['data']['children'][random.randint(0, 25)]["data"]["title"]
+            url = res['data']['children'][random.randint(0, 25)]["data"]["url"]
+
+            em = nextcord.Embed(title = f"{title}")
+            em.set_image(url = f"{url}")
+            em.timestamp = datetime.datetime.utcnow()
+
+            await interaction.send(embed = em)
+
+
 @bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def youtube(ctx: commands.Context, channel: nextcord.VoiceChannel = None):
