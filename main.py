@@ -755,13 +755,13 @@ async def help(ctx: commands.Context):
 
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "<:dev:1000605337088438272> Activities <:dev:1000605337088438272>", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food, rock", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -773,13 +773,13 @@ async def help(interaction: Interaction):
 
     em = nextcord.Embed(title = "Commands (>)")
     em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "pet, 8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "<:dev:1000605337088438272> Activities <:dev:1000605337088438272>", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food, rock", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1313,18 +1313,6 @@ async def emojiadd(interaction: Interaction, url: str, *, name):
 
 
 # Fun Command
-@fun.command()
-async def pet(ctx: commands.Context):
-    view = PetView()
-    await ctx.send("Choose 1 pet to buy", view = view)
-
-
-@bot.slash_command(name = "pet", description = "Buy a pet")
-async def pet(interaction: Interaction):
-    view = PetView()
-    await interaction.send("Choose 1 pet", view = view)
-
-
 """
 @fun.command(alises=["dadjokes", "dj"])
 async def dadjoke(ctx: commands.Context):
@@ -2274,8 +2262,7 @@ async def memes(ctx: commands.Context):
             em.set_image(url = anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = ctx.message.created_at
 
-            msg = await ctx.send(embed = em)
-            await msg.add_reaction("<:verycool:976411226055778305>")
+            await ctx.send(embed = em)
 
 
 @animeslash.subcommand(name = "memes", description = "Get some random funny anime memes")
@@ -2289,8 +2276,7 @@ async def memes(interaction: Interaction):
             em.set_image(url = anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = datetime.datetime.utcnow()
             
-            msg = await interaction.send(embed = em)
-            await msg.add_reaction("<:verycool:976411226055778305>")
+            await interaction.send(embed = em)
 
 
 @anime.command(aliases = ["wa"])
@@ -3368,6 +3354,18 @@ async def forum(interaction: Interaction):
 
 
 # Miscellaneous Command
+@bot.command()
+async def pet(ctx: commands.Context):
+    view = PetView()
+    await ctx.send("Choose 1 pet to buy", view = view)
+
+
+@bot.slash_command(name = "pet", description = "Buy a pet")
+async def pet(interaction: Interaction):
+    view = PetView()
+    await interaction.send("Choose 1 pet", view = view)
+
+
 @bot.command(aliases = ["meme", "mem"])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx: commands.Context):
@@ -3381,7 +3379,8 @@ async def memes(ctx: commands.Context):
             em.set_image(url = f"{url}")
             em.timestamp = ctx.message.created_at
 
-            await ctx.send(embed = em)
+            msg = await ctx.send(embed = em)
+            await msg.add_reaction("<:verycool:976411226055778305>")
 
 
 @bot.slash_command(name = "memes", description = "Get some random funny memes")
@@ -3397,7 +3396,8 @@ async def memes(interaction: Interaction):
             em.set_image(url = f"{url}")
             em.timestamp = datetime.datetime.utcnow()
 
-            await interaction.send(embed = em)
+            msg = await interaction.send(embed = em)
+            await msg.add_reaction("<:verycool:976411226055778305>")
 
 
 @bot.command()
