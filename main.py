@@ -3801,7 +3801,7 @@ async def suggest(ctx: commands.Context, *, suggestion):
     em = nextcord.Embed(title = "Suggestions", description = f"**{author}** send a suggestions\n\nMessage :\n\n```py\n{suggestion}```")
     em.timestamp = datetime.datetime.utcnow()
 
-    await ctx.message.add_reaction("✅")
+    await ctx.message.add_reaction("<:verified:999942216732655666>")
     await channel.send(embed = em)
 
 
@@ -3820,7 +3820,7 @@ async def report(ctx: commands.Context, *, message):
     em = nextcord.Embed(title = "Report", description = f"**{author}** send a report message\n\nMessage :\n\n```py\n{message}```", color = nextcord.Color.red())
     em.timestamp = datetime.datetime.utcnow()
 
-    await ctx.message.add_reaction("✅")
+    await ctx.message.add_reaction("<:verified:999942216732655666>")
     await channel.send(embed = em)
 
 
@@ -4126,7 +4126,7 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
         await ctx.send(embed = em)
 
     else:
-        await ctx.message.add_reaction("✅")
+        await ctx.message.add_reaction("<:verified:999942216732655666>")
 
         em2 = nextcord.Embed(title = f"{title}", description = f"{message}")
         em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
