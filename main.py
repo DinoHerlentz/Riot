@@ -758,7 +758,7 @@ async def help(ctx: commands.Context):
     em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "<:dev:1000605337088438272> Activities <:dev:1000605337088438272>", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
-    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food, rock", inline = False)
+    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
     em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
@@ -776,7 +776,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "<:dev:1000605337088438272> Activities <:dev:1000605337088438272>", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
-    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food, rock", inline = False)
+    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
     em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, slap, movie, cv, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, channelinfo, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
@@ -2736,6 +2736,7 @@ async def rock(ctx: commands.Context):
 
             if not rock_img == None:
                 em.set_image(url = rock_img)
+                
 
             await ctx.send(embed = em)
 
