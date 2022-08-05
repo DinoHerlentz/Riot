@@ -2274,7 +2274,8 @@ async def memes(ctx: commands.Context):
             em.set_image(url = anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = ctx.message.created_at
 
-            await ctx.send(embed = em)
+            msg = await ctx.send(embed = em)
+            await msg.add_reaction("<:verycool:976411226055778305>")
 
 
 @animeslash.subcommand(name = "memes", description = "Get some random funny anime memes")
@@ -2287,7 +2288,9 @@ async def memes(interaction: Interaction):
             em = nextcord.Embed()
             em.set_image(url = anime_memes['data']['children'][random.randint(0, 30)]['data']['url'])
             em.timestamp = datetime.datetime.utcnow()
-            await interaction.send(embed = em)
+            
+            msg = await interaction.send(embed = em)
+            await msg.add_reaction("<:verycool:976411226055778305>")
 
 
 @anime.command(aliases = ["wa"])
@@ -3770,7 +3773,7 @@ async def quote(interaction: Interaction):
 @bot.command(aliases = ["cd"])
 async def cleardm(ctx: commands.Context, amount, arg: int = None):
     dmchannel = await ctx.author.create_dm()
-    await ctx.message.add_reaction("✅")
+    await ctx.message.add_reaction("<:staff:907616995661475910>")
 
     async for message in dmchannel.history(limit=int(amount)):
         await message.delete()
@@ -4251,7 +4254,7 @@ async def dm(ctx: commands.Context, member: nextcord.User, *, content):
     except nextcord.Forbidden:
         await ctx.reply("Couldn't DM that user.")
 
-    await ctx.message.add_reaction("✅")
+    await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
 
 @bot.command(aliases = ["statistic", "stat"])
@@ -4267,7 +4270,7 @@ async def stats(ctx: commands.Context):
 @commands.is_owner()
 async def status(ctx: commands.Context, *, activity):
     await bot.change_presence(activity = nextcord.Game(activity))
-    await ctx.message.add_reaction("✅")
+    await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
 
 @bot.command(aliases = ["ln"])
@@ -4280,7 +4283,7 @@ async def leaveservername(ctx: commands.Context, *, guild_name):
 
     else:
         await guildName.leave()
-        await ctx.message.add_reaction("✅")
+        await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
 
 @bot.command(aliases = ["lid"])
@@ -4293,13 +4296,13 @@ async def leaveserverid(ctx: commands.Context, *, guild_id):
 
     else:
         await guildID.leave()
-        await ctx.message.add_reaction("✅")
+        await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
 
 @bot.command(aliases = ["message"])
 @commands.is_owner()
 async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
-    await ctx.message.add_reaction("✅")
+    await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
     try:
         await channel.send(f"{msg}")
@@ -4440,7 +4443,7 @@ async def eval(ctx: commands.Context, *, code):
         return await ctx.send(embed = em)
 
     msg = await ctx.send(f"```py\n{str_obj.getvalue()}```")
-    await msg.add_reaction("✅")
+    await msg.add_reaction("<:python:1005004573557141535>")
 
 
 keep_alive()
