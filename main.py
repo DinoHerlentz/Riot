@@ -3945,6 +3945,7 @@ async def userinfo(ctx: commands.Context, member: nextcord.User = None):
     em.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
     em.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
     em.add_field(name = "Permissions", value = ", ".join(perm).replace("_", " ").title(), inline = False)
+    em.add_field(name = "Top Permissions", value = " ".join([str(p[0]).title() for p in member.guild_permissions]).lower().split()[0].replace("_", " ").title(), inline = False)
     em.add_field(name = "Bot", value = member.bot, inline = False)
     em.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar.url)
 
@@ -3971,6 +3972,7 @@ async def userinfo(interaction: Interaction, member: nextcord.User = None):
     em.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
     em.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
     em.add_field(name = "Permissions", value = ", ".join(perm).replace("_", " ").title(), inline = False)
+    em.add_field(name = "Top Permissions", value = " ".join([str(p[0]).title() for p in member.guild_permissions]).lower().split()[0].replace("_", " ").title(), inline = False)
     em.add_field(name = "Bot", value = member.bot, inline = False)
     em.set_footer(text = f"Requested by {interaction.user}", icon_url = interaction.user.avatar.url)
 
