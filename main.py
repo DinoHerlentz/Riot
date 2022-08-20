@@ -4120,8 +4120,8 @@ async def poll(ctx: commands.Context, *, argument = None):
 @bot.command()
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_messages = True)
-async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, title = None, *, message = None):
-    if channel == None or title == None or message == None:
+async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, *, message = None):
+    if channel == None or message == None:
         em = nextcord.Embed(title = "Announce")
         em.add_field(name = "Command", value = ">announce", inline = False)
         em.add_field(name = "Description", value = "Announce a message to the specified channel", inline = False)
@@ -4134,7 +4134,7 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
     else:
         await ctx.message.add_reaction("<:verified:999942216732655666>")
 
-        em2 = nextcord.Embed(title = f"{title}", description = f"{message}")
+        em2 = nextcord.Embed(title = f"New Announcement", description = f"{message}")
         em2.set_footer(text = f"Announcement from {ctx.author}", icon_url = ctx.author.avatar.url)
         em2.timestamp = ctx.message.created_at
 
@@ -4144,10 +4144,10 @@ async def announce(ctx: commands.Context, channel: nextcord.TextChannel = None, 
 @bot.slash_command(name = "announce", description = "Announce a message to a specified channel")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_messages = True)
-async def announce(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel"), *, title, message):
+async def announce(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel"), *, message):
     await interaction.send("Announcement has been sent.", ephemeral = True)
 
-    em = nextcord.Embed(title = f"{title}", description = f"{message}")
+    em = nextcord.Embed(title = f"New Announcement", description = f"{message}")
     em.set_footer(text = f"Announcement from {interaction.user}", icon_url = interaction.user.avatar.url)
     em.timestamp = datetime.datetime.utcnow()
 
