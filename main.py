@@ -3952,7 +3952,7 @@ async def userinfo(ctx: commands.Context, member: nextcord.User = None):
     await ctx.send(embed = em)
 
 
-@bot.slash_command(name = "userinfo", description = "Shows user informations")
+@bot.slash_command(name = "userinfo", description = "Shows user info")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def userinfo(interaction: Interaction, member: nextcord.User = None):
     if member == None:
@@ -3960,6 +3960,7 @@ async def userinfo(interaction: Interaction, member: nextcord.User = None):
 
     members = sorted(interaction.guild.members, key = lambda m: m.joined_at)
     roles = [role for role in member.roles[1:9]]
+    perm = [perm[0] for perm in interaction.message.user.guild_permissions if perm[1]]
 
     em = nextcord.Embed(color = member.color, timestamp = datetime.datetime.utcnow())
     em.set_author(name = f"User Info - {member}")
@@ -3974,7 +3975,7 @@ async def userinfo(interaction: Interaction, member: nextcord.User = None):
     em.add_field(name = "Permissions", value = ", ".join(perm).replace("_", " ").title(), inline = False)
     em.add_field(name = "Top Permissions", value = " ".join([str(p[0]).title() for p in member.guild_permissions]).lower().split()[0].replace("_", " ").title(), inline = False)
     em.add_field(name = "Bot", value = member.bot, inline = False)
-    em.set_footer(text = f"Requested by {interaction.user}", icon_url = interaction.user.avatar.url)
+    em.set_footer(text = f"Requested by {interaction}", icon_url = interaction.user.avatar.url)
 
     await interaction.send(embed = em)
 
