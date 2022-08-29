@@ -3926,7 +3926,7 @@ async def channelinfo(interaction: Interaction, channel: GuildChannel = SlashOpt
 
 @bot.command(aliases = ["whois", "w", "ui", "info"])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def userinfo(ctx: commands.Context, member: nextcord.User = None):
+async def userinfo(ctx: commands.Context, member: nextcord.Member = None):
     if member == None:
         member = ctx.author
 
@@ -3954,7 +3954,7 @@ async def userinfo(ctx: commands.Context, member: nextcord.User = None):
 
 @bot.slash_command(name = "userinfo", description = "Shows user info")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def userinfo(interaction: Interaction, member: nextcord.User = None):
+async def userinfo(interaction: Interaction, member: nextcord.Member = None):
     if member == None:
         member = interaction.user
 
