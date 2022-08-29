@@ -3932,7 +3932,7 @@ async def userinfo(ctx: commands.Context, member: nextcord.Member = None):
 
     members = sorted(ctx.guild.members, key = lambda m: m.joined_at)
     roles = [role for role in member.roles[1:9]]
-    perm = [perm[0] for perm in ctx.message.author.guild_permissions if perm[1]]
+    # perm = [perm[0] for perm in ctx.message.author.guild_permissions if perm[1]]
 
     em = nextcord.Embed(color = member.color, timestamp = ctx.message.created_at)
     em.set_author(name = f"User Info - {member}")
@@ -3944,8 +3944,8 @@ async def userinfo(ctx: commands.Context, member: nextcord.Member = None):
     em.add_field(name = "Join Position", value = str(members.index(member) + 1), inline = False)
     em.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
     em.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
-    em.add_field(name = "Permissions", value = ", ".join(perm).replace("_", " ").title(), inline = False)
-    em.add_field(name = "Top Permissions", value = " ".join([str(p[0]).title() for p in member.guild_permissions]).lower().split()[0].replace("_", " ").title(), inline = False)
+    # em.add_field(name = "Permissions", value = ", ".join(perm).replace("_", " ").title(), inline = False)
+    # em.add_field(name = "Top Permissions", value = " ".join([str(p[0]).title() for p in member.guild_permissions]).lower().split()[0].replace("_", " ").title(), inline = False)
     em.add_field(name = "Bot", value = member.bot, inline = False)
     em.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar.url)
 
@@ -3960,7 +3960,7 @@ async def userinfo(interaction: Interaction, member: nextcord.Member = None):
 
     members = sorted(interaction.guild.members, key = lambda m: m.joined_at)
     roles = [role for role in member.roles[1:9]]
-    perm = [perm[0] for perm in interaction.message.user.guild_permissions if perm[1]]
+    # perm = [perm[0] for perm in interaction.message.user.guild_permissions if perm[1]]
 
     em = nextcord.Embed(color = member.color, timestamp = datetime.datetime.utcnow())
     em.set_author(name = f"User Info - {member}")
@@ -3972,10 +3972,10 @@ async def userinfo(interaction: Interaction, member: nextcord.Member = None):
     em.add_field(name = "Join Position", value = str(members.index(member) + 1), inline = False)
     em.add_field(name = f"Roles ({len(roles)})", value = " ".join([role.mention for role in roles]), inline = False)
     em.add_field(name = "Top Role : ", value = member.top_role.mention, inline = False)
-    em.add_field(name = "Permissions", value = ", ".join(perm).replace("_", " ").title(), inline = False)
-    em.add_field(name = "Top Permissions", value = " ".join([str(p[0]).title() for p in member.guild_permissions]).lower().split()[0].replace("_", " ").title(), inline = False)
+    # em.add_field(name = "Permissions", value = ", ".join(perm).replace("_", " ").title(), inline = False)
+    # em.add_field(name = "Top Permissions", value = " ".join([str(p[0]).title() for p in member.guild_permissions]).lower().split()[0].replace("_", " ").title(), inline = False)
     em.add_field(name = "Bot", value = member.bot, inline = False)
-    em.set_footer(text = f"Requested by {interaction}", icon_url = interaction.user.avatar.url)
+    em.set_footer(text = f"Requested by {interaction.user}", icon_url = interaction.user.avatar.url)
 
     await interaction.send(embed = em)
 
