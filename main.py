@@ -3894,18 +3894,30 @@ async def avatar(interaction: Interaction, member: nextcord.User = None):
 
 
 @bot.command(aliases = ["ci"])
-async def channelinfo(ctx: commands.Context, channel: nextcord.TextChannel):
-    em = nextcord.Embed(title = f"Channel Info - {channel}")
-    em.add_field(name = "ID", description = channel.id, inline = False)
-    em.add_field(name = "Topic", value = f"{channel.topic if channel.topic else None}", inline = False)
-    em.add_field(name = "Position", value = channel.position, inline = False)
-    em.add_field(name = "Slowmode", value = f"{channel.slowmode_delay}s", inline = False)
-    em.add_field(name = "News Channel", value = channel.is_nsfw, inline = False)
-    em.add_field(name = "News Channel", value = channel.is_news(), inline = False)
-    em.add_field(name = "Created At", value = channel.created_at, inline = False)
-    em.add_field(name = "Permissions Synced", value = channel.permissions_synced, inline = False)
-    
-    await ctx.send(embed = em)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def channelinfo(ctx: commands.Context, channel: nextcord.TextChannel = None):
+    if channel == None:
+        em = nextcord.Emebd(title = "Channel Info")
+        em.add_field(name = "Command", value = ">channelinfo|>ci", inline = False)
+        em.add_field(name = "Description", value = "Shows text channel info", inline = False)
+        em.add_field(name = "Permissions Required", value = None, inline = False)
+        em.add_field(name = "Usage", value = ">channelinfo [channel]", inline = False)
+        em.add_field(name = "Example", value = ">channelinfo #general", inline = False)
+
+        await ctx.send(embed = em)
+
+    else:
+        em2 = nextcord.Embed(title = f"Channel Info - {channel}")
+        em2.add_field(name = "ID", description = channel.id, inline = False)
+        em2.add_field(name = "Topic", value = f"{channel.topic if channel.topic else None}", inline = False)
+        em2.add_field(name = "Position", value = channel.position, inline = False)
+        em2.add_field(name = "Slowmode", value = f"{channel.slowmode_delay}s", inline = False)
+        em2.add_field(name = "News Channel", value = channel.is_nsfw, inline = False)
+        em2.add_field(name = "News Channel", value = channel.is_news(), inline = False)
+        em2.add_field(name = "Created At", value = channel.created_at, inline = False)
+        em2.add_field(name = "Permissions Synced", value = channel.permissions_synced, inline = False)
+        
+        await ctx.send(embed = em2)
 
 
 @bot.slash_command(name = "channelinfo", description = "Shows text channel informations")
