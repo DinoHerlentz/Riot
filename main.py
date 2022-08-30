@@ -3897,7 +3897,7 @@ async def avatar(interaction: Interaction, member: nextcord.User = None):
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def channelinfo(ctx: commands.Context, channel: nextcord.TextChannel = None):
     if channel == None:
-        em = nextcord.Emebd(title = "Channel Info")
+        em = nextcord.Embed(title = "Channel Info")
         em.add_field(name = "Command", value = ">channelinfo|>ci", inline = False)
         em.add_field(name = "Description", value = "Shows text channel info", inline = False)
         em.add_field(name = "Permissions Required", value = None, inline = False)
