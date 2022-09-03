@@ -589,7 +589,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalinkinc.ml", port = 443, password = "incognito", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
 
 
 @bot.event
