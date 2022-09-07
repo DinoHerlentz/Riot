@@ -3810,7 +3810,7 @@ async def suggest(ctx: commands.Context, *, suggestion):
 @cooldowns.cooldown(1, 3600, bucket=cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
     await interaction.response.send_modal(Suggest())
-    await interaction.send("Your suggestions has been sent. Any troll message will be ignored, and you might be blocked.", ephemeral = True)
+    await interaction.send("Your suggestions has been sent. Any troll message will be ignored, and you will be blocked.", ephemeral = True)
 
 
 @bot.command()
@@ -3828,7 +3828,7 @@ async def report(ctx: commands.Context, *, message):
 @bot.slash_command(name = "report", description = "Report an issue")
 async def report(interaction: Interaction):
     await interaction.response.send_modal(Report())
-    await interaction.send("Your report has been sent. Any false report will be ignored, and you might be blocked.", ephemeral = True)
+    await interaction.send("Your report has been sent. Any false report will be ignored, and you will be blocked.", ephemeral = True)
 
 
 @bot.slash_command(name = "serverreport", description = "Report an issue from this server", guild_ids = [server_id])
