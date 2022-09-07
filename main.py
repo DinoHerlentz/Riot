@@ -654,6 +654,19 @@ async def on_message(message):
 
 
 @bot.event
+async def on_reaction_add(reaction, user):
+    if str(reaction.emoji) == "📌":
+        await nextcord.Message.pin(reaction.message)
+
+
+@bot.event
+async def on_reaction_remove(reaction, user):
+    if reaction.emoji == "📌":
+        if "📌" not in str(reaction.message.reactions):
+            await nextcord.Message.unpin(reaction.message)
+
+
+@bot.event
 async def on_message_delete(message):
     global snipe_message_content
     global snipe_message_author
