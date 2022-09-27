@@ -28,7 +28,7 @@ from nextcord.abc import GuildChannel
 from nextcord import Interaction, SlashOption, ChannelType
 from nextcord.abc import GuildChannel
 from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissions, MissingRequiredArgument, BotMissingPermissions, CommandOnCooldown, DisabledCommand, MemberNotFound
-from keep_alive import keep_alive
+
 
 intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
@@ -574,12 +574,14 @@ async def on_ready():
 
     # Music
     bot.loop.create_task(node_connect())
-
+    
+    """
     # AFK
     setattr(bot, "db", await aiosqlite.connect("afk.db"))
-
+    
     async with bot.db.cursor() as cursor:
         await cursor.execute("CREATE TABLE IF NOT EXISTS afk (user INTEGER, guild INTEGER, reason TEXT)")
+    """
 
 
 @bot.event
@@ -589,7 +591,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
 
 
 @bot.event
@@ -626,6 +628,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
         await interaction.send(embed = em2)
 
 
+"""
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -651,6 +654,7 @@ async def on_message(message):
 
     await bot.db.commit()
     await bot.process_commands(message)
+"""
 
 
 @bot.event
@@ -761,7 +765,7 @@ async def help(ctx: commands.Context):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, slap, movie, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, movie, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -779,7 +783,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, slap, movie, afk, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, movie, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -3478,7 +3482,6 @@ async def slap(interaction: Interaction, member: nextcord.User):
     await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
 
 
-"""
 @bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def weather(ctx: commands.Context, *, city: str = None):
@@ -3492,9 +3495,9 @@ async def weather(ctx: commands.Context, *, city: str = None):
 
         await ctx.send(embed = em)
 
-    api_key = os.environ["WEATHER_API_KEY"]
+    api_key = "c6e381d5c0b39faad3bfdcfd1aa5b074"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid = " + api_key + "&q=" + city
+    complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
     x = res.json()
 
@@ -3525,9 +3528,9 @@ async def weather(ctx: commands.Context, *, city: str = None):
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def weather(interaction: Interaction, *, city: str):
-    api_key = os.environ["WEATHER_API_KEY"]
+    api_key = "c6e381d5c0b39faad3bfdcfd1aa5b074"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid = " + api_key + "&q=" + city
+    complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
     x = res.json()
 
@@ -3553,7 +3556,6 @@ async def weather(interaction: Interaction, *, city: str):
 
     else:
         await interaction.send(f"No City Found - {city}")
-"""
 
 
 @bot.command(aliases = ["imdb"])
@@ -3561,7 +3563,7 @@ async def weather(interaction: Interaction, *, city: str):
 async def movie(ctx: commands.Context, *, movie_name = None):
     if movie_name == None:
         em = nextcord.Embed(title = "Movie")
-        em.add_field(name = "Command", value = ">movie|>imdb", inline = Fales)
+        em.add_field(name = "Command", value = ">movie|>imdb", inline = False)
         em.add_field(name = "Description", value = "Get a movie informations", inline = False)
         em.add_field(name = "Permissions Required", value = None, inline = False)
         em.add_field(name = "Usage", value = ">movie [name]", inline = False)
@@ -3595,37 +3597,6 @@ async def movie(ctx: commands.Context, *, movie_name = None):
     em2.add_field(name = "Actors", value = f"**{actors}**", inline = False)
 
     await ctx.send(embed = em2)
-
-
-@bot.slash_command(name = "movie", description = "Search for movie name")
-@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def movie(interaction: Interaction, *, movie_name):
-    moviesDB = IMDb()
-
-    try:
-        movies = moviesDB.search_movie(movie_name)
-
-    except:
-        await interaction.send(f"No Movie Found - {movie_name.title()}")
-
-    id = movies[0].getID()
-    movie = moviesDB.get_movie(id)
-    title = movie['title']
-    year = movie['year']
-    rating = movie['rating']
-    # directors = movie['directors']
-    casting = movie['cast']
-    # direcStr = " ".join(map(str, directors))
-    actors = ", ".join(map(str, casting))
-
-    em = nextcord.Embed(title = f"{movie_name.title()}")
-    em.add_field(name = "Title", value = f"**{movie_name.title()}**", inline = False)
-    em.add_field(name = "Year", value = f"**{year}**", inline = False)
-    em.add_field(name = "Rating", value = f"**{rating}**", inline = False)
-    # em.add_field(name = "Directors", value = f"**{direcStr}**", inline = False)
-    em.add_field(name = "Actors", value = f"**{actors}**", inline = False)
-
-    await interaction.send(embed = em)
 
 
 """
@@ -3682,6 +3653,7 @@ async def cv(interaction: Interaction, *, country):
 """
 
 
+"""
 @bot.command()
 async def afk(ctx: commands.Context, *, reason = None):
     if reason == None:
@@ -3727,6 +3699,7 @@ async def afk(interaction: Interaction, *, reason):
             await interaction.send(embed = em)
 
     await bot.db.commit()
+"""
 
 
 @bot.command()
@@ -4468,6 +4441,4 @@ async def eval(ctx: commands.Context, *, code):
     msg = await ctx.send(f"```py\n{str_obj.getvalue()}```")
     await msg.add_reaction("<:python:1005004573557141535>")
 
-
-keep_alive()
-bot.run(os.environ['TOKEN'])
+bot.run("ODc3NDkzNDQyOTU0MDA2NTk5.GFPaMc.CqOAj4MlUs7OCvL0PZtxzgn4xkLaO_u9z08CUQ")
