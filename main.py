@@ -4351,7 +4351,7 @@ async def creator(ctx: commands.Context):
 
 @bot.command(aliases = ["born"])
 async def created(ctx: commands.Context):
-    await ctx.reply("I was made on **__Wednesday, 08/18/2021, 20:05 AM UTC__**.")
+    await ctx.reply("I was made on **__Wednesday, 08/18/2021, 10:05 AM UTC__**.")
 
 
 @bot.command(aliases = ["ver", "__ver__" "__version__"])
