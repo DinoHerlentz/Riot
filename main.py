@@ -758,13 +758,13 @@ async def help(ctx: commands.Context):
     view = Help()
 
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
+    em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, ctcn, cvcn, emojiadd", inline = False)
     em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "<:dev:1000605337088438272> Activities <:dev:1000605337088438272>", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
+    em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "nick, embed", inline = False)
     em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, movie, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
@@ -776,13 +776,13 @@ async def help(interaction: Interaction):
     view = Help()
 
     em = nextcord.Embed(title = "Commands (>)")
-    em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, addrole, removerole, nick, ctcn, cvcn, emojiadd", inline = False)
+    em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, ctcn, cvcn, emojiadd", inline = False)
     em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "<:dev:1000605337088438272> Activities <:dev:1000605337088438272>", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu, neko, shinobu, megumin, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, highfive, handhold, nom, bite, glomp, slap, kick, happy, wink, poke, dance, cringe", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "embed", inline = False)
+    em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "nick, embed", inline = False)
     em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, movie, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
@@ -1114,9 +1114,14 @@ async def slowmode(ctx: commands.Context, seconds: int = None):
         await ctx.send(embed = em)
 
     else:
-        await ctx.channel.edit(slowmode_delay=seconds)
-        em2 = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
-        await ctx.reply(embed = em2, mention_author = False)
+        if seconds == 0:
+            await ctx.channel.edit(slowmode_delay = 0)
+            em2 = nextcord.Embed(title = f"Slowmode in this channel has been removed.", color = 0x2ECC71)
+            await ctx.reply(embed = em2, mention_author = False)
+        else:
+            await ctx.channel.edit(slowmode_delay = seconds)
+            em3 = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
+            await ctx.reply(embed = em3, mention_author = False)
 
 
 @bot.slash_command(name = "slowmode", description = "Set a slowmode to the current channel")
@@ -1124,50 +1129,15 @@ async def slowmode(ctx: commands.Context, seconds: int = None):
 @application_checks.has_permissions(manage_channels = True)
 async def slowmode(interaction: Interaction, seconds: int):
     await interaction.channel.edit(slowmode_delay=seconds)
-    em = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
-    await interaction.send(embed = em)
-
-
-@moderation.command(aliases = ["ar"])
-@commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_roles = True)
-async def addrole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
-    if role == None or member == None:
-        em = nextcord.Embed(title = "Add Role")
-        em.add_field(name = "Command", value = ">addrole|>ar", inline = False)
-        em.add_field(name = "Description", value = "Add a role to a member", inline = False)
-        em.add_field(name = "Permissions Required", value = "Manage Roles", inline = False)
-        em.add_field(name = "Usage", value = ">addrole [role] [member]", inline = False)
-        em.add_field(name = "Example", value = ">addrole @Administrator @DINO", inline = False)
-
-        await ctx.send(embed = em)
-
+    if seconds == 0:
+        em = nextcord.Embed(title = f"Slowmode in this channel has been removed.", color = 0x2ECC71)
+        await interaction.send(embed = em)
     else:
-        await member.add_roles(role)
-        em2 = nextcord.Embed(title = f"Successfully added {role.mention} to {member.mention}", color = 0x2ECC71)
-        await ctx.reply(embed = em2, mention_author = False)
+        em = nextcord.Embed(title = f"Slowmode in this channel has been set to {seconds} seconds.", color = 0x2ECC71)
+        await interaction.send(embed = em)
 
 
-@moderation.command(aliases = ["rr"])
-@commands.cooldown(1, 5, commands.BucketType.user)
-@commands.has_permissions(manage_roles = True)
-async def removerole(ctx: commands.Context, role: nextcord.Role = None, *, member: nextcord.User = None):
-    if role == None or member == None:
-        em = nextcord.Embed(title = "Remove Role")
-        em.add_field(name = "Command", value = ">removerole|>rr", inline = False)
-        em.add_field(name = "Description", value = "Remove a role from a member", inline = False)
-        em.add_field(name = "Permissions Required", value = "Manage Roles", inline = False)
-        em.add_field(name = "Usage", value = ">removerole [role] [member]", inline = False)
-        em.add_field(name = "Example", value = ">removerole @Administrator @DINO", inline = False)
-
-        await ctx.send(embed = em)
-
-    else:
-        await member.remove_roles(role)
-        em2 = nextcord.Embed(title = f"Successfully removed {role.mention} to {member.mention}", color = 0x2ECC71)
-        await ctx.reply(embed = em2, mention_author = False)
-
-
+"""
 @moderation.command(aliases = ["cn"])
 @commands.cooldown(1, 5, commands.BucketType.user)
 @commands.has_permissions(manage_nicknames = True)
@@ -1185,14 +1155,7 @@ async def nick(ctx: commands.Context, member: nextcord.User = None, *, nickname 
     else:
         await member.edit(nick = nickname)
         await ctx.reply(f"Successfully changed {member.mention} nicknames to `{nickname}`", mention_author = False)
-
-
-@bot.slash_command(name = "nick", description = "Change server member's nickname")
-# @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
-@application_checks.has_permissions(manage_nicknames = True)
-async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
-    await member.edit(nick = nickname)
-    await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
+"""
 
 
 @moderation.command(aliases = ["ctcn"])
@@ -3346,6 +3309,14 @@ async def lyrics(interaction: Interaction):
 
 
 # Application Commands
+@bot.slash_command(name = "nick", description = "Change server member's nickname")
+# @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
+@application_checks.has_permissions(manage_nicknames = True)
+async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
+    await member.edit(nick = nickname)
+    await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
+
+
 @bot.slash_command(name = "embed", description = "Create an embed")
 async def embed(interaction: Interaction):
     await interaction.response.send_modal(Embed())
@@ -3450,7 +3421,7 @@ async def ping(interaction: Interaction):
     await interaction.response.send_message(f"{round(bot.latency * 1000)}ms")
 
 
-@fun.command()
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def slap(ctx: commands.Context, member: nextcord.User = None):
     res = requests.get("https://waifu.pics/api/sfw/slap")
@@ -3495,7 +3466,7 @@ async def weather(ctx: commands.Context, *, city: str = None):
 
         await ctx.send(embed = em)
 
-    api_key = "c6e381d5c0b39faad3bfdcfd1aa5b074"
+    api_key = os.environ['WEATHER_API_KEY']
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
@@ -3528,7 +3499,7 @@ async def weather(ctx: commands.Context, *, city: str = None):
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def weather(interaction: Interaction, *, city: str):
-    api_key = "c6e381d5c0b39faad3bfdcfd1aa5b074"
+    api_key = os.environ['WEATHER_API_KEY']
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
