@@ -3312,10 +3312,7 @@ async def lyrics(interaction: Interaction):
 @bot.slash_command(name = "nick", description = "Change server member's nickname")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_nicknames = True)
-async def nick(interaction: Interaction, member: nextcord.User = None, *, nickname = None):
-    if member == None:
-        member = interaction.user
-    
+async def nick(interaction: Interaction, member: nextcord.User, *, nickname):
     await member.edit(nick = nickname)
     await interaction.send(f"Successfully changed {member.mention} nicknames to `{nickname}`")
 
