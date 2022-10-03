@@ -765,7 +765,7 @@ async def help(ctx: commands.Context):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "nick, embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, movie, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -783,7 +783,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "nick, embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, movie, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -3466,7 +3466,7 @@ async def weather(ctx: commands.Context, *, city: str = None):
 
         await ctx.send(embed = em)
 
-    api_key = os.environ['WEATHER_API_KEY']
+    api_key = "c6e381d5c0b39faad3bfdcfd1aa5b074"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
@@ -3499,7 +3499,7 @@ async def weather(ctx: commands.Context, *, city: str = None):
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def weather(interaction: Interaction, *, city: str):
-    api_key = os.environ['WEATHER_API_KEY']
+    api_key = "c6e381d5c0b39faad3bfdcfd1aa5b074"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
@@ -3527,47 +3527,6 @@ async def weather(interaction: Interaction, *, city: str):
 
     else:
         await interaction.send(f"No City Found - {city}")
-
-
-@bot.command(aliases = ["imdb"])
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def movie(ctx: commands.Context, *, movie_name = None):
-    if movie_name == None:
-        em = nextcord.Embed(title = "Movie")
-        em.add_field(name = "Command", value = ">movie|>imdb", inline = False)
-        em.add_field(name = "Description", value = "Get a movie informations", inline = False)
-        em.add_field(name = "Permissions Required", value = None, inline = False)
-        em.add_field(name = "Usage", value = ">movie [name]", inline = False)
-        em.add_field(name = "Example", value = ">movie Interstellar", inline = False)
-
-        await ctx.send(embed = em)
-
-    moviesDB = IMDb()
-
-    try:
-        movies = moviesDB.search_movie(movie_name)
-
-    except:
-        await ctx.reply(f"No Movie Found - {movie_name.title()}", mention_author = False)
-
-    id = movies[0].getID()
-    movie = moviesDB.get_movie(id)
-    title = movie['title']
-    year = movie['year']
-    rating = movie['rating']
-    # directors = movie['directors']
-    casting = movie['cast']
-    # direcStr = " ".join(map(str, directors))
-    actors = ", ".join(map(str, casting))
-
-    em2 = nextcord.Embed(title = f"{movie_name.title()}")
-    em2.add_field(name = "Title", value = f"**{movie_name.title()}**", inline = False)
-    em2.add_field(name = "Year", value = f"**{year}**", inline = False)
-    em2.add_field(name = "Rating", value = f"**{rating}**", inline = False)
-    # em2.add_field(name = "Directors", value = f"**{direcStr}**", inline = False)
-    em2.add_field(name = "Actors", value = f"**{actors}**", inline = False)
-
-    await ctx.send(embed = em2)
 
 
 """
