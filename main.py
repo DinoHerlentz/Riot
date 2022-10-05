@@ -3167,15 +3167,18 @@ async def volume(ctx: commands.Context, volume: int):
     else:
         vc: wavelink.Player = ctx.voice_client
 
-    if isinstance(volume, int) and 0 <= volume <= 200:
-        volume /= 200
-
-        await vc.set_volume(volume=volume)
-
-        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
-        em.timestamp = ctx.message.created_at
-
+    if volume > 100:
+        em = nextcord.Embed(title = "Error", description = "Max volume is 100%", color = nextcord.Color.red())
         await ctx.send(embed = em)
+    
+    elif volume < 0:
+        em2 = nextcord.Embed(title = "Error", description = "Min volume is 0%", color = nextcord.Color.red())
+        await ctx.send(embed = em2)
+
+        em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
+        em3.timestamp = ctx.message.created_at
+
+        await ctx.send(embed = em3)
 
 
 @bot.slash_command(name = "volume", description = "Change music volume")
@@ -3189,15 +3192,18 @@ async def volume(interaction: Interaction, volume: int):
     else:
         vc: wavelink.Player = interaction.guild.voice_client
 
-    if isinstance(volume, int) and 0 <= volume <= 200:
-        volume /= 200
-
-        await vc.set_volume(volume=volume)
-
-        em = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
-        em.timestamp = datetime.datetime.utcnow()
-
+    if volume > 100:
+        em = nextcord.Embed(title = "Error", description = "Max volume is 100%", color = nextcord.Color.red())
         await interaction.send(embed = em)
+    
+    elif volume < 0:
+        em2 = nextcord.Embed(title = "Error", description = "Min volume is 0%", color = nextcord.Color.red())
+        await interaction.send(embed = em2)
+
+        em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
+        em3.timestamp = datetime.datetime.utcnow()
+
+        await interaction.send(embed = em3)
 
 
 @music.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
