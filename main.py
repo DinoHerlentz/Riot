@@ -3169,15 +3169,16 @@ async def volume(ctx: commands.Context, volume: int):
 
     if volume > 100:
         em = nextcord.Embed(title = "Error", description = "Max volume is 100%", color = nextcord.Color.red())
-        await ctx.send(embed = em)
+        return await ctx.send(embed = em)
     
     elif volume < 0:
         em2 = nextcord.Embed(title = "Error", description = "Min volume is 0%", color = nextcord.Color.red())
-        await ctx.send(embed = em2)
+        return await ctx.send(embed = em2)
 
         em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
         em3.timestamp = ctx.message.created_at
 
+        return await vc.set_volume(volume)
         await ctx.send(embed = em3)
 
 
@@ -3203,6 +3204,7 @@ async def volume(interaction: Interaction, volume: int):
         em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
         em3.timestamp = datetime.datetime.utcnow()
 
+        return await vc.set_volume(volume)
         await interaction.send(embed = em3)
 
 
