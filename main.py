@@ -765,7 +765,7 @@ async def help(ctx: commands.Context):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "nick, embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "status, pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await ctx.send(embed = em, view = view)
     await view.wait()
@@ -783,7 +783,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:partnership:907617961202831401> Application Commands (/) <:partnership:907617961202831401>", value = "nick, embed", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "status, pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount, emojiinfo", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -3339,6 +3339,21 @@ async def forum(interaction: Interaction):
 
 # Miscellaneous Command
 @bot.command()
+async def status(ctx: commands.Context, member: nextcord.User = None):
+    if member == None:
+        member = ctx.author
+    
+    await ctx.send(member.activities[0].name)
+
+@bot.slash_command(name = "status", description = "Shows user custom status")
+async def status(interaction: Interaction, member: nextcord.User = None):
+    if member == None:
+        member = interaction.user
+    
+    await interaction.send(member.activities[0].name)
+
+
+@bot.command()
 async def pet(ctx: commands.Context):
     view = PetView()
     await ctx.send("Choose 1 pet to buy", view = view)
@@ -4202,7 +4217,7 @@ async def stats(ctx: commands.Context):
 
 @bot.command()
 @commands.is_owner()
-async def status(ctx: commands.Context, *, activity):
+async def ba(ctx: commands.Context, *, activity):
     await bot.change_presence(activity = nextcord.Game(activity))
     await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
