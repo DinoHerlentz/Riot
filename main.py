@@ -3178,8 +3178,8 @@ async def volume(ctx: commands.Context, volume: int):
     em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
     em3.timestamp = ctx.message.created_at
 
-    return await vc.set_volume(volume)
     await ctx.send(embed = em3)
+    return await vc.set_volume(volume)
 
 
 @bot.slash_command(name = "volume", description = "Change music volume")
@@ -3204,8 +3204,8 @@ async def volume(interaction: Interaction, volume: int):
     em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
     em3.timestamp = datetime.datetime.utcnow()
 
-    return await vc.set_volume(volume)
     await interaction.send(embed = em3)
+    return await vc.set_volume(volume)
 
 
 @music.command(aliases = ["np", "cp", "currentplay", "currentplaying"])
