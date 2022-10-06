@@ -3339,21 +3339,6 @@ async def forum(interaction: Interaction):
 
 # Miscellaneous Command
 @bot.command()
-async def status(ctx: commands.Context, member: nextcord.User = None):
-    if member == None:
-        member = ctx.author
-    
-    await ctx.send(member.activities[0].name)
-
-@bot.slash_command(name = "status", description = "Shows user custom status")
-async def status(interaction: Interaction, member: nextcord.User = None):
-    if member == None:
-        member = interaction.user
-    
-    await interaction.send(member.activities[0].name)
-
-
-@bot.command()
 async def pet(ctx: commands.Context):
     view = PetView()
     await ctx.send("Choose 1 pet to buy", view = view)
