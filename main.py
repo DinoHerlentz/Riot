@@ -34,7 +34,7 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 
 
 intents = nextcord.Intents.all()
-bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
+bot = commands.Bot(intents = intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 cats = json.load(open("cat_gifs.json"))
@@ -507,7 +507,7 @@ class WordSnacksGame(nextcord.ui.View):
 # Event Decorator
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=nextcord.Status.online, activity = nextcord.Game(">help"))
+    await bot.change_presence(status=nextcord.Status.online, activity = nextcord.Game("/help"))
     print("We have logged in as {0.user}".format(bot))
 
     """
