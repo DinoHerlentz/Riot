@@ -38,7 +38,7 @@ bot = commands.Bot(intents = intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 cats = json.load(open("cat_gifs.json"))
-lyrics_url = "https://some-random-api.ml/lyrics?title="
+# lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
@@ -2466,6 +2466,7 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 """
 
 
+"""
 # Owner Command
 @bot.command()
 @commands.is_owner()
@@ -2668,5 +2669,6 @@ async def eval(ctx: commands.Context, *, code):
 
     msg = await ctx.send(f"```py\n{str_obj.getvalue()}```")
     await msg.add_reaction("<:python:1005004573557141535>")
+"""
 
 bot.run(os.environ['TOKEN'])
