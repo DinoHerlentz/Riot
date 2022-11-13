@@ -682,7 +682,7 @@ async def help(interaction: Interaction):
 @bot.slash_command(name = "ban", description = "Ban a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(ban_members = True)
-async def ban(interaction: Interaction, member: nextcord.User, *, reason):
+async def ban(interaction: Interaction, member: nextcord.User, *, reason = None):
     if member.id == interaction.user.id:
         await interaction.send("❌ You can't ban yourself.", ephemeral = True)
 
@@ -702,7 +702,7 @@ async def ban(interaction: Interaction, member: nextcord.User, *, reason):
 @bot.slash_command(name = "unban", description = "Unban a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(ban_members = True)
-async def unban(interaction: Interaction, member, *, reason):
+async def unban(interaction: Interaction, member, *, reason = None):
     banned_users = await interaction.guild.bans()
     member_name, member_discriminator = member.split("#")
 
@@ -719,7 +719,7 @@ async def unban(interaction: Interaction, member, *, reason):
 @bot.slash_command(name = "timeout", description = "Timeout a member so they can't chat/speak/react to a message")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(moderate_members = True)
-async def timeout(interaction: Interaction, member: nextcord.User, time, *, reason):
+async def timeout(interaction: Interaction, member: nextcord.User, time, *, reason = None):
     if member == interaction.user:
         await interaction.send("❌ You can't mute yourself.", ephemeral = True)
 
@@ -740,7 +740,7 @@ async def timeout(interaction: Interaction, member: nextcord.User, time, *, reas
 @bot.slash_command(name = "removetimeout", description = "Remove timeout from a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(moderate_members = True)
-async def removetimeout(interaction: Interaction, member: nextcord.User, *, reason):
+async def removetimeout(interaction: Interaction, member: nextcord.User, *, reason = None):
     if member.top_role >= interaction.user.top_role:
         await interaction.send("❌ You can only moderate members below your role.", ephemeral = True)
 
@@ -756,7 +756,7 @@ async def removetimeout(interaction: Interaction, member: nextcord.User, *, reas
 @bot.slash_command(name = "kick", description = "Kick a member")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(kick_members = True)
-async def kick(interaction: Interaction, member: nextcord.User, *, reason):
+async def kick(interaction: Interaction, member: nextcord.User, *, reason = None):
     if member == interaction.user:
         await interaction.send("❌ You can't kick yourself.", ephemeral = True)
 
