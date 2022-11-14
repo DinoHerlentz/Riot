@@ -507,7 +507,8 @@ class WordSnacksGame(nextcord.ui.View):
 # Event Decorator
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=nextcord.Status.online, activity = nextcord.Game("/help"))
+    # await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Game("/help"))
+    await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(type = nextcord.ActivityType.watching, name = f"{len(bot.guilds)} servers"))
     print("Successfully logged in as {0.user}".format(bot))
 
     """
