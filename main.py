@@ -1578,7 +1578,7 @@ async def gif(interaction: Interaction):
     op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing dog GIFs", emoji = "😎")
     op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating dog GIFs", emoji = "🥫")
     op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping dog GIFs", emoji = "😴")
-    dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 4)
+    dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 1)
 
     dropdown.callback = dropdown_callback
     view = nextcord.ui.View(timeout = None)
@@ -1606,7 +1606,7 @@ async def gif(interaction: Interaction):
     op2 = nextcord.SelectOption(label = "Play", value = "play", description = "Random playing cat GIFs", emoji = "😎")
     op3 = nextcord.SelectOption(label = "Eat", value = "eat", description = "Random eating cat GIFs", emoji = "🥫")
     op4 = nextcord.SelectOption(label = "Sleep", value = "sleep", description = "Random sleeping cat GIFs", emoji = "😴")
-    dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 4)
+    dropdown = nextcord.ui.Select(placeholder = "Choose any", options = [op1, op2, op3, op4], max_values = 1)
 
     dropdown.callback = dropdown_callback
     view = nextcord.ui.View(timeout = None)
