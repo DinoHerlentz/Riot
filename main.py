@@ -320,7 +320,7 @@ class ServerReport(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Server Report Forum")
 
-        self.emMsg = nextcord.ui.TextInput( label = "Server Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
+        self.emMsg = nextcord.ui.TextInput(label = "Server Report", min_length = 10, max_length = 4000, required = True, placeholder = "Put your report message here", style = nextcord.TextInputStyle.paragraph)
         self.add_item(self.emMsg)
 
     async def callback(self, interaction: Interaction) -> None:
@@ -329,6 +329,24 @@ class ServerReport(nextcord.ui.Modal):
         msg = self.emMsg.value
 
         em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n```py\n{msg}```", color = nextcord.Color.red())
+        em.timestamp = datetime.datetime.utcnow()
+
+        return await channel.send(embed = em)
+
+
+class NKS2D(nextcord.ui.Modal):
+    def __init__(self):
+        super().__init__("NKS2D Server Suggestions Forum")
+
+        self.emMsg = nextcord.ui.TextInput(label = "Server Suggestions", min_length = 10, max_length = 4000, required = True, placeholder = "Put your suggestions here", style = nextcord.TextInputStyle.paragraph)
+        self.add_item(self.emMsg)
+
+    async def callback(self, interaction: Interaction) -> None:
+        channel = bot.get_channel(884452356111101982)
+        author = interaction.user
+        msg = self.emMsg.value
+
+        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n```py\n{msg}```")
         em.timestamp = datetime.datetime.utcnow()
 
         return await channel.send(embed = em)
@@ -673,7 +691,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, poll, announce, servericon, id, membercount", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -824,7 +842,7 @@ async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
 @bot.slash_command(name = "changetextchannelname", description = "Change the specified text channel name")
 #@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_channels = True)
-async def changetextchannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select voice channel"), *, name):
+async def changetextchannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel"), *, name):
     await channel.edit(name = name)
 
     em = nextcord.Embed(title = "Successfully changed the channel name.", color = 0x2ECC71)
@@ -2212,16 +2230,19 @@ async def cleardm(interaction: Interaction, amount, arg: int = None):
 @cooldowns.cooldown(1, 3600, bucket=cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
     await interaction.response.send_modal(Suggest())
+    await interaction.send("Please fill the suggestion forum (any troll messages will be ignored and you might get blacklisted).", ephemeral = True)
 
 
 @bot.slash_command(name = "report", description = "Report an issue")
 async def report(interaction: Interaction):
     await interaction.response.send_modal(Report())
+    await interaction.send("Please fill the report forum (any troll messages will be ignored and you might get blacklisted).", ephemeral = True)
 
 
 @bot.slash_command(name = "serverreport", description = "Report an issue from this server", guild_ids = [server_id])
 async def serverreport(interaction: Interaction):
     await interaction.response.send_modal(ServerReport())
+    await interaction.send("Please fill the report forum (any troll messages will be ignored and you might get blacklisted).", ephemeral = True)
 
 
 @bot.slash_command(name = "webhooksay", description = "Say something with a webhook")
@@ -2377,17 +2398,6 @@ async def timer(interaction: Interaction, seconds):
         await interaction.send("Please enter a number.", ephemeral = True)
 
 
-@bot.slash_command(name = "poll", description = "Create a poll")
-async def poll(interaction: Interaction, *, argument):
-    em = nextcord.Embed(title = f"New Poll", description = f"{argument}")
-    em.set_footer(text = f"Poll by {interaction.user}", icon_url = interaction.user.avatar.url)
-    em.timestamp = datetime.datetime.utcnow()
-    poll_msg = await interaction.send(embed = em)
-    
-    await poll_msg.add_reaction("👍")
-    await poll_msg.add_reaction("👎")
-
-
 @bot.slash_command(name = "announce", description = "Announce a message to a specified channel")
 # @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_messages = True)
@@ -2465,6 +2475,12 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 
     await ctx.send(embed = em)
 """
+
+# Trivia Command
+@bot.slash_command(name = "nks2d", description = "Gives your suggestions to this server", guild_ids = [884452356111101982])
+async def nks2d(interaction: Interaction):
+    await interaction.response.send_modal(NKS2D())
+    await interaction.send("Please fill the suggestion forum", ephemeral = True)
 
 
 """
