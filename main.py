@@ -16,15 +16,12 @@ import animec
 import aiosqlite
 import aiohttp
 import psutil
-import base64
 from traceback import format_exception
 from imdb import IMDb
 from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
 from cooldowns import CallableOnCooldown
-from craiyon import Craiyon
-from PIL import Image
 from nextcord.ext import commands, tasks, activities, application_checks
 from nextcord.ext.application_checks import ApplicationNotOwner, ApplicationMissingPermissions, ApplicationMissingRole, ApplicationMissingAnyRole, ApplicationBotMissingPermissions, ApplicationBotMissingRole, ApplicationBotMissingAnyRole, ApplicationNSFWChannelRequired, ApplicationNoPrivateMessage, ApplicationPrivateMessageOnly
 from nextcord.abc import GuildChannel
@@ -40,6 +37,7 @@ dogs = json.load(open("dog_gifs.json"))
 cats = json.load(open("cat_gifs.json"))
 # lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
+nks2d = 884452356111101982
 snipe_message_content = None
 snipe_message_author = None
 
@@ -91,16 +89,16 @@ class NoLyricsFound(commands.CommandError):
 
 
 class ControlPanel(nextcord.ui.View):
-    def __init__(self, vc, ctx):
+    def __init__(self, vc, interaction):
         super().__init__()
         self.vc = vc
-        self.ctx = ctx
+        self.interaction = interaction
     
     
     @nextcord.ui.button(label = "Resume/Pause", style = nextcord.ButtonStyle.blurple)
     async def resume_and_pause(self, button: nextcord.ui.Button, interaction: Interaction):
-        if not interaction.user == self.ctx.author:
-            return await interaction.user.send_message("This panel isn't yours.", ephemeral = True)
+        if not interaction.user == self.interaction.user:
+            return await interaction.send("This panel isn't yours.", ephemeral = True)
         
         for child in self.children:
             child.disabled = False
@@ -116,8 +114,8 @@ class ControlPanel(nextcord.ui.View):
     
     @nextcord.ui.button(label = "Queue", style = nextcord.ButtonStyle.blurple)
     async def queue(self, button: nextcord.ui.Button, interaction: Interaction):
-        if not interaction.user == self.ctx.author:
-            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
+        if not interaction.user == self.interaction.user:
+            return await interaction.send("This panel isn't yours.", ephemeral = True)
         
         for child in self.children:
             child.disabled = False
@@ -125,7 +123,7 @@ class ControlPanel(nextcord.ui.View):
         button.disabled = True
         
         if self.vc.queue.is_empty:
-            return await interaction.response.send_message("Queue is empty.", ephemeral = True)
+            return await interaction.send("Queue is empty.", ephemeral = True)
         
         em = nextcord.Embed(title = "Queue")
         queue = self.vc.queue.copy()
@@ -141,8 +139,8 @@ class ControlPanel(nextcord.ui.View):
     """
     @nextcord.ui.button(label = "Skip", style = nextcord.ButtonStyle.blurple)
     async def skip(self, button: nextcord.ui.Button, interaction: Interaction):
-        if not interaction.user == self.ctx.author:
-            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
+        if not interaction.user == self.interaction.user:
+            return await interaction.send("This panel isn't yours.", ephemeral = True)
         
         for child in self.children:
             child.disabled = False
@@ -150,7 +148,7 @@ class ControlPanel(nextcord.ui.View):
         button.disabled = True
         
         if self.vc.queue.is_empty:
-            return await interaction.response.send_message("The queue is empty.", ephemeral = True)
+            return await interaction.send("The queue is empty.", ephemeral = True)
         
         try:
             next_song = self.vc.queue.get()
@@ -164,94 +162,8 @@ class ControlPanel(nextcord.ui.View):
     
     @nextcord.ui.button(label = "Disconnect", style = nextcord.ButtonStyle.red)
     async def disconnect(self, button: nextcord.ui.Button, interaction: Interaction):
-        if not interaction.user == self.ctx.author:
-            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
-        
-        for child in self.children:
-            child.disabled = True
-        
-        await self.vc.disconnect()
-        await interaction.message.edit(content = "Successfully left the voice channel.", view = self)
-
-
-class ControlPanelII(nextcord.ui.View):
-    def __init__(self, vc, interaction: Interaction):
-        super().__init__()
-        self.vc = vc
-        self.interaction = interaction
-    
-    
-    @nextcord.ui.button(label = "Resume/Pause", style = nextcord.ButtonStyle.blurple)
-    async def resume_and_pause(self, button: nextcord.ui.Button, interaction: Interaction):
         if not interaction.user == self.interaction.user:
-            return await interaction.user.send_message("This panel isn't yours.", ephemeral = True)
-        
-        for child in self.children:
-            child.disabled = False
-        
-        if self.vc.is_paused():
-            await self.vc.resume()
-            await interaction.message.edit(content = "Resumed", view = self)
-        
-        else:
-            await self.vc.pause()
-            await interaction.message.edit(content = "Paused", view = self)
-    
-    
-    @nextcord.ui.button(label = "Queue", style = nextcord.ButtonStyle.blurple)
-    async def queue(self, button: nextcord.ui.Button, interaction: Interaction):
-        if not interaction.user == self.interaction.user:
-            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
-        
-        for child in self.children:
-            child.disabled = False
-        
-        button.disabled = True
-        
-        if self.vc.queue.is_empty:
-            return await interaction.response.send_message("The queue is empty.", ephemeral = True)
-        
-        em = nextcord.Embed(title = "Queue")
-        queue = self.vc.queue.copy()
-        songCount = 0
-        
-        for song in queue:
-            songCount += 1
-            em.add_field(name = f"Queue number {str(songCount)}", value = f"{song}", inline = False)
-        
-        await interaction.message.edit(embed = em, view = self)
-    
-    
-    """
-    @nextcord.ui.button(label = "Skip", style = nextcord.ButtonStyle.blurple)
-    async def skip(self, button: nextcord.ui.Button, interaction: Interaction):
-        if not interaction.user == self.interaction.user:
-            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
-        
-        for child in self.children:
-            child.disabled = False
-        
-        button.disabled = True
-        
-        
-        if self.vc.queue.is_empty and not self.vc.is_playing():
-            return await interaction.response.send_message("The queue is empty.", ephemeral = True)
-        
-        try:
-            next_song = self.vc.queue.get()
-            await self.vc.play(next_song)
-            
-            await interaction.message.edit(content = f"Now playing -> `{next_song}`", view = self)
-        
-        except Exception:
-            return await interaction.response.send_message("The queue is empty.", ephemeral = True)
-    """
-    
-    
-    @nextcord.ui.button(label = "Disconnect", style = nextcord.ButtonStyle.red)
-    async def disconnect(self, button: nextcord.ui.Button, interaction: Interaction):
-        if not interaction.user == self.interaction.user:
-            return await interaction.response.send_message("This panel isn't yours.", ephemeral = True)
+            return await interaction.send("This panel isn't yours.", ephemeral = True)
         
         for child in self.children:
             child.disabled = True
@@ -329,24 +241,6 @@ class ServerReport(nextcord.ui.Modal):
         msg = self.emMsg.value
 
         em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n```py\n{msg}```", color = nextcord.Color.red())
-        em.timestamp = datetime.datetime.utcnow()
-
-        return await channel.send(embed = em)
-
-
-class NKS2D(nextcord.ui.Modal):
-    def __init__(self):
-        super().__init__("NKS2D Server Suggestions Forum")
-
-        self.emMsg = nextcord.ui.TextInput(label = "Server Suggestions", min_length = 10, max_length = 4000, required = True, placeholder = "Put your suggestions here", style = nextcord.TextInputStyle.paragraph)
-        self.add_item(self.emMsg)
-
-    async def callback(self, interaction: Interaction) -> None:
-        channel = bot.get_channel(884452356111101982)
-        author = interaction.user
-        msg = self.emMsg.value
-
-        em = nextcord.Embed(title = "Suggestions", description = f"**{author}** sent a suggestions\n\nMessage :\n\n```py\n{msg}```")
         em.timestamp = datetime.datetime.utcnow()
 
         return await channel.send(embed = em)
@@ -529,10 +423,8 @@ async def on_ready():
     await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(type = nextcord.ActivityType.watching, name = f"{len(bot.guilds)} servers"))
     print("Successfully logged in as {0.user}".format(bot))
 
-    """
     # Music
     bot.loop.create_task(node_connect())
-    """
     
     """
     # AFK
@@ -543,7 +435,6 @@ async def on_ready():
     """
 
 
-"""
 @bot.event
 async def on_wavelink_node_ready(node: wavelink.Node):
     print(f"Node {node.identifier} is ready")
@@ -556,13 +447,8 @@ async def node_connect():
 
 @bot.event
 async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTubeTrack, reason):
-    try:
-        ctx = player.ctx
-        vc: player = ctx.voice_client
-
-    except nextcord.HTTPException:
-        interaction = player.interaction
-        vc: player = interaction.guild.voice_client
+    interaction = player.interaction
+    vc: player = interaction.guild.voice_client
 
     if vc.loop:
         return await vc.play(track)
@@ -577,16 +463,10 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
     except wavelink.errors.QueueEmpty:
         pass
 
-    try:
-        em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
-        em.timestamp = ctx.message.created_at
-        await ctx.send(embed = em)
-
-    except nextcord.HTTPException:
-        em2 = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
-        em2.timestamp = datetime.datetime.utcnow()
-        await interaction.send(embed = em2)
-"""
+    em = nextcord.Embed(title = "Music Play", description = f"Now playing -> `{next_song.title}`")
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
 
 
 """
@@ -691,6 +571,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
+    em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
 
     await interaction.send(embed = em, view = view)
@@ -1705,7 +1586,6 @@ async def rock(Interaction: commands.Context):
 
 
 # Music Command
-"""
 @bot.slash_command(name = "panel", description = "Control the music with button interaction")
 async def panel(interaction: Interaction):
     if not interaction.guild.voice_client:
@@ -1718,7 +1598,7 @@ async def panel(interaction: Interaction):
         vc: wavelink.Player = interaction.guild.voice_client
     
     em = nextcord.Embed(title = "Music Panel", description = "Control the music with button interaction")
-    view = ControlPanelII(vc, interaction)
+    view = ControlPanel(vc, interaction)
     
     await interaction.send(embed = em, view = view)
 
@@ -1938,11 +1818,12 @@ async def volume(interaction: Interaction, volume: int):
         em2 = nextcord.Embed(title = "Error", description = "Min volume is 0%", color = nextcord.Color.red())
         await interaction.send(embed = em2)
 
-    em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
-    em3.timestamp = datetime.datetime.utcnow()
+    else:
+        em3 = nextcord.Embed(title = "Music Volume", description = f"Music volume has been set to `{volume}%`", color = 0x2CCE71)
+        em3.timestamp = datetime.datetime.utcnow()
 
-    await interaction.send(embed = em3)
-    return await vc.set_volume(volume)
+        await interaction.send(embed = em3)
+        return await vc.set_volume(volume)
 
 
 @bot.slash_command(name = "nowplaying", description = "Shows current playing music info")
@@ -1997,7 +1878,6 @@ async def lyrics(interaction: Interaction):
             em.timestamp = datetime.datetime.utcnow()
 
             await interaction.send(embed = em)
-"""
 
 
 # Miscellaneous Command
@@ -2474,218 +2354,6 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
     em.add_field(name = "Requires Colons", value = require_colons, inline = False)
 
     await ctx.send(embed = em)
-"""
-
-# Trivia Command
-@bot.slash_command(name = "nks2d", description = "Gives your suggestions to this server", guild_ids = [884452356111101982])
-async def nks2d(interaction: Interaction):
-    await interaction.response.send_modal(NKS2D())
-    await interaction.send("Please fill the suggestion forum", ephemeral = True)
-
-
-"""
-# Owner Command
-@bot.command()
-@commands.is_owner()
-async def dm(ctx: commands.Context, member: nextcord.User, *, content):
-    user = await member.create_dm()
-
-    try:
-        await user.send(content)
-
-    except nextcord.Forbidden:
-        await ctx.reply("Couldn't DM that user.")
-
-    await ctx.message.add_reaction("<:dev:1000605337088438272>")
-
-
-@bot.command(aliases = ["statistic", "stat"])
-@commands.is_owner()
-async def stats(ctx: commands.Context):
-    em = nextcord.Embed(title = "Riot Bot Statistics")
-    em.add_field(name = "CPU", value = f"{psutil.cpu_percent()}%", inline = False)
-    em.add_field(name = "RAM", value = f"{psutil.virtual_memory()[2]}%", inline = False)
-    await ctx.send(embed = em)
-
-
-@bot.command()
-@commands.is_owner()
-async def ba(ctx: commands.Context, *, activity):
-    await bot.change_presence(activity = nextcord.Game(activity))
-    await ctx.message.add_reaction("<:dev:1000605337088438272>")
-
-
-@bot.command(aliases = ["ln"])
-@commands.is_owner()
-async def leaveservername(ctx: commands.Context, *, guild_name):
-    guildName = nextcord.utils.get(bot.guilds, name = guild_name)
-
-    if guildName is None:
-        await ctx.reply("No guild with that name found.", mention_author = False)
-
-    else:
-        await guildName.leave()
-        await ctx.message.add_reaction("<:dev:1000605337088438272>")
-
-
-@bot.command(aliases = ["lid"])
-@commands.is_owner()
-async def leaveserverid(ctx: commands.Context, *, guild_id):
-    guildID = nextcord.utils.get(bot.guilds, name = guild_id)
-
-    if guildID is None:
-        await ctx.reply("No guild with that ID found.", mention_author = False)
-
-    else:
-        await guildID.leave()
-        await ctx.message.add_reaction("<:dev:1000605337088438272>")
-
-
-@bot.command(aliases = ["message"])
-@commands.is_owner()
-async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
-    await ctx.message.add_reaction("<:dev:1000605337088438272>")
-
-    try:
-        await channel.send(f"{msg}")
-
-    except nextcord.Forbidden:
-        await ctx.reply("I don't have permissions to send a message in that channel.")
-
-
-@bot.command()
-@commands.is_owner()
-async def toggle(ctx: commands.Context, *, command):
-    command = bot.get_command(command)
-
-    if command == None:
-        await ctx.reply("Couldn't find that command.", mention_author = False)
-
-    elif ctx.command == command:
-        await ctx.reply(f"You can't disable this command", mention_author = False)
-
-    else:
-        command.enabled = not command.enabled
-        ternary = "enabled" if command.enabled else "disabled"
-
-        em = nextcord.Embed(title = "Command Toggle", description = f"Successfully {ternary} command {command.qualified_name}", color = 0x2CCE71)
-        await ctx.send(embed = em)
-
-
-@bot.command()
-@commands.is_owner()
-async def act(ctx: commands.Context, member: nextcord.User = None, *, message = None):
-    if member == None:
-        await ctx.reply("Please mention a member.", mention_author = False)
-
-    elif message == None:
-        await ctx.reply("Please provide a message.", mention_author = False)
-
-    webhook = await ctx.channel.create_webhook(name = member.name)
-    await webhook.send(str(message), username = member.name, avatar_url = member.avatar.url)
-    await ctx.message.delete()
-
-    webhooks = await ctx.channel.webhooks()
-    for webhook in webhooks:
-        await webhook.delete()
-
-
-@bot.command(aliases = ["owner"])
-async def creator(ctx: commands.Context):
-    await ctx.reply("DINO#9914")
-
-
-@bot.command(aliases = ["born"])
-async def created(ctx: commands.Context):
-    await ctx.reply("I was made on **__Wednesday, 08/18/2021, 10:05 AM UTC__**.")
-
-
-@bot.command(aliases = ["ver", "__ver__" "__version__"])
-@commands.is_owner()
-async def version(ctx: commands.Context):
-    await ctx.send(nextcord.__version__)
-
-
-@bot.command(aliases = ["checkguildid"])
-@commands.is_owner()
-async def gid(ctx: commands.Context):
-    async for guild in bot.fetch_guilds():
-        await ctx.send(guild.id)
-
-
-@bot.command(aliases = ["checkguild"])
-@commands.is_owner()
-async def cg(ctx: commands.Context):
-    async for guild in bot.fetch_guilds():
-        await ctx.send(guild.name)
-
-
-@bot.command(aliases = ["checkguildlist"])
-@commands.is_owner()
-async def cgl(ctx: commands.Context):
-    guilds = await bot.fetch_guilds().flatten()
-    await ctx.send(guilds)
-
-
-@bot.command()
-@commands.is_owner()
-async def createinvite(ctx: commands.Context, guildid: int):
-    try:
-        guild = bot.get_guild(guildid)
-        invitelink = ""
-        i = 0
-
-        while invitelink == "":
-            channel = guild.text_channels[i]
-            link = await channel.create_invite(max_age=0, max_uses=0)
-            invitelink = str(link)
-            i += 1
-
-        await ctx.send(invitelink)
-
-    except Exception:
-        await ctx.send("Something wrong.")
-
-
-@bot.command(pass_context = True)
-@commands.is_owner()
-async def join(ctx: commands.Context):
-    if (ctx.author.voice):
-        channel = ctx.message.author.voice.channel
-        await channel.connect()
-        await ctx.reply("Successfully joined the voice chat.")
-
-    else:
-        await ctx.reply("You aren't connected to the voice channel.", mention_author = False)
-
-
-@bot.command(pass_context = True)
-@commands.is_owner()
-async def left(ctx: commands.Context):
-    if (ctx.voice_client):
-        await ctx.guild.voice_bot.disconnect()
-        await ctx.reply("Successfully left the voice channel.")
-
-    else:
-        await ctx.reply("I'm not in the voice channel.")
-
-
-@bot.command(aliases = ["e"])
-@commands.is_owner()
-async def eval(ctx: commands.Context, *, code):
-    code = clean_code(code)
-    str_obj = io.StringIO()
-
-    try:
-        with contextlib.redirect_stdout(str_obj):
-            exec(code)
-
-    except Exception as e:
-        em = nextcord.Embed(title = "❌ Error ❌", description = "```py\n" + "".join(format_exception(e.__class__, e, e.__traceback__)) + "```", color = nextcord.Color.red())
-        return await ctx.send(embed = em)
-
-    msg = await ctx.send(f"```py\n{str_obj.getvalue()}```")
-    await msg.add_reaction("<:python:1005004573557141535>")
 """
 
 bot.run(os.environ['TOKEN'])
