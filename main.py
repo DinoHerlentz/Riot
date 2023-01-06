@@ -35,9 +35,8 @@ bot = commands.Bot(intents = intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 cats = json.load(open("cat_gifs.json"))
-# lyrics_url = "https://some-random-api.ml/lyrics?title="
+lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
-nks2d = 884452356111101982
 snipe_message_content = None
 snipe_message_author = None
 
@@ -567,12 +566,12 @@ async def help(interaction: Interaction):
 
     em = nextcord.Embed(title = "Commands (/)")
     em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, hug, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, slap, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -925,6 +924,65 @@ async def rps(interaction: Interaction, choice):
 async def rate(interaction: Interaction, *, argument):
     em = nextcord.Embed(title = "Rate Parameter", description = f"{argument} : **{random.randrange(100)}%**")
     await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "slap", description = "Slap someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def slap(interaction: Interaction, member: nextcord.User):
+    if member == interaction.user:
+        await interaction.send("You won't hurt yourself.", ephemeral = True)
+    res = requests.get("https://waifu.pics/api/sfw/slap")
+    image_link = res.json()["url"]
+
+    await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
+
+
+@bot.slash_command(name = "hug", description = "Hug someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def hug(interaction: Interaction, member: nextcord.User):
+    if member == interaction.user:
+        await interaction.send("You can't hug yourself.", ephemeral = True)
+    
+    res = requests.get("https://waifu.pics/api/sfw/hug")
+    image_link = res.json()["url"]
+    
+    await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
+
+
+@bot.slash_command(name = "kiss", description = "Kiss someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def kiss(interaction: Interaction, member: nextcord.User):
+    if member == interaction.user:
+        await interaction.send("You can't kiss yourself.", ephemeral = True)
+    
+    res = requests.get("https://waifu.pics/api/sfw/kiss")
+    image_link = res.json()["url"]
+    
+    await interaction.send(f"{interaction.user.name} kiss {member.name}\n{image_link}")
+
+
+@bot.slash_command(name = "bite", description = "Bite someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def bite(interaction: Interaction, member: nextcord.User):
+    if member == interaction.user:
+        await interaction.send("You won't hurt yourself.", ephemeral = True)
+    
+    res = requests.get("https://waifu.pics/api/sfw/bite")
+    image_link = res.json()["url"]
+    
+    await interaction.send(f"{interaction.user.name} bite {member.name}\n{image_link}")
+
+
+@bot.slash_command(name = "kill", description = "Kill someone")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def kill(interaction: Interaction, member: nextcord.User):
+    if member == interaction.user:
+        await interaction.send("Suicide will not be tolerated.", ephemeral = True)
+    
+    res = requests.get("https://waifu.pics/api/sfw/kill")
+    image_link = res.json()["url"]
+    
+    await interaction.send(f"{interaction.user.name} kill {member.name}\n{image_link}")
 
 
 @bot.slash_command(name = "say", description = "Ask the bot to say something")
@@ -1930,19 +1988,10 @@ async def ping(interaction: Interaction):
     await interaction.response.send_message(f"{round(bot.latency * 1000)}ms")
 
 
-@bot.slash_command(name = "slap", description = "Slap someone")
-@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def slap(interaction: Interaction, member: nextcord.User):
-    res = requests.get("https://waifu.pics/api/sfw/slap")
-    image_link = res.json()["url"]
-
-    await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
-
-
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def weather(interaction: Interaction, *, city: str):
-    api_key = os.environ['WEATHER']
+    api_key = os.environ['WEATHER_API_KEY']
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "appid=" + api_key + "&q=" + city
     res = requests.get(complete_url)
