@@ -931,10 +931,12 @@ async def rate(interaction: Interaction, *, argument):
 async def slap(interaction: Interaction, member: nextcord.User):
     if member == interaction.user:
         await interaction.send("You won't hurt yourself.", ephemeral = True)
-    res = requests.get("https://waifu.pics/api/sfw/slap")
-    image_link = res.json()["url"]
+    
+    else:
+        res = requests.get("https://waifu.pics/api/sfw/slap")
+        image_link = res.json()["url"]
 
-    await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
+        await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
 
 
 @bot.slash_command(name = "hug", description = "Hug someone")
@@ -943,10 +945,11 @@ async def hug(interaction: Interaction, member: nextcord.User):
     if member == interaction.user:
         await interaction.send("You can't hug yourself.", ephemeral = True)
     
-    res = requests.get("https://waifu.pics/api/sfw/hug")
-    image_link = res.json()["url"]
-    
-    await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
+    else:
+        res = requests.get("https://waifu.pics/api/sfw/hug")
+        image_link = res.json()["url"]
+
+        await interaction.send(f"{interaction.user.name} slap {member.name}\n{image_link}")
 
 
 @bot.slash_command(name = "kiss", description = "Kiss someone")
@@ -955,10 +958,11 @@ async def kiss(interaction: Interaction, member: nextcord.User):
     if member == interaction.user:
         await interaction.send("You can't kiss yourself.", ephemeral = True)
     
-    res = requests.get("https://waifu.pics/api/sfw/kiss")
-    image_link = res.json()["url"]
-    
-    await interaction.send(f"{interaction.user.name} kiss {member.name}\n{image_link}")
+    else:
+        res = requests.get("https://waifu.pics/api/sfw/kiss")
+        image_link = res.json()["url"]
+
+        await interaction.send(f"{interaction.user.name} kiss {member.name}\n{image_link}")
 
 
 @bot.slash_command(name = "bite", description = "Bite someone")
@@ -967,10 +971,11 @@ async def bite(interaction: Interaction, member: nextcord.User):
     if member == interaction.user:
         await interaction.send("You won't hurt yourself.", ephemeral = True)
     
-    res = requests.get("https://waifu.pics/api/sfw/bite")
-    image_link = res.json()["url"]
-    
-    await interaction.send(f"{interaction.user.name} bite {member.name}\n{image_link}")
+    else:
+        res = requests.get("https://waifu.pics/api/sfw/bite")
+        image_link = res.json()["url"]
+
+        await interaction.send(f"{interaction.user.name} bite {member.name}\n{image_link}")
 
 
 @bot.slash_command(name = "kill", description = "Kill someone")
@@ -979,10 +984,11 @@ async def kill(interaction: Interaction, member: nextcord.User):
     if member == interaction.user:
         await interaction.send("Suicide will not be tolerated.", ephemeral = True)
     
-    res = requests.get("https://waifu.pics/api/sfw/kill")
-    image_link = res.json()["url"]
-    
-    await interaction.send(f"{interaction.user.name} kill {member.name}\n{image_link}")
+    else:
+        res = requests.get("https://waifu.pics/api/sfw/kill")
+        image_link = res.json()["url"]
+
+        await interaction.send(f"{interaction.user.name} kill {member.name}\n{image_link}")
 
 
 @bot.slash_command(name = "say", description = "Ask the bot to say something")
