@@ -566,7 +566,7 @@ async def help(interaction: Interaction):
 
     em = nextcord.Embed(title = "Commands (/)")
     em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, uba, timeout, removetimeout, kick, warn, purge, slowmode, nick, ctcn, cvcn, emojiadd", inline = False)
-    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, cvtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
@@ -817,7 +817,7 @@ async def eightball(interaction: Interaction, *, question):
 
 @bot.slash_command(name = "covidtest", description = "Do a swab test")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def cvtest(interaction: Interaction, member: nextcord.User = None):
+async def covidtest(interaction: Interaction, member: nextcord.User = None):
     cvRes = ["positive", "negative"]
 
     if member == None:
@@ -841,12 +841,12 @@ async def temperature(interaction: Interaction, member: nextcord.User = None):
     if member == None:
         original_message = await interaction.send("Analyzing your body temperature...")
         await asyncio.sleep(3)
-        await interaction.edit_original_message(content = f"Your body temperature is **__{random.randint(1, 40)}°C__**")
+        await interaction.edit_original_message(content = f"Your body temperature is **__{random.randint(30, 40)}°C__**")
 
     else:
         original_message = await interaction.send(f"Analyzing {member.mention}'s body temperature...")
         await asyncio.sleep(3)
-        await interaction.edit_original_message( content = f"{member.mention}'s body temperature is **__{random.randint(1, 40)}°C__**")
+        await interaction.edit_original_message( content = f"{member.mention}'s body temperature is **__{random.randint(30, 40)}°C__**")
 
 
 @bot.slash_command(name = "dice", description = "Roll a dice")
