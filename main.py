@@ -569,7 +569,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
-    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, food", inline = False)
+    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
 
@@ -1558,6 +1558,15 @@ async def gif(interaction: Interaction):
     view.add_item(dropdown)
 
     await interaction.send("Here's some of the cat GIFs.", view = view)
+
+
+@capybaraslash.subcommand(name = "image", description = "Get some random cute capybara pictures")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def image(interaction: Interaction):
+    res = requests.get("https://api.capy.lol/v1/capybara?json=true")
+    image_link = res.json()["data"]["url"]
+    await interaction.send(image_link)
+
 
 """
 @capybaraslash.subcommand(name = "large", description = "Large capybara pictures")
