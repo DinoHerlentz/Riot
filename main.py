@@ -441,7 +441,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
 
 
 @bot.event
@@ -2006,35 +2006,34 @@ async def ping(interaction: Interaction):
 
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def weather(interaction: Interaction, *, city: str):
-    api_key = os.environ['WEATHER']
-    base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid=" + api_key + "&q=" + city
-    res = requests.get(complete_url)
-    x = res.json()
-
-    if x["cod"] != "404":
-        y = x["main"]
-        current_temperature = y["temp"]
-        current_temperature_celcius = str(round(current_temperature - 273.15))
-        current_pressure = y["pressure"]
-        current_humidity = y["humidity"]
-        z = x["weather"]
-        weather_description = z[0]["description"]
-
-        em = nextcord.Embed(title = f"{city.title()} Weather Information")
-        em.add_field(name = "Weather Description", value = f"**{weather_description.title()}**", inline = False)
-        em.add_field(name = "Temperature (C)", value = f"**{current_temperature_celcius}°C**", inline = False)
-        em.add_field(name = "Temperature (K)", value = f"**{current_temperature} K**", inline = False)
-        em.add_field(name = "Atmospheric Pressure (hPa)", value = f"**{current_pressure}**", inline = False)
-        em.add_field(name = "Humidity (%)", value = f"{current_humidity}", inline = False)
-        em.set_thumbnail(url = "https://i.ibb.co/CMrsxdX/weather.png")
-        em.timestamp = datetime.datetime.utcnow()
-
-        await interaction.send(embed = em)
-
-    else:
-        await interaction.send(f"No City Found - {city}")
+async def weather(interaction: Interaction, *, city):
+    url = "https://api.weatherapi.com/v1/current.json"
+    
+    params = {
+        "key": os.environ['WEATHER_API_KEY'],
+        "q": city,
+        
+    }
+    
+    async with aiohttp.ClientSession() as ses:
+        async with ses.get(url, params = params) as res:
+            data = await res.json()
+            
+            location = data['location']['name']
+            temp_c = data['current']['temp_c']
+            temp_f = data['current']['temp_f']
+            humidity = data['current']['humidity']
+            wind_kph = data['current']['wind_kph']
+            wind_mph = data['current']['wind_mph']
+            condition = data['current']['condition']['text']
+            image_url = "http" + data['current']['condition']['icon']
+            
+            em = nextcord.Embed(title = f"{location} Weather Information", description = f"Current condition in `{location}` is `{condition}`")
+            em.add_field(name = "Temperature", value = f"**C : {temp_c}°C | F : {temp_f}°F**", inline = False)
+            em.add_field(name = "Humidity", value = f"**{humidity}**", inline = False)
+            em.add_field(name = "Wind Speed", value = f"**KPH : {wind_kph} | MPH : {wind_mph}**", inline = False)
+            
+            await interaction.send(embed = em)
 
 
 """
@@ -2422,4 +2421,4 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 """
 
 
-bot.run(os.environ['TOKEN'])
+bot.run("ODc3NDkzNDQyOTU0MDA2NTk5.GlaLCp.d9j-C4OIJOrDujZf9uhGTOgMOaFUA0SOPWwpWs")
