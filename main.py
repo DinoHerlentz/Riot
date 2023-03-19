@@ -441,7 +441,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
 
 
 @bot.event
@@ -2421,4 +2421,4 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 """
 
 
-bot.run("ODc3NDkzNDQyOTU0MDA2NTk5.GlaLCp.d9j-C4OIJOrDujZf9uhGTOgMOaFUA0SOPWwpWs")
+bot.run(os.environ['TOKEN'])
