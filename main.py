@@ -2010,7 +2010,7 @@ async def weather(interaction: Interaction, *, city):
     url = "https://api.weatherapi.com/v1/current.json"
     
     params = {
-        "key": os.environ['WEATHER_API_KEY'],
+        "key": "73602374fbea4e7fbeb135655231903",
         "q": city,
         
     }
@@ -2026,12 +2026,14 @@ async def weather(interaction: Interaction, *, city):
             wind_kph = data['current']['wind_kph']
             wind_mph = data['current']['wind_mph']
             condition = data['current']['condition']['text']
-            image_url = "http" + data['current']['condition']['icon']
+            image_url = "http:" + data['current']['condition']['icon']
             
             em = nextcord.Embed(title = f"{location} Weather Information", description = f"Current condition in `{location}` is `{condition}`")
+            # em.set_thumbnail(url = image_url, inline = False)
             em.add_field(name = "Temperature", value = f"**C : {temp_c}°C | F : {temp_f}°F**", inline = False)
             em.add_field(name = "Humidity", value = f"**{humidity}**", inline = False)
             em.add_field(name = "Wind Speed", value = f"**KPH : {wind_kph} | MPH : {wind_mph}**", inline = False)
+            em.timestamp = datetime.datetime.utcnow()
             
             await interaction.send(embed = em)
 
