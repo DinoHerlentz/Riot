@@ -571,7 +571,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, wsay, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2007,7 +2007,7 @@ async def ping(interaction: Interaction):
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def weather(interaction: Interaction, *, city):
-    url = "https://api.weatherapi.com/v1/current.json"
+    url = os.environ['WEATHER_API_KEY']
     
     params = {
         "key": "73602374fbea4e7fbeb135655231903",
@@ -2191,6 +2191,7 @@ async def serverreport(interaction: Interaction):
     await interaction.send("Please fill the report forum (any troll messages will be ignored and you might get blacklisted).", ephemeral = True)
 
 
+"""
 @bot.slash_command(name = "webhooksay", description = "Say something with a webhook")
 async def wsay(interaction: Interaction, *, message):
     author = interaction.user
@@ -2202,6 +2203,7 @@ async def wsay(interaction: Interaction, *, message):
     
     for webhook in webhooks:
         await webhook.delete()
+"""
 
 
 @bot.slash_command(name = "avatar", description = "Shows user avatar")
