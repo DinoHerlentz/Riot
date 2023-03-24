@@ -11,14 +11,14 @@ import requests
 import datetime
 import time
 import humanfriendly
-import wavelink
+# import wavelink
 import animec
 import aiosqlite
 import aiohttp
 import psutil
 from traceback import format_exception
 from imdb import IMDb
-from wavelink.ext import spotify
+# from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
 from cooldowns import CallableOnCooldown
@@ -422,10 +422,10 @@ async def on_ready():
     await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(type = nextcord.ActivityType.watching, name = f"{len(bot.guilds)} servers and {len(bot.users)} users"))
     print("Successfully logged in as {0.user}".format(bot))
 
+    """
     # Music
     bot.loop.create_task(node_connect())
-    
-    """
+
     # AFK
     setattr(bot, "db", await aiosqlite.connect("afk.db"))
     
@@ -434,6 +434,7 @@ async def on_ready():
     """
 
 
+"""
 @bot.event
 async def on_wavelink_node_ready(node: wavelink.Node):
     print(f"Node {node.identifier} is ready")
@@ -466,6 +467,7 @@ async def on_wavelink_track_end(player: wavelink.Player, track: wavelink.YouTube
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
+"""
 
 
 """
@@ -570,7 +572,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
-    em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
+    # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
 
     await interaction.send(embed = em, view = view)
@@ -1659,6 +1661,7 @@ async def rock(Interaction: commands.Context):
 """
 
 
+"""
 # Music Command
 @bot.slash_command(name = "panel", description = "Control the music with button interaction")
 async def panel(interaction: Interaction):
@@ -1952,6 +1955,7 @@ async def lyrics(interaction: Interaction):
             em.timestamp = datetime.datetime.utcnow()
 
             await interaction.send(embed = em)
+"""
 
 
 # Miscellaneous Command
@@ -2007,10 +2011,10 @@ async def ping(interaction: Interaction):
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def weather(interaction: Interaction, *, city):
-    url = os.environ['WEATHER_API_KEY']
+    url = "https://api.weatherapi.com/v1/current.json"
     
     params = {
-        "key": "73602374fbea4e7fbeb135655231903",
+        "key": os.environ['WEATHER_API_KEY'],
         "q": city,
         
     }
