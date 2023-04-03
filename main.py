@@ -28,7 +28,6 @@ from nextcord.abc import GuildChannel
 from nextcord import Interaction, SlashOption, ChannelType
 from nextcord.abc import GuildChannel
 from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissions, MissingRequiredArgument, BotMissingPermissions, CommandOnCooldown, DisabledCommand, MemberNotFound
-from keep_alive import keep_alive
 
 
 intents = nextcord.Intents.all()
@@ -422,16 +421,16 @@ async def on_ready():
     # await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Game("/help"))
     await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(type = nextcord.ActivityType.watching, name = f"{len(bot.guilds)} servers and {len(bot.users)} users"))
     print("Successfully logged in as {0.user}".format(bot))
-
+    
     """
     # Music
     bot.loop.create_task(node_connect())
-
+    
     # AFK
     setattr(bot, "db", await aiosqlite.connect("afk.db"))
     
     async with bot.db.cursor() as cursor:
-        await cursor.execute("CREATE TABLE IF NOT EXISTS afk (user INTEGER, guild INTEGER, reason TEXT)")
+    await cursor.execute("CREATE TABLE IF NOT EXISTS afk (user, INTEGER, guild INTEGER, reason TEXT)")
     """
 
 
@@ -443,7 +442,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
 
 
 @bot.event
@@ -574,7 +573,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount, github", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2015,7 +2014,7 @@ async def weather(interaction: Interaction, *, city):
     url = "https://api.weatherapi.com/v1/current.json"
     
     params = {
-        "key": os.environ['WEATHER_API_KEY'],
+        "key": os.environ['WEATHER'],
         "q": city,
         
     }
@@ -2394,6 +2393,25 @@ async def membercount(interaction: Interaction):
     await interaction.send(embed = em)
 
 
+@bot.slash_command(name = "github", description = "Shows github profile")
+async def github(interaction: Interaction, *, username):
+    res = requests.get(f"https://api.github.com/users/{username}")
+    
+    if res.status_code == 200:
+        data = res.json()
+        
+        em = nextcord.Embed(title = data['login'], description = data['bio'], url = data['html_url'])
+        em.set_thumbnail(url = data['avatar_url'])
+        em.add_field(name = "Followers", value = data['followers'], inline = False)
+        em.add_field(name = "Following", value = data['following'], inline = False)
+        em.add_field(name = "Public Repos", value = data['public_repos'], inline = False)
+        
+        await interaction.send(embed = em)
+    
+    else:
+        await interaction.send(f"Error : {res.status_code} - User Not Found")
+
+
 """
 @bot.command(aliases = ["ei"])
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -2430,4 +2448,4 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 """
 
 
-bot.run(os.environ['TOKEN'])
+bot.runos.environ['TOKEN']
