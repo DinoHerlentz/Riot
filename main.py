@@ -209,6 +209,24 @@ class Suggest(nextcord.ui.Modal):
         return await channel.send(embed = em)
 
 
+class NKS2D(nextcord.ui.Modal):
+    def __init__(self):
+        super().__init__("Forum Saran")
+
+        self.emSug = nextcord.ui.TextInput(label = "Saran", min_length = 10, max_length = 4000, required = True, placeholder = "Beri saran", style = nextcord.TextInputStyle.paragraph)
+        self.add_item(self.emSug)
+
+    async def callback(self, interaction: Interaction) -> None:
+        channel = bot.get_channel(1092527333681938462)
+        author = interaction.user
+        sug = self.emSug.value
+
+        em = nextcord.Embed(title = "Saran", description = f"**{author}** mengirim sebuah saran\n\Saran :\n\n```py\n{sug}\n```")
+        em.timestamp = datetime.datetime.utcnow()
+
+        return await channel.send(embed = em)
+
+
 class Report(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Report Forum")
@@ -2177,10 +2195,17 @@ async def cleardm(interaction: Interaction, amount, arg: int = None):
 
 
 @bot.slash_command(name = "suggest", description = "Send suggestions")
-@cooldowns.cooldown(1, 3600, bucket=cooldowns.SlashBucket.author)
+@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
     await interaction.response.send_modal(Suggest())
-    await interaction.send("Please fill the suggestion forum (any troll messages will be ignored and you might get blacklisted).", ephemeral = True)
+    await interaction.send("Your suggestions has been sent (any troll messages will be ignored and you might get blacklisted).", ephemeral = True)
+
+
+@bot.slash_command(name = "saran", description = "Beri saran/masukkanmu terhadap server ini")
+@cooldowns.cooldown(1, 86400, bucket = cooldowns.SlashBucket.author)
+async def saran(interaction: Interaction):
+    await interaction.response.send_modal(NKS2D())
+    await interaction.send(f"{interaction.user.mention} telah mengirim saran untuk server.")
 
 
 @bot.slash_command(name = "report", description = "Report an issue")
@@ -2323,7 +2348,7 @@ async def serverinfo(interaction: Interaction):
 
 
 @bot.slash_command(name = "timer", description = "Set a timer")
-@cooldowns.cooldown(1, 10, bucket=cooldowns.SlashBucket.author)
+@cooldowns.cooldown(1, 10, bucket = cooldowns.SlashBucket.author)
 async def timer(interaction: Interaction, seconds):
     try:
         secondint = int(seconds)
@@ -2448,4 +2473,4 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 """
 
 
-bot.runos.environ['TOKEN']
+bot.run(os.environ['TOKEN'])
