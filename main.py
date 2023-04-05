@@ -39,6 +39,8 @@ lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
+cavaliere = 593297247467470858
+nks2d = 884452356111101982
 
 
 # Function
@@ -209,24 +211,6 @@ class Suggest(nextcord.ui.Modal):
         return await channel.send(embed = em)
 
 
-class NKS2D(nextcord.ui.Modal):
-    def __init__(self):
-        super().__init__("Forum Saran")
-
-        self.emSug = nextcord.ui.TextInput(label = "Saran", min_length = 10, max_length = 4000, required = True, placeholder = "Beri saran", style = nextcord.TextInputStyle.paragraph)
-        self.add_item(self.emSug)
-
-    async def callback(self, interaction: Interaction) -> None:
-        channel = bot.get_channel(1092527333681938462)
-        author = interaction.user
-        sug = self.emSug.value
-
-        em = nextcord.Embed(title = "Saran", description = f"**{author}** mengirim sebuah saran\n\Saran :\n\n```py\n{sug}\n```")
-        em.timestamp = datetime.datetime.utcnow()
-
-        return await channel.send(embed = em)
-
-
 class Report(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Report Forum")
@@ -240,6 +224,42 @@ class Report(nextcord.ui.Modal):
         msg = self.emMsg.value
 
         em = nextcord.Embed(title = "Report", description = f"**{author}** sent a report message\n\nMessage :\n\n```py\n{msg}```", color = nextcord.Color.red())
+        em.timestamp = datetime.datetime.utcnow()
+
+        return await channel.send(embed = em)
+
+
+class Lapor(nextcord.ui.Modal):
+    def __init__(self):
+        super().__init__("Forum Report")
+
+        self.emMsg = nextcord.ui.TextInput(label = "Report", min_length = 10, max_length = 4000, required = True, placeholder = "Masukkan laporanmu", style = nextcord.TextInputStyle.paragraph)
+        self.add_item(self.emMsg)
+
+    async def callback(self, interaction: Interaction) -> None:
+        channel = bot.get_channel(884576992605917285)
+        author = interaction.user
+        msg = self.emMsg.value
+
+        em = nextcord.Embed(title = "Report", description = f"**{author}** melaporkan sebuah isu\n\nPesan :\n\n```py\n{msg}```", color = nextcord.Color.red())
+        em.timestamp = datetime.datetime.utcnow()
+
+        return await channel.send(embed = em)
+
+
+class Saran(nextcord.ui.Modal):
+    def __init__(self):
+        super().__init__("Forum Saran")
+
+        self.emSug = nextcord.ui.TextInput(label = "Saran", min_length = 10, max_length = 4000, required = True, placeholder = "Beri saran", style = nextcord.TextInputStyle.paragraph)
+        self.add_item(self.emSug)
+
+    async def callback(self, interaction: Interaction) -> None:
+        channel = bot.get_channel(1092527333681938462)
+        author = interaction.user
+        sug = self.emSug.value
+
+        em = nextcord.Embed(title = "Saran", description = f"**{author}** mengirim sebuah saran\n\n\Saran :\n\n```py\n{sug}\n```")
         em.timestamp = datetime.datetime.utcnow()
 
         return await channel.send(embed = em)
@@ -2194,18 +2214,25 @@ async def cleardm(interaction: Interaction, amount, arg: int = None):
         await message.delete()
 
 
-@bot.slash_command(name = "suggest", description = "Send suggestions")
+@bot.slash_command(name = "suggest", description = "Send your suggestions for bot")
 @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 async def suggest(interaction: Interaction):
     await interaction.response.send_modal(Suggest())
     await interaction.send("Your suggestions has been sent (any troll messages will be ignored and you might get blacklisted).", ephemeral = True)
 
 
-@bot.slash_command(name = "saran", description = "Beri saran/masukkanmu terhadap server ini")
+@bot.slash_command(name = "saran", description = "Beri saran/masukkanmu terhadap server ini", guild_ids = [nks2d])
 @cooldowns.cooldown(1, 86400, bucket = cooldowns.SlashBucket.author)
 async def saran(interaction: Interaction):
-    await interaction.response.send_modal(NKS2D())
+    await interaction.response.send_modal(Saran())
     await interaction.send(f"{interaction.user.mention} telah mengirim saran untuk server.")
+
+
+@bot.slash_command(name = "lapor", description = "Laporkan sebuah isu", guild_ids = [nks2d])
+@cooldowns.cooldown(1, 60, bucket = cooldowns.SlashBucket.author)
+async def lapor(interaction: Interaction):
+    await interaction.response.send_modal(Lapor())
+    await interaction.send(f"{interaction.user.mention} telah mengirim report")
 
 
 @bot.slash_command(name = "report", description = "Report an issue")
