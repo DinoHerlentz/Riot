@@ -229,6 +229,24 @@ class Report(nextcord.ui.Modal):
         return await channel.send(embed = em)
 
 
+class Saran(nextcord.ui.Modal):
+    def __init__(self):
+        super().__init__("Forum Saran")
+
+        self.emSug = nextcord.ui.TextInput(label = "Saran", min_length = 10, max_length = 4000, required = True, placeholder = "Beri saran", style = nextcord.TextInputStyle.paragraph)
+        self.add_item(self.emSug)
+
+    async def callback(self, interaction: Interaction) -> None:
+        channel = bot.get_channel(1092527333681938462)
+        author = interaction.user
+        sug = self.emSug.value
+
+        em = nextcord.Embed(title = "Saran", description = f"**{author}** mengirim sebuah saran\n\nSaran :\n\n```py\n{sug}\n```")
+        em.timestamp = datetime.datetime.utcnow()
+
+        return await channel.send(embed = em)
+
+
 class Lapor(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Forum Report")
@@ -242,24 +260,6 @@ class Lapor(nextcord.ui.Modal):
         msg = self.emMsg.value
 
         em = nextcord.Embed(title = "Report", description = f"**{author}** melaporkan sebuah isu\n\nPesan :\n\n```py\n{msg}```", color = nextcord.Color.red())
-        em.timestamp = datetime.datetime.utcnow()
-
-        return await channel.send(embed = em)
-
-
-class Saran(nextcord.ui.Modal):
-    def __init__(self):
-        super().__init__("Forum Saran")
-
-        self.emSug = nextcord.ui.TextInput(label = "Saran", min_length = 10, max_length = 4000, required = True, placeholder = "Beri saran", style = nextcord.TextInputStyle.paragraph)
-        self.add_item(self.emSug)
-
-    async def callback(self, interaction: Interaction) -> None:
-        channel = bot.get_channel(1092527333681938462)
-        author = interaction.user
-        sug = self.emSug.value
-
-        em = nextcord.Embed(title = "Saran", description = f"**{author}** mengirim sebuah saran\n\n\Saran :\n\n```py\n{sug}\n```")
         em.timestamp = datetime.datetime.utcnow()
 
         return await channel.send(embed = em)
