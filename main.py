@@ -669,7 +669,7 @@ async def timeout(interaction: Interaction, member: nextcord.User, time, *, reas
         time = humanfriendly.parse_timespan(time)
         await member.edit(timeout = nextcord.utils.utcnow() + datetime.timedelta(seconds = time))
 
-        em = nextcord.Embed(title = "Timeout", description = f"{interaction.user.mention} has use timeout on {member.mention}\nReason : {reason}", color = nextcord.Color.red())
+        em = nextcord.Embed(title = "Timeout", description = f"{interaction.user.mention} has timed out {member.mention}\nReason : {reason}", color = nextcord.Color.red())
         await interaction.send(embed = em)
 
         em2 = nextcord.Embed(title = "Timeout", description = f"You've been muted in {interaction.guild.name}\nReason : {reason}", color = nextcord.Color.red())
