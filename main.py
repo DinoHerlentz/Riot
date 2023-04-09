@@ -16,6 +16,7 @@ import animec
 import aiosqlite
 import aiohttp
 import psutil
+import platform
 from traceback import format_exception
 from imdb import IMDb
 # from wavelink.ext import spotify
@@ -60,9 +61,11 @@ def is_me():
 
 
 # Group Command
+"""
 @bot.slash_command(name = "activity", description = "Activity game slash command")
 async def activityslash(interaction: Interaction):
     return
+"""
 
 
 @bot.slash_command(name = "anime", description = "Anime slash command")
@@ -607,11 +610,11 @@ async def help(interaction: Interaction):
     em = nextcord.Embed(title = "Commands (/)")
     em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd", inline = False)
     em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
-    em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
+    # em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
-    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara, food", inline = False)
+    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, pet, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, timer, announce, servericon, id, membercount, github", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1102,6 +1105,7 @@ async def beautiful(interaction: Interaction, member: nextcord.User = None):
         await interaction.send(embed = em)
 
 
+"""
 # Activity Command
 @activityslash.subcommand(name = "sketch", description = "Start sketch game in a voice channel")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
@@ -1261,6 +1265,7 @@ async def wordsnacks(interaction: Interaction, channel: GuildChannel = SlashOpti
     em.set_thumbnail(url = "https://support.discord.com/hc/article_attachments/4409234925463/word_snack_example.png")
 
     await interaction.send(embed = em, view = WordSnacksGame(invite_link))
+"""
 
 
 # Anime Command
@@ -1650,12 +1655,14 @@ async def facts(interaction: Interaction):
 """
 
 
+"""
 @bot.slash_command(name = "food", description = "Get some random delicious food")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def food(interaction: Interaction):
     res = requests.get("https://foodish-api.herokuapp.com/api/")
     image_link = res.json()["image"]
     await interaction.send(image_link)
+"""
 
 
 """
@@ -2002,10 +2009,12 @@ async def embed(interaction: Interaction):
     await interaction.response.send_modal(Embed())
 
 
+"""
 @bot.slash_command(name = "pet", description = "Buy a pet")
 async def pet(interaction: Interaction):
     view = PetView()
     await interaction.send("Choose 1 pet", view = view)
+"""
 
 
 @bot.slash_command(name = "memes", description = "Get some random funny memes")
@@ -2052,7 +2061,7 @@ async def weather(interaction: Interaction, *, city):
     url = "https://api.weatherapi.com/v1/current.json"
     
     params = {
-        "key": os.environ['WEATHER'],
+        "key": os.environ['WEATHER']),
         "q": city,
         
     }
@@ -2374,6 +2383,7 @@ async def serverinfo(interaction: Interaction):
     await interaction.send(embed = em)
 
 
+"""
 @bot.slash_command(name = "timer", description = "Set a timer")
 @cooldowns.cooldown(1, 10, bucket = cooldowns.SlashBucket.author)
 async def timer(interaction: Interaction, seconds):
@@ -2400,6 +2410,7 @@ async def timer(interaction: Interaction, seconds):
 
     except ValueError:
         await interaction.send("Please enter a number.", ephemeral = True)
+"""
 
 
 @bot.slash_command(name = "announce", description = "Announce a message to a specified channel")
@@ -2462,6 +2473,17 @@ async def github(interaction: Interaction, *, username):
     
     else:
         await interaction.send(f"Error : {res.status_code} - User Not Found")
+
+
+@bot.slash_command(name = "uptime", description = "Shows bot uptime")
+async def uptime(interaction: Interaction):
+    uptime_delta = datetime.datetime.now() - datetime.datetime.now()
+    uptime = str(uptime_delta.split('.')[0])
+    
+    em = nextcord.Embed(title = "Uptime", description = f"{uptime}")
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
 
 
 """
