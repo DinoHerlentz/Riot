@@ -618,7 +618,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github, chatgpt, fact, image, joke, ud", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github, chatgpt, fact, image, joke, ud, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2559,6 +2559,21 @@ async def ud(interaction: Interaction, *, word):
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "math", description = "Evaluate any math expressions")
+async def math(interaction: Interaction, *, expression: str):
+    expression = expression.replace(" ", "")
+    
+    try:
+        result = float(eval(expression))
+        await interaction.send(f"Result = {result}")
+    
+    except ZeroDivisionError:
+        await interaction.send("Error : Division by zero.", ephemeral = True)
+    
+    except:
+        await interaction.send("Invalid mathematical expression.", ephemeral = True)
 
 
 """
