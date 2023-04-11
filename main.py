@@ -2485,7 +2485,7 @@ async def chatgpt(interaction: Interaction, *, prompt: str):
             "model": "text-davinci-003",
             "prompt": prompt,
             "temperature": 0.5,
-            "max_tokens": 50,
+            "max_tokens": 1024,
             "presence_penalty": 0,
             "frequency_penalty": 0,
             "best_of": 1
