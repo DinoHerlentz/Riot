@@ -20,6 +20,7 @@ import platform
 import openai
 from traceback import format_exception
 from imdb import IMDb
+from bs4 import BeautifulSoup
 # from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
@@ -43,8 +44,8 @@ snipe_message_content = None
 snipe_message_author = None
 cavaliere = 593297247467470858
 nks2d = 884452356111101982
-openai.api_key = os.environ['OPENAI']
-API_KEY = os.environ['OPENAI']
+openai.api_key = "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"
+API_KEY = "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"
 
 
 # Function
@@ -617,7 +618,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github, chatgpt", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github, chatgpt, fact, image, joke, ud", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2500,6 +2501,82 @@ async def chatgpt(interaction: Interaction, *, prompt: str):
             em.timestamp = datetime.datetime.utcnow()
             
             await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "fact", description = "Get some random facts")
+async def fact(interaction: Interaction, category = None):
+    url = "https://api.chucknorris.io/jokes/random"
+    
+    if category:
+        url += f"?category={category}"
+    
+    res = requests.get(url).json()
+    fact = res['value']
+    
+    em = nextcord.Embed(title = "Random Fact Generator", description = f"{fact}")
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
+async def image(interaction: Interaction, *, query):
+    api_key = os.environ['GCS']
+    cx = os.environ['CX']
+    url = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cx}&q={query}&searchType=image&num=1"
+    res = requests.get(url).json()
+    
+    if "items" not in res:
+        await interaction.send(f"Couldn't find an image for {query}", ephemeral = True)
+    
+    else:
+        image_url = res['items'][0]['link']
+        await interaction.send(image_url)
+
+
+@bot.slash_command(name = "joke", description = "Get some random jokes")
+async def joke(interaction: Interaction):
+    res = requests.get("https://official-joke-api.appspot.com/random_joke")
+    joke = res.json()
+    
+    em = nextcord.Embed(title = "Joke")
+    em.add_field(name = "Setup", value = f"{joke['setup']}", inline = False)
+    em.add_field(name = "Punchline", value = f"{joke['punchline']}", inline = False)
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "ud", description = "Get the definition of a word from Urban Dictionary")
+async def ud(interaction: Interaction, *, word):
+    url = f"https://www.urbandictionary.com/define.php?term={word}"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3)"}
+    res = requests.get(url, headers = headers)
+    soup = BeautifulSoup(res.text, "html.parser")
+    definition = soup.select(".meaning")[0].getText().strip()
+    
+    em = nextcord.Embed(title = f"{word.title()}", description = f"{definition}")
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+"""
+@bot.slash_command(name = "wikipedia", description = "Get a summary of a Wikipedia article")
+async def wikipedia(interaction: Interaction, *, query):
+    try:
+        async with interaction.channel.typing():
+            await asyncio.sleep(3)
+        
+        summary = wikipedia.summary(query, sentences = 2)
+        await interaction.send(summary)
+    
+    except wikipedia.exceptions.DisambiguationError as e:
+        await interaction.send(f"{e.options}", ephemeral = True)
+    
+    except wikipedia.exceptions.PageError:
+        await interaction.send(f"No wikipedia page found for {query}", ephemeral = True)
+"""
 
 
 """
