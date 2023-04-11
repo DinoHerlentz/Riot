@@ -479,6 +479,18 @@ async def on_ready():
     """
 
 
+@bot.event
+async def on_message(message):
+    if isinstance(message.channel, nextcord.DMChannel):
+        if not message.author.bot:
+            user_id = 550588846706786305
+            user = await bot.fetch_user(user_id)
+            
+            await user.send(f"{message.author} : {message.content}")
+    
+    await bot.process_commands(message)
+
+
 """
 @bot.event
 async def on_wavelink_node_ready(node: wavelink.Node):
@@ -2521,9 +2533,9 @@ async def fact(interaction: Interaction, category = None):
 
 @bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
 async def image(interaction: Interaction, *, query):
-    api_key = os.environ['GCS']
-    cx = os.environ['CX']
-    url = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cx}&q={query}&searchType=image&num=1"
+    image_api = os.environ['IMAGE']
+    cx = "21d6e818eed364bce"
+    url = f"https://www.googleapis.com/customsearch/v1?key={image_api}&cx={cx}&q={query}&searchType=image&num=1"
     res = requests.get(url).json()
     
     if "items" not in res:
@@ -2574,7 +2586,6 @@ async def math(interaction: Interaction, *, expression: str):
     
     except:
         await interaction.send("Invalid mathematical expression.", ephemeral = True)
-
 
 """
 @bot.slash_command(name = "wikipedia", description = "Get a summary of a Wikipedia article")
