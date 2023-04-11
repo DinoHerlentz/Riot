@@ -44,8 +44,8 @@ snipe_message_content = None
 snipe_message_author = None
 cavaliere = 593297247467470858
 nks2d = 884452356111101982
-openai.api_key = "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"
-API_KEY = "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"
+openai.api_key = os.environ['OPENAI']
+API_KEY = os.environ['OPENAI']
 
 
 # Function
