@@ -17,6 +17,7 @@ import aiosqlite
 import aiohttp
 import psutil
 import platform
+import openai
 from traceback import format_exception
 from imdb import IMDb
 # from wavelink.ext import spotify
@@ -42,6 +43,8 @@ snipe_message_content = None
 snipe_message_author = None
 cavaliere = 593297247467470858
 nks2d = 884452356111101982
+openai.api_key = os.environ['OPENAI']
+API_KEY = os.environ['OPENAI']
 
 
 # Function
@@ -614,7 +617,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github, chatgpt", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1294,7 +1297,7 @@ async def search(interaction: Interaction, *, anime):
     except:
         await interaction.send(f"No anime found - `{anime}`", mention_author = False)
 
-    em = nextcord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:200]}...")
+    em = nextcord.Embed(title = animeName.title_english, url = animeName.url, description = f"{animeName.description[:200]}...")
     em.add_field(name = "Episodes", value = str(animeName.episodes))
     em.add_field(name = "Rating", value = str(animeName.rating))
     em.add_field(name = "Broadcast", value = str(animeName.broadcast))
@@ -2061,7 +2064,7 @@ async def weather(interaction: Interaction, *, city):
     url = "https://api.weatherapi.com/v1/current.json"
     
     params = {
-        "key": os.environ['WEATHER']),
+        "key": os.environ['WEATHER'],
         "q": city,
         
     }
@@ -2475,15 +2478,28 @@ async def github(interaction: Interaction, *, username):
         await interaction.send(f"Error : {res.status_code} - User Not Found")
 
 
-@bot.slash_command(name = "uptime", description = "Shows bot uptime")
-async def uptime(interaction: Interaction):
-    uptime_delta = datetime.datetime.now() - datetime.datetime.now()
-    uptime = str(uptime_delta.split('.')[0])
-    
-    em = nextcord.Embed(title = "Uptime", description = f"{uptime}")
-    em.timestamp = datetime.datetime.utcnow()
-    
-    await interaction.send(embed = em)
+@bot.slash_command(name = "chatgpt", description = "Ask anything to ChatGPT")
+async def chatgpt(interaction: Interaction, *, prompt: str):
+    async with aiohttp.ClientSession() as ses:
+        payload = {
+            "model": "text-davinci-003",
+            "prompt": prompt,
+            "temperature": 0.5,
+            "max_tokens": 50,
+            "presence_penalty": 0,
+            "frequency_penalty": 0,
+            "best_of": 1
+        }
+        
+        headers = {"Authorization": f"Bearer {API_KEY}"}
+        
+        async with ses.post("https://api.openai.com/v1/completions", json = payload, headers = headers) as res:
+            response = await res.json()
+            
+            em = nextcord.Embed(title = "ChatGPT", description = response['choices'][0]['text'])
+            em.timestamp = datetime.datetime.utcnow()
+            
+            await interaction.send(embed = em)
 
 
 """
