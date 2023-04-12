@@ -630,7 +630,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, github, chatgpt, fact, image, joke, ud, math", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, image, joke, ud, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1400,6 +1400,19 @@ async def cringe(ctx: commands.Context):
 
 
 # Image Command
+@bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
+async def image(interaction: Interaction, *, query):
+    image_api = os.environ['IMAGE']
+    cx = os.environ['CX']
+    url = f"https://www.googleapis.com/customsearch/v1?key={image_api}&cx={cx}&q={query}&searchType=image&num=1"
+    res = requests.get(url).json()
+    
+    if "items" not in res:
+        await interaction.send(f"Couldn't find an image for {query}", ephemeral = True)
+    
+    else:
+        image_url = res['items'][0]['link']
+        await interaction.send(image_url)
 
 
 @dogslash.subcommand(name = "image", description = "Get some random cute dog pictures")
@@ -2021,6 +2034,20 @@ async def membercount(interaction: Interaction):
     await interaction.send(embed = em)
 
 
+@bot.slash_command(name = "channelinfo", description = "Shows channel informations")
+async def channelinfo(interaction: Interaction, channel: nextcord.TextChannel):
+    em = nextcord.Embed(title = f"#{channel.name}")
+    em.add_field(name = "Channel ID", value = channel.id, inline = False)
+    em.add_field(name = "Topic", value = channel.topic or None, inline = False)
+    em.add_field(name = "Channel Position", value = channel.position, inline = False)
+    em.add_field(name = "Channel Category", value = channel.category.name if channel.category else None, inline = False)
+    em.add_field(name = "Creation Time", value = channel.created_at.strftime("%Y-%m-%d %H:%M:%S"), inline = False)
+    em.add_field(name = "NSFW", value = channel.is_nsfw(), inline = False)
+    em.timestamp = datetime.datetime.utcnow()
+
+    await interaction.send(embed = em)
+
+
 @bot.slash_command(name = "github", description = "Shows github profile")
 async def github(interaction: Interaction, *, username):
     res = requests.get(f"https://api.github.com/users/{username}")
@@ -2078,21 +2105,6 @@ async def fact(interaction: Interaction, category = None):
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
-
-
-@bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
-async def image(interaction: Interaction, *, query):
-    image_api = os.environ['GCS']
-    cx = os.environ['CX']
-    url = f"https://www.googleapis.com/customsearch/v1?key={image_api}&cx={cx}&q={query}&searchType=image&num=1"
-    res = requests.get(url).json()
-    
-    if "items" not in res:
-        await interaction.send(f"Couldn't find an image for {query}", ephemeral = True)
-    
-    else:
-        image_url = res['items'][0]['link']
-        await interaction.send(image_url)
 
 
 @bot.slash_command(name = "joke", description = "Get some random jokes")
