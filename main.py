@@ -33,8 +33,8 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 intents = nextcord.Intents.all()
 bot = commands.Bot(intents = intents, case_insensitive = True)
 bot.remove_command("help")
-dogs = json.load(open("E:/dino/venv/dog_gifs.json"))
-cats = json.load(open("E:/dino/venv/cat_gifs.json"))
+dogs = json.load(open("dog_gifs.json"))
+cats = json.load(open("cat_gifs.json"))
 lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
 snipe_message_content = None
