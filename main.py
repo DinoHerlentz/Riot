@@ -1606,11 +1606,8 @@ async def nasa(interaction: Interaction):
     em = nextcord.Embed(title = result['data'][0]['title'])
     em.timestamp = datetime.datetime.utcnow()
     
-    if url.endswith(".jpg") or url.endswith(".mov"):
+    if url.endswith(".jpg"):
         em.set_image(url = url)
-    
-    elif url.endswith(".mp4") or url.endswith(".mov"):
-        em.add_field(name = "Video", value = url)
     
     else:
         em.add_field(name = "URL", value = url)
