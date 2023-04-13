@@ -11,7 +11,6 @@ import requests
 import datetime
 import time
 import humanfriendly
-# import wavelink
 import animec
 import aiosqlite
 import aiohttp
@@ -19,9 +18,7 @@ import psutil
 import platform
 import openai
 from traceback import format_exception
-from imdb import IMDb
 from bs4 import BeautifulSoup
-# from wavelink.ext import spotify
 from async_timeout import timeout
 from io import BytesIO
 from cooldowns import CallableOnCooldown
@@ -36,8 +33,8 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 intents = nextcord.Intents.all()
 bot = commands.Bot(intents = intents, case_insensitive = True)
 bot.remove_command("help")
-dogs = json.load(open("dog_gifs.json"))
-cats = json.load(open("cat_gifs.json"))
+dogs = json.load(open("E:/dino/venv/dog_gifs.json"))
+cats = json.load(open("E:/dino/venv/cat_gifs.json"))
 lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
 snipe_message_content = None
@@ -628,9 +625,10 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     # em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
-    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "dog, cat, capybara", inline = False)
+    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "image, apod, dog, cat, capybara", inline = False)
+    em.add_field(name = "☄️ NASA ☄️", value = "nasa, apod", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, image, joke, ud, math", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1581,6 +1579,45 @@ async def rock(Interaction: commands.Context):
 """
 
 
+# NASA Command
+@bot.slash_command(name = "apod", description = "Get Astronomy Picture of the Day")
+async def apod(interaction: Interaction):
+    nasa_api = os.environ['APOD']
+    res = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={nasa_api}")
+    data = json.loads(res.text)
+
+    em = nextcord.Embed(title = data['title'], description = data['explanation'])
+    em.set_image(url = data['url'])
+    em.timestamp = datetime.datetime.utcnow()
+
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "nasa", description = "Generate a random query to search the NASA Image and Video Library")
+async def nasa(interaction: Interaction):
+    query = random.choice(['moon', 'earth', 'nebula', 'supernova', 'galaxy'])
+    url = f"https://images-api.nasa.gov/search?q={query}&media_type=image,video"
+    res = requests.get(url)
+    data = res.json()
+
+    result = random.choice(data['collection']['items'])
+    url = result['links'][0]['href']
+
+    em = nextcord.Embed(title = result['data'][0]['title'])
+    em.timestamp = datetime.datetime.utcnow()
+    
+    if url.endswith(".jpg") or url.endswith(".mov"):
+        em.set_image(url = url)
+    
+    elif url.endswith(".mp4") or url.endswith(".mov"):
+        em.add_field(name = "Video", value = url)
+    
+    else:
+        em.add_field(name = "URL", value = url)
+    
+    await interaction.send(embed = em)
+
+
 # Miscellaneous Command
 @bot.slash_command(name = "embed", description = "Create an embed")
 async def embed(interaction: Interaction):
@@ -2147,6 +2184,7 @@ async def math(interaction: Interaction, *, expression: str):
     
     except:
         await interaction.send("Invalid mathematical expression.", ephemeral = True)
+
 
 """
 @bot.slash_command(name = "wikipedia", description = "Get a summary of a Wikipedia article")
