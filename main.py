@@ -622,7 +622,7 @@ async def help(interaction: Interaction):
 
     em = nextcord.Embed(title = "Commands (/)")
     em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd", inline = False)
-    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
+    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     # em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "image, apod, dog, cat, capybara", inline = False)
@@ -822,6 +822,30 @@ async def emojiadd(interaction: Interaction, url: str, *, name):
 
 
 # Fun Command
+@bot.slash_command(name = "pokemon", description = "Get information about a Pokemon")
+async def pokemon(interaction: Interaction, name: str):
+    async with aiohttp.ClientSession() as ses:
+        async with ses.get(f"https://pokeapi.co/api/v2/pokemon/{name.lower()}") as res:
+            if res.status == 200:
+                data = await res.json()
+
+                pokemon_name = data['name'].capitalize()
+                pokemon_id = data['id']
+                pokemon_type = data['types'][0]['type']['name'].capitalize()
+                pokemon_image_url = data['sprites']['front_default']
+                pokemon_stats = data['stats']
+                pokemon_stats_string = "\n".join(f"{stat['stat']['name'].capitalize()}: {stat['base_stat']}" for stat in pokemon_stats)
+
+                em = nextcord.Embed(title = f"{pokemon_name} ({pokemon_id})", description = f"Type : {pokemon_type}")
+                em.set_thumbnail(url = pokemon_image_url)
+                em.add_field(name = "Stats", value = pokemon_stats_string, inline = False)
+                
+                await interaction.send(embed = em)
+            
+            else:
+                await interaction.send(f"Couldn't find Pokemon with name {name.capitalize()}")
+
+
 """
 @fun.command(alises=["dadjokes", "dj"])
 async def dadjoke(ctx: commands.Context):
