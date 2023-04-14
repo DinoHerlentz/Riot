@@ -35,7 +35,6 @@ bot = commands.Bot(intents = intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 cats = json.load(open("cat_gifs.json"))
-lyrics_url = "https://some-random-api.ml/lyrics?title="
 server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
@@ -59,6 +58,11 @@ def is_me():
         return interaction.user.id == 55058884670678630
 
     return application_checks.check(predicate)
+
+
+def get_uptime():
+    uptime = datetime.datetime.now() - datetime.datetime.fromtimestamp(time.monotonic())
+    return str(uptime).split('.')[0]
 
 
 # Group Command
@@ -628,7 +632,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "image, apod, dog, cat, capybara", inline = False)
     em.add_field(name = "☄️ NASA ☄️", value = "nasa, apod", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "stats, embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1640,6 +1644,18 @@ async def nasa(interaction: Interaction):
 
 
 # Miscellaneous Command
+@bot.slash_command(name = "stats", description = "Shows dino; bot statistics")
+async def stats(interaction: Interaction):
+    embed = nextcord.Embed(title = "dino; Stats")
+    em.add_field(name = "CPU Usage", value = f"{psutil.cpu_percent()}%")
+    em.add_field(name = "RAM Usage", value = f"{psutil.virtual_memory().percent}%")
+    em.add_field(name = "Disk Usage", value = f"{psutil.disk_usage('/').percent}%")
+    em.add_field(name = "API Latency", value = f"{round(bot.latency * 1000, 2)} ms")
+    em.add_field(name = "Uptime", value = get_uptime())
+    em.timestamp = datetime.datetime.utcnow()
+    await ctx.send(embed = em)
+
+
 @bot.slash_command(name = "embed", description = "Create an embed")
 async def embed(interaction: Interaction):
     await interaction.response.send_modal(Embed())
