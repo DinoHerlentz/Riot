@@ -1646,14 +1646,14 @@ async def nasa(interaction: Interaction):
 # Miscellaneous Command
 @bot.slash_command(name = "stats", description = "Shows dino; bot statistics")
 async def stats(interaction: Interaction):
-    embed = nextcord.Embed(title = "dino; Stats")
+    em = nextcord.Embed(title = "dino; Stats")
     em.add_field(name = "CPU Usage", value = f"{psutil.cpu_percent()}%")
     em.add_field(name = "RAM Usage", value = f"{psutil.virtual_memory().percent}%")
     em.add_field(name = "Disk Usage", value = f"{psutil.disk_usage('/').percent}%")
     em.add_field(name = "API Latency", value = f"{round(bot.latency * 1000, 2)} ms")
     em.add_field(name = "Uptime", value = get_uptime())
     em.timestamp = datetime.datetime.utcnow()
-    await ctx.send(embed = em)
+    await interaction.send(embed = em)
 
 
 @bot.slash_command(name = "embed", description = "Create an embed")
