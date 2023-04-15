@@ -2214,7 +2214,9 @@ async def math(interaction: Interaction, *, expression: str):
     
     try:
         result = float(eval(expression))
-        await interaction.send(f"Result = {result}")
+        
+        em = nextcord.Embed(title = "Math Expression", description = f"{expression} = {result}")
+        await interaction.send(embed = em)
     
     except ZeroDivisionError:
         await interaction.send("Error : Division by zero.", ephemeral = True)
