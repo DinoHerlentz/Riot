@@ -2216,6 +2216,8 @@ async def math(interaction: Interaction, *, expression: str):
         result = float(eval(expression))
         
         em = nextcord.Embed(title = "Math Expression", description = f"{expression} = {result}")
+	em.timestamp = datetime.datetime.utcnow()
+	
         await interaction.send(embed = em)
     
     except ZeroDivisionError:
