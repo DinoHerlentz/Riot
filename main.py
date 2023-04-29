@@ -31,7 +31,7 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 
 
 intents = nextcord.Intents.all()
-bot = commands.Bot(intents = intents, case_insensitive = True)
+bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
 bot.remove_command("help")
 dogs = json.load(open("dog_gifs.json"))
 cats = json.load(open("cat_gifs.json"))
@@ -467,6 +467,7 @@ async def on_ready():
     # await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Game("/help"))
     await bot.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(type = nextcord.ActivityType.watching, name = f"{len(bot.guilds)} servers and {len(bot.users)} users"))
     print("Successfully logged in as {0.user}".format(bot))
+    
     
     """
     # Music
@@ -1182,7 +1183,7 @@ async def search(interaction: Interaction, *, anime):
     em.add_field(name = "NSFW Status", value = str(animeName.is_nsfw()))
     em.set_thumbnail(url = anime.poster)
     em.timestamp = datetime.datetime.utcnow()
-
+    
     await interaction.send(embed = em)
 
 
@@ -1610,7 +1611,7 @@ async def rock(Interaction: commands.Context):
 # NASA Command
 @bot.slash_command(name = "apod", description = "Get Astronomy Picture of the Day")
 async def apod(interaction: Interaction):
-    nasa_api = os.environ['APOD']
+    nasa_api = os.environ['NASA']
     res = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={nasa_api}")
     data = json.loads(res.text)
 
@@ -2216,8 +2217,8 @@ async def math(interaction: Interaction, *, expression: str):
         result = float(eval(expression))
         
         em = nextcord.Embed(title = "Math Expression", description = f"{expression} = {result}")
-	em.timestamp = datetime.datetime.utcnow()
-	
+        em.timestamp = datetime.datetime.utcnow()
+        
         await interaction.send(embed = em)
     
     except ZeroDivisionError:
@@ -2234,7 +2235,7 @@ async def wikipedia(interaction: Interaction, *, query):
         async with interaction.channel.typing():
             await asyncio.sleep(3)
         
-        summary = wikipedia.summary(query, sentences = 2)
+        summary = wikipedia.summary(query, sentences = 1)
         await interaction.send(summary)
     
     except wikipedia.exceptions.DisambiguationError as e:
@@ -2279,6 +2280,48 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 
     await ctx.send(embed = em)
 """
+
+
+# Owner Command
+@bot.command()
+@commands.is_owner()
+async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
+    await ctx.message.add_reaction("<:dev:1000605337088438272>")
+    
+    try:
+        await channel.send(f"{msg}")
+    
+    except nextcord.Forbidden:
+        await ctx.reply("I don't have permissions to send a message in that channel.")
+
+
+@bot.command()
+@commands.is_owner()
+async def msg2(ctx: commands.Context, guild_id: int, channel_id: int, *, msg):
+    await ctx.message.add_reaction("<:dev:1000605337088438272>")
+    
+    guild = bot.get_guild(guild_id)
+    channel = guild.get_channel(channel_id)
+    
+    try:
+        await channel.send(f"{msg}")
+    
+    except nextcord.Forbidden:
+        await ctx.reply("I don't have permissions to send a message in that channel.")
+
+
+@bot.command()
+@commands.is_owner()
+async def dm(ctx: commands.Context, member: nextcord.User, *, content):
+    user = await member.create_dm()
+    
+    try:
+        await user.send(content)
+    
+    except nextcord.Forbidden:
+        await ctx.reply("Couldn't DM that user.")
+    
+    await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
 
 bot.run(os.environ['TOKEN'])
