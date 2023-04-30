@@ -488,7 +488,13 @@ async def on_message(message):
             user_id = 550588846706786305
             user = await bot.fetch_user(user_id)
             
-            await user.send(f"{message.author} : {message.content}")
+            content = message.content
+            
+            if message.attachments:
+                attachment_urls = [attachment.url for attachment in message.attachments]
+                content += "\n" + "\n".join(attachment_urls)
+            
+            await user.send(f"{message.author} : {content}")
     
     await bot.process_commands(message)
 
