@@ -2129,23 +2129,39 @@ async def channelinfo(interaction: Interaction, channel: nextcord.TextChannel):
     await interaction.send(embed = em)
 
 
-@bot.slash_command(name = "github", description = "Shows github profile")
+@bot.slash_command(name="github", description="Shows github profile")
 async def github(interaction: Interaction, *, username):
     res = requests.get(f"https://api.github.com/users/{username}")
     
     if res.status_code == 200:
         data = res.json()
         
+        repos = requests.get(f"https://api.github.com/users/{username}/repos")
+        repo_data = repos.json()
+        lang_dict = {}
+        
+        for repo in repo_data:
+            lang = repo['language']
+            
+            if lang:
+                lang_dict[lang] = lang_dict.get(lang, 0) + 1
+        
+        most_used_lang = max(lang_dict, key = lang_dict.get)
+        created_at = data['created_at'][:10]
+        
         em = nextcord.Embed(title = data['login'], description = data['bio'], url = data['html_url'])
         em.set_thumbnail(url = data['avatar_url'])
         em.add_field(name = "Followers", value = data['followers'], inline = False)
         em.add_field(name = "Following", value = data['following'], inline = False)
         em.add_field(name = "Public Repos", value = data['public_repos'], inline = False)
+        em.add_field(name = "Most Used Language", value = most_used_lang, inline = False)
+        em.add_field(name = "Created At", value = created_at, inline = False)
+        em.timestamp = datetime.datetime.utcnow()
         
-        await interaction.send(embed = em)
+        await interaction.send(embed=em)
     
     else:
-        await interaction.send(f"Error : {res.status_code} - User Not Found")
+        await interaction.send(f"Error: {res.status_code} - User Not Found")
 
 
 @bot.slash_command(name = "chatgpt", description = "Ask anything to ChatGPT")
