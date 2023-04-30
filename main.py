@@ -2292,10 +2292,9 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 @bot.command()
 @commands.is_owner()
 async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
-    await ctx.message.add_reaction("<:dev:1000605337088438272>")
-    
     try:
         await channel.send(f"{msg}")
+        await ctx.message.add_reaction("<:dev:1000605337088438272>")
     
     except nextcord.Forbidden:
         await ctx.reply("I don't have permissions to send a message in that channel.")
@@ -2304,13 +2303,12 @@ async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
 @bot.command()
 @commands.is_owner()
 async def msg2(ctx: commands.Context, guild_id: int, channel_id: int, *, msg):
-    await ctx.message.add_reaction("<:dev:1000605337088438272>")
-    
     guild = bot.get_guild(guild_id)
     channel = guild.get_channel(channel_id)
     
     try:
         await channel.send(f"{msg}")
+        await ctx.message.add_reaction("<:dev:1000605337088438272>")
     
     except nextcord.Forbidden:
         await ctx.reply("I don't have permissions to send a message in that channel.")
@@ -2323,11 +2321,10 @@ async def dm(ctx: commands.Context, member: nextcord.User, *, content):
     
     try:
         await user.send(content)
+        await ctx.message.add_reaction("<:dev:1000605337088438272>")
     
     except nextcord.Forbidden:
         await ctx.reply("Couldn't DM that user.")
-    
-    await ctx.message.add_reaction("<:dev:1000605337088438272>")
 
 
 bot.run(os.environ['TOKEN'])
