@@ -2130,6 +2130,7 @@ async def channelinfo(interaction: Interaction, channel: nextcord.TextChannel):
 
 
 @bot.slash_command(name="github", description="Shows github profile")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def github(interaction: Interaction, *, username):
     res = requests.get(f"https://api.github.com/users/{username}")
     
@@ -2165,6 +2166,7 @@ async def github(interaction: Interaction, *, username):
 
 
 @bot.slash_command(name = "chatgpt", description = "Ask anything to ChatGPT")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def chatgpt(interaction: Interaction, *, prompt: str):
     async with aiohttp.ClientSession() as ses:
         payload = {
@@ -2189,6 +2191,7 @@ async def chatgpt(interaction: Interaction, *, prompt: str):
 
 
 @bot.slash_command(name = "fact", description = "Get some random facts")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def fact(interaction: Interaction, category = None):
     url = "https://api.chucknorris.io/jokes/random"
     
@@ -2205,6 +2208,7 @@ async def fact(interaction: Interaction, category = None):
 
 
 @bot.slash_command(name = "joke", description = "Get some random jokes")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def joke(interaction: Interaction):
     res = requests.get("https://official-joke-api.appspot.com/random_joke")
     joke = res.json()
@@ -2218,6 +2222,7 @@ async def joke(interaction: Interaction):
 
 
 @bot.slash_command(name = "ud", description = "Get the definition of a word from Urban Dictionary")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def ud(interaction: Interaction, *, word):
     url = f"https://www.urbandictionary.com/define.php?term={word}"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3)"}
@@ -2232,6 +2237,7 @@ async def ud(interaction: Interaction, *, word):
 
 
 @bot.slash_command(name = "math", description = "Evaluate any math expressions")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def math(interaction: Interaction, *, expression: str):
     expression = expression.replace(" ", "")
     
