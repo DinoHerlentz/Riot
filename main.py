@@ -19,6 +19,7 @@ import platform
 import openai
 from traceback import format_exception
 from bs4 import BeautifulSoup
+from youtubesearchpython import VideosSearch
 from async_timeout import timeout
 from io import BytesIO
 from cooldowns import CallableOnCooldown
@@ -1709,17 +1710,18 @@ async def youtube(interaction: Interaction, channel: GuildChannel = SlashOption(
     await interaction.send(embed = em, view = YouTubeGame(invite_link))
 
 
-@bot.slash_command(name = "youtubesearch", desciption = "Search anything in youtube")
+@bot.slash_command(name = "youtubesearch", description = "Search anything in youtube")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def youtubesearch(interaction: Interaction, *, query):
     search = VideosSearch(query, limit = 1)
 
-    if search.result()['result']:
+    if search.result()["result"]:
         video_url = f"https://www.youtube.com/watch?v={search.result()['result'][0]['id']}"
-        await interaction.send(video_url)
+        response = f"{video_url}"
+        await interaction.send(response)
     
     else:
-        await interaction.send("No result found from your query.", ephemeral = True)
+        await interaction.send("No results found for your query.", ephemeral = True)
 
 
 @bot.slash_command(name = "ping", description = "Shows the bot latency")
