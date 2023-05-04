@@ -639,7 +639,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "image, apod, dog, cat, capybara", inline = False)
     em.add_field(name = "☄️ NASA ☄️", value = "nasa, apod", inline = False)
     # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "stats, embed, memes, youtube, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
+    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "stats, embed, memes, youtube, youtubesearch, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1707,6 +1707,19 @@ async def youtube(interaction: Interaction, channel: GuildChannel = SlashOption(
     em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
 
     await interaction.send(embed = em, view = YouTubeGame(invite_link))
+
+
+@bot.slash_command(name = "youtubesearch", desciption = "Search anything in youtube")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def youtubesearch(interaction: Interaction, *, query):
+    search = VideosSearch(query, limit = 1)
+
+    if search.result()['result']:
+        video_url = f"https://www.youtube.com/watch?v={search.result()['result'][0]['id']}"
+        await interaction.send(video_url)
+    
+    else:
+        await interaction.send("No result found from your query.", ephemeral = True)
 
 
 @bot.slash_command(name = "ping", description = "Shows the bot latency")
