@@ -2330,7 +2330,7 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
     em.add_field(name = "Name", value = emoji.name, inline = False)
     em.add_field(name = "ID", value = emoji.id, inline = False)
     em.add_field(name = "Emoji Guild Name", value = emoji.guild.name, inline = False)
-    em.add_field(name = "Emoji Guild ID", value = emoji.guild.id, inline = False)
+    em.add_field(name = "Emoji Guild ID", value = emoji.guild.iFd, inline = False)
     em.add_field(name = "URL", value = f"[Click Here]({str(emoji.url)})", inline = False)
     em.add_field(name = "Author", value = emoji.user.mention, inline = False)
     em.add_field(name = "Created At", value = created_time, inline = False)
@@ -2344,6 +2344,23 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 
 
 # Owner Command
+@bot.command(aliases = ["e"])
+@commands.is_owner()
+async def eval(ctx: commands.Context, *, code):
+    code = clean_code(code)
+    str_obj = io.StringIO()
+
+    try:
+        with contextlib.redirect_stdout(str_obj):
+            exec(code)
+
+    except Exception as e:
+        em = nextcord.Embed(title = "❌ Error ❌", description = "```py\n" + "".join(format_exception(e.__class__, e, e.__traceback__)) + "```", color = nextcord.Color.red())
+        return await ctx.send(embed = em)
+
+    await ctx.send(f"```py\n{str_obj.getvalue()}```")
+
+
 @bot.command()
 @commands.is_owner()
 async def msg(ctx: commands.Context, channel: nextcord.TextChannel, *, msg):
