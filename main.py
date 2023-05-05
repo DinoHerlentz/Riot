@@ -16,10 +16,12 @@ import aiosqlite
 import aiohttp
 import psutil
 import platform
+import twitch
 import openai
 from traceback import format_exception
 from bs4 import BeautifulSoup
 from youtubesearchpython import VideosSearch
+from youtubesearchpython import ChannelsSearch
 from async_timeout import timeout
 from io import BytesIO
 from cooldowns import CallableOnCooldown
@@ -633,14 +635,15 @@ async def help(interaction: Interaction):
     view = Help()
 
     em = nextcord.Embed(title = "Commands (/)")
-    em.add_field(name = "<:staff:907616995661475910> Moderation <:staff:907616995661475910>", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd", inline = False)
-    em.add_field(name = "<:verycool:976411226055778305> Fun <:verycool:976411226055778305>", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
-    # em.add_field(name = "🚀 Activities 🚀", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
-    em.add_field(name = "<:hugme:881392592514867221> Anime <:hugme:881392592514867221>", value = "news, search, character, memes, waifu", inline = False)
-    em.add_field(name = "<:hypesquad:907631220849000498> Images <:hypesquad:907631220849000498>", value = "image, apod, dog, cat, capybara", inline = False)
-    em.add_field(name = "☄️ NASA ☄️", value = "nasa, apod", inline = False)
-    # em.add_field(name = "🎵 Music 🎵", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "<:mod:907620365914755082> Miscellaneous <:mod:907620365914755082>", value = "stats, embed, memes, youtube, youtubesearch, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
+    em.add_field(name = "Moderation", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd", inline = False)
+    em.add_field(name = "Fun", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
+    # em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
+    em.add_field(name = "Anime", value = "news, search, character, memes, waifu", inline = False)
+    em.add_field(name = "Images", value = "image, apod, dog, cat, capybara", inline = False)
+    em.add_field(name = "NASA", value = "nasa, apod", inline = False)
+    em.add_field(name = "YouTube", value = "youtube, youtubevideo, youtubechannel", inline = False)
+    # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
+    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1618,7 +1621,7 @@ async def rock(Interaction: commands.Context):
 # NASA Command
 @bot.slash_command(name = "apod", description = "Get Astronomy Picture of the Day")
 async def apod(interaction: Interaction):
-    nasa_api = os.environ['NASA']
+    nasa_api = "6xY5flBuzMWl3ob0oiljcDgpQEdZlnMZJDeJzsZZ"
     res = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={nasa_api}")
     data = json.loads(res.text)
 
@@ -1649,6 +1652,50 @@ async def nasa(interaction: Interaction):
         em.add_field(name = "URL", value = url)
     
     await interaction.send(embed = em)
+
+
+# YouTube Command
+@bot.slash_command(name = "youtube", description = "Watch youtube together with your friends")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def youtube(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
+    try:
+        invite_link = await channel.create_activity_invite(activities.Activity.youtube)
+
+    except nextcord.HTTPException:
+        await interaction.send("Please mention a voice channel.")
+
+    em = nextcord.Embed(title = "YouTube", description = f"{interaction.user.mention} has started YouTube in {channel.mention}")
+    em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
+    em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
+
+    await interaction.send(embed = em, view = YouTubeGame(invite_link))
+
+
+@bot.slash_command(name = "youtubesearch", description = "Search for youtube videos")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def youtubevideo(interaction: Interaction, *, query):
+    search = VideosSearch(query, limit = 1)
+
+    if search.result()['result']:
+        video_url = f"https://www.youtube.com/watch?v={search.result()['result'][0]['id']}"
+        await interaction.send(video_url)
+    
+    else:
+        await interaction.send("No result found from your query.", ephemeral = True)
+
+
+@bot.slash_command(name = "youtubechannel", description = "Search for youtube channels")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def youtubechannels(interaction: Interaction, *, query):
+    cs = ChannelsSearch(query, limit = 1)
+    result = cs.result()
+    
+    if not result['result']:
+        await interaction.send("No channels found.", ephemeral = True)
+        return
+    
+    channel = result['result'][0]
+    await interaction.send(channel['link'])
 
 
 # Miscellaneous Command
@@ -1692,36 +1739,6 @@ async def memes(interaction: Interaction):
 
             msg = await interaction.send(embed = em)
             await msg.add_reaction("<:verycool:976411226055778305>")
-
-
-@bot.slash_command(name = "youtube", description = "Watch youtube together with your friends")
-@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def youtube(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel")):
-    try:
-        invite_link = await channel.create_activity_invite(activities.Activity.youtube)
-
-    except nextcord.HTTPException:
-        await interaction.send("Please mention a voice channel.")
-
-    em = nextcord.Embed(title = "YouTube", description = f"{interaction.user.mention} has started YouTube in {channel.mention}")
-    em.add_field(name = "How To Play", value = "Watch YouTube together with your friends in voice channel")
-    em.set_thumbnail(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6VA4LFWn__CPwipsbuJQlUSi3jCtJNY_v0g>usqp=CAU")
-
-    await interaction.send(embed = em, view = YouTubeGame(invite_link))
-
-
-@bot.slash_command(name = "youtubesearch", description = "Search anything in youtube")
-@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def youtubesearch(interaction: Interaction, *, query):
-    search = VideosSearch(query, limit = 1)
-
-    if search.result()["result"]:
-        video_url = f"https://www.youtube.com/watch?v={search.result()['result'][0]['id']}"
-        response = f"{video_url}"
-        await interaction.send(response)
-    
-    else:
-        await interaction.send("No results found for your query.", ephemeral = True)
 
 
 @bot.slash_command(name = "ping", description = "Shows the bot latency")
@@ -2131,6 +2148,7 @@ async def membercount(interaction: Interaction):
 
 
 @bot.slash_command(name = "channelinfo", description = "Shows channel informations")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def channelinfo(interaction: Interaction, channel: nextcord.TextChannel):
     em = nextcord.Embed(title = f"#{channel.name}")
     em.add_field(name = "Channel ID", value = channel.id, inline = False)
@@ -2362,6 +2380,5 @@ async def dm(ctx: commands.Context, member: nextcord.User, *, content):
     
     except nextcord.Forbidden:
         await ctx.reply("Couldn't DM that user.")
-
 
 bot.run(os.environ['TOKEN'])
