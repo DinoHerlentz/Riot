@@ -487,7 +487,7 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     if isinstance(message.channel, nextcord.DMChannel):
-        if not message.author.bot:
+        if not message.author.bot and message.author.id != 550588846706786305:
             user_id = 550588846706786305
             user = await bot.fetch_user(user_id)
             
