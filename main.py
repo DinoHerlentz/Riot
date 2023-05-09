@@ -2398,4 +2398,34 @@ async def dm(ctx: commands.Context, member: nextcord.User, *, content):
     except nextcord.Forbidden:
         await ctx.reply("Couldn't DM that user.")
 
+
+@bot.command()
+async def sc(ctx, id: int):
+    user = bot.get_user(id)
+
+    if not user:
+        await ctx.send("Couldn't find that user.")
+        return
+
+    dm_channel = user.dm_channel or await user.create_dm()
+
+    messages = []
+    async for message in dm_channel.history(limit = None):
+        messages.insert(0, message)
+
+    for message in messages:
+        if message.author == user:
+            author = f"{user.name}#{user.discriminator}"
+        
+        else:
+            author = f"{bot.user.name}#{bot.user.discriminator}"
+
+        if message.attachments:
+            attachment_url = message.attachments[0].url
+            print(f"{author} : {attachment_url}")
+        
+        else:
+            print(f"{author} : {message.content}")
+
+
 bot.run(os.environ['TOKEN'])
