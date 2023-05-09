@@ -2402,6 +2402,7 @@ async def dm(ctx: commands.Context, member: nextcord.User, *, content):
 @bot.command()
 async def sc(ctx, id: int):
     user = bot.get_user(id)
+    channel = bot.get_channel(1105487991704662119)
 
     if not user:
         await ctx.send("Couldn't find that user.")
@@ -2422,10 +2423,10 @@ async def sc(ctx, id: int):
 
         if message.attachments:
             attachment_url = message.attachments[0].url
-            print(f"{author} : {attachment_url}")
+            await channel.send(f"{author} : {attachment_url}")
         
         else:
-            print(f"{author} : {message.content}")
+            await channel.send(f"{author} : {message.content}")
 
 
 bot.run(os.environ['TOKEN'])
