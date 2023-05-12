@@ -1242,7 +1242,7 @@ async def kiss(interaction: Interaction):
     await interaction.send(image_link)
 
 
-@animeslash.subcommand(name = "cry" description = "Get some anime crying gif")
+@animeslash.subcommand(name = "cry", description = "Get some anime crying gif")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def cry(interaction: Interaction):
     res = requests.get("https://api.waifu.pics/sfw/cry")
