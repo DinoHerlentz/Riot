@@ -2269,6 +2269,7 @@ async def ud(interaction: Interaction, *, word):
     await interaction.send(embed = em)
 
 
+"""
 @bot.slash_command(name = "math", description = "Evaluate any math expressions")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def math(interaction: Interaction, *, expression: str):
@@ -2287,6 +2288,7 @@ async def math(interaction: Interaction, *, expression: str):
     
     except:
         await interaction.send("Invalid mathematical expression.", ephemeral = True)
+"""
 
 
 """
