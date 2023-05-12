@@ -638,12 +638,12 @@ async def help(interaction: Interaction):
     em.add_field(name = "Moderation", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd", inline = False)
     em.add_field(name = "Fun", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     # em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
-    em.add_field(name = "Anime", value = "news, search, character, memes, waifu", inline = False)
+    em.add_field(name = "Anime", value = "news, search, character, memes, waifu, kiss, cry, pat, blush, smile, happy, dance, wink, wave, nom, bite, slap, kick, cringe", inline = False)
     em.add_field(name = "Images", value = "image, apod, dog, cat, capybara", inline = False)
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubevideo, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud, math", inline = False)
+    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1230,6 +1230,106 @@ async def memes(interaction: Interaction):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def waifu(interaction: Interaction):
     res = requests.get("https://api.waifu.pics/sfw/waifu")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "kiss", description = "Get some anime kissing gif")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def kiss(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/kiss")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "cry" description = "Get some anime crying gif")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def cry(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/cry")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "pat", description = "Get some anime patting gif")
+async def pat(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/pat")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "blush", description = "Get some anime blushing gif")
+async def blush(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/blush")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "smile", description = "Get some anime smiling gif")
+async def smile(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/smile")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "happy", description = "Get some anime happy gif")
+async def happy(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/happy")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "dance", description = "Get some anime dancing gif")
+async def dance(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/dance")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "wink", description = "Get some anime wink gif")
+async def wink(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/wink")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "wave", description = "Get some anime waving gif")
+async def wave(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/wave")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "nom", description = "Get some anime eating gif")
+async def nom(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/nom")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "bite", description = "Get some anime bite gif")
+async def bite(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/bite")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "slap", description = "Get some anime slappping gif")
+async def slap(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/slap")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "kick", description = "Get some anime kicking gif")
+async def kick(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/kick")
+    image_link = res.json()["url"]
+    await interaction.send(image_link)
+
+
+@animeslash.subcommand(name = "cringe", description = "Get some anime cringe gif")
+async def cringe(interaction: Interaction):
+    res = requests.get("https://api.waifu.pics/sfw/cringe")
     image_link = res.json()["url"]
     await interaction.send(image_link)
 
@@ -2277,6 +2377,7 @@ async def math(interaction: Interaction, *, expression: str):
     
     try:
         result = float(eval(expression))
+        expression = expression.replace("", " ")
         
         em = nextcord.Embed(title = "Math Expression", description = f"{expression} = {result}")
         em.timestamp = datetime.datetime.utcnow()
@@ -2332,7 +2433,7 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
     em.add_field(name = "Name", value = emoji.name, inline = False)
     em.add_field(name = "ID", value = emoji.id, inline = False)
     em.add_field(name = "Emoji Guild Name", value = emoji.guild.name, inline = False)
-    em.add_field(name = "Emoji Guild ID", value = emoji.guild.iFd, inline = False)
+    em.add_field(name = "Emoji Guild ID", value = emoji.guild.id, inline = False)
     em.add_field(name = "URL", value = f"[Click Here]({str(emoji.url)})", inline = False)
     em.add_field(name = "Author", value = emoji.user.mention, inline = False)
     em.add_field(name = "Created At", value = created_time, inline = False)
