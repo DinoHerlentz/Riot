@@ -6,7 +6,7 @@ import os
 import json
 import traceback
 import asyncio
-import random
+import randomf 
 import requests
 import datetime
 import time
@@ -2447,6 +2447,16 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 
 
 # Owner Command
+@bot.command(aliases = ">")
+@commands.is_owner()
+async def help(ctx: commands.Context):
+    em = nextcord.Embed(title = "Owner Commands (>)")
+    em.add_field(name = "Commands", value = "eval, msg, msg2, dm, sc")
+    em.timestamp = ctx.message.created_at
+    
+    await ctx.send(embed = em)
+
+
 @bot.command(aliases = ["e"])
 @commands.is_owner()
 async def eval(ctx: commands.Context, *, code):
