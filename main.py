@@ -2447,7 +2447,7 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 
 
 # Owner Command
-@bot.command(aliases = ">")
+@bot.command(aliases = [">"])
 @commands.is_owner()
 async def help(ctx: commands.Context):
     em = nextcord.Embed(title = "Owner Commands (>)")
