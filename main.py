@@ -21,7 +21,7 @@ import openai
 from traceback import format_exception
 from bs4 import BeautifulSoup
 from youtubesearchpython import VideosSearch
-from youtubesearchpython import ChannelsSearch
+from youtubesearchpython import ChannelsSearchf
 from async_timeout import timeout
 from io import BytesIO
 from cooldowns import CallableOnCooldown
@@ -512,6 +512,8 @@ async def on_message(message):
         
         bot_owner = await bot.fetch_user(owner_id)
         await bot_owner.send(f"Notice : {message.author} pinged you in {message.guild.name}")
+	
+	await message.add_reaction("<:dev:1000605337088438272>")
     
     await bot.process_commands(message)
 
