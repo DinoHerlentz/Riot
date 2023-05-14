@@ -504,7 +504,7 @@ async def on_message(message):
     owner_id = "550588846706786305"
     server_id = "593297247467470858"
     
-    if f"<@{owner_id}>" in message.content and message.guild.id == int(server_id):
+    if f"<@{owner_id}>" in message.content and message.guild.id == int(server_id) and not message.author.bot:
         await message.author.send(f"Note : Message an owner ONLY ONCE about an issue. Please DO NOT ping the owner if you don't have any issue to report. If you have an issue, DM <@!877493442954006599> to report your issues (spamming ping can cause you get muted).")
         
         bot_owner = await bot.fetch_user(owner_id)
