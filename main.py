@@ -486,6 +486,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    # 1st Event
     if isinstance(message.channel, nextcord.DMChannel):
         if not message.author.bot and message.author.id != 550588846706786305:
             user_id = 550588846706786305
@@ -499,11 +500,7 @@ async def on_message(message):
             
             await user.send(f"{message.author} : {content}")
     
-    await bot.process_commands(message)
-
-
-@bot.event
-async def on_message(message):
+    # 2nd Event
     owner_id = "550588846706786305"
     server_id = "593297247467470858"
     
@@ -512,8 +509,8 @@ async def on_message(message):
         
         bot_owner = await bot.fetch_user(owner_id)
         await bot_owner.send(f"Notice : {message.author} pinged you in {message.guild.name}")
-	
-	await message.add_reaction("<:dev:1000605337088438272>")
+        
+        await message.add_reaction("<:dev:1000605337088438272>")
     
     await bot.process_commands(message)
 
