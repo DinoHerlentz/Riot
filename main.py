@@ -648,7 +648,7 @@ async def help(interaction: Interaction):
     view = Help()
 
     em = nextcord.Embed(title = "Commands (/)")
-    em.add_field(name = "Moderation", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd", inline = False)
+    em.add_field(name = "Moderation", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd, lock, lockdown, unlock, unlockdown", inline = False)
     em.add_field(name = "Fun", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     # em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, kiss, cry, pat, blush, smile, happy, dance, wink, wave, nom, bite, slap, kick, cringe", inline = False)
@@ -849,6 +849,56 @@ async def emojiadd(interaction: Interaction, url: str, *, name):
                 await interaction.send("This file size is too big.", ephemeral = True)
 
 
+@bot.slash_command(name = "lock", description = "Lock a channel")
+@application_checks.has_permissions(manage_channels = True)
+async def lock(interaction: Interaction, channel: nextcord.TextChannel):
+    await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has locked {channel.name}", send_messages = False)
+    
+    em = nextcord.Embed(title = "Channel Locked", description = f"{interaction.user.mention} has locked {channel.name}", color = nextcord.Color.red())
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "lockdown", description = "Lock the server")
+@application_checks.has_permissions(manage_channels = True)
+async def lockdown(interaction: Interaction):
+    channel = nextcord.TextChannel
+
+    for channel in interaction.guild.channels:
+        await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has locked the server", send_messages = False)
+    
+    em = nextcord.Embed(title = "Server Locked", description = f"{interaction.user.mention} has locked the server", color = nextcord.Color.red())
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "unlock", description = "Unlock a channel")
+@application_checks.has_permissions(manage_channels = True)
+async def unlock(interaction: Interaction, channel: nextcord.TextChannel):
+    await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has unlocked {channel.name}", send_messages = True)
+    
+    em = nextcord.Embed(title = "Channel Unlocked", description = f"{interaction.user.mention} has unlocked {channel.name}", color = nextcord.Color.green())
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "unlockdown", description = "Unlock the server")
+@application_checks.has_permissions(manage_channels = True)
+async def unlockdown(interaction: Interaction):
+    channel = nextcord.TextChannel
+
+    for channel in interaction.guild.channels:
+        await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has unlocked the server", send_messages = True)
+    
+    em = nextcord.Embed(title = "Server Unlocked", description = f"{interaction.user.mention} has unlocked the server", color = nextcord.Color.green())
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
 # Fun Command
 @bot.slash_command(name = "pokemon", description = "Get information about a Pokemon")
 async def pokemon(interaction: Interaction, name: str):
@@ -875,19 +925,6 @@ async def pokemon(interaction: Interaction, name: str):
 
 
 """
-@fun.command(alises=["dadjokes", "dj"])
-async def dadjoke(ctx: commands.Context):
-    url = "https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes"
-
-    async with aiohttp.request("GET", url, headers={}) as res:
-        if res.status == 200:
-            data = await res.json()
-            await ctx.send(f"{data['setup']}\n\n||{data['punchline']}||")
-
-        else:
-            await ctx.send(f"Request Failed - {res.status}")
-
-
 @bot.slash_command(name = "dadjoke", description = "Get some random dad jokes")
 async def dadjoke(interaction: Interaction):
     url = "https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes"
