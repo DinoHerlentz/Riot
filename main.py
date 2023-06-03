@@ -2157,7 +2157,7 @@ async def channelinfo(ctx: commands.Context, channel: nextcord.TextChannel = Non
 
 
 @bot.slash_command(name = "channelinfo", description = "Shows text channel informations")
-@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+@cooldowns.cooldown(1, 3, bufcket = cooldowns.SlashBucket.author)
 async def channelinfo(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel")):
     em = nextcord.Embed(title = f"Channel Info - {channel}")
     em.add_field(name = "ID", description = channel.id, inline = False)
@@ -2590,6 +2590,28 @@ async def sc(ctx, id: int):
         
         else:
             await channel.send(f"{author} : {message.content}")
+
+
+@bot.command()
+@commands.is_owner()
+async def hide(ctx: commands.Context):
+    guild = ctx.guild
+    
+    for channel in guild.channels:
+        if isinstance(channel, nextcord.TextChannel):
+            await channel.set_permissions(guild.default_role, view_channel = False)
+            print("Success")
+
+
+@bot.command()
+@commands.is_owner()
+async def unhide(ctx: commands.Context):
+    guild = ctx.guild
+    
+    for channel in guild.channels:
+        if isinstance(channel, nextcord.TextChannel):
+            await channel.set_permissions(guild.default_role, view_channel = True)
+            print("Success")
 
 
 bot.run(os.environ['TOKEN'])
