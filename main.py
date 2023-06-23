@@ -866,7 +866,7 @@ async def lockdown(interaction: Interaction):
     channel = nextcord.TextChannel
 
     for channel in interaction.guild.channels:
-        await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has locked the server", send_messages = False, view_channel = False)
+        await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has locked the server", send_messages = False)
     
     em = nextcord.Embed(title = "Server Locked", description = f"{interaction.user.mention} has locked the server", color = nextcord.Color.red())
     em.timestamp = datetime.datetime.utcnow()
@@ -891,7 +891,7 @@ async def unlockdown(interaction: Interaction):
     channel = nextcord.TextChannel
 
     for channel in interaction.guild.channels:
-        await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has unlocked the server", send_messages = True, view_channel = True)
+        await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has unlocked the server", send_messages = True)
     
     em = nextcord.Embed(title = "Server Unlocked", description = f"{interaction.user.mention} has unlocked the server", color = nextcord.Color.green())
     em.timestamp = datetime.datetime.utcnow()
