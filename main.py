@@ -648,7 +648,7 @@ async def help(interaction: Interaction):
     view = Help()
 
     em = nextcord.Embed(title = "Commands (/)")
-    em.add_field(name = "Moderation", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd, lock, lockdown, unlock, unlockdown, open, close", inline = False)
+    em.add_field(name = "Moderation", value = "ban, unban, timeout, removetimeout, kick, warn, purge, slowmode, nick, changetextchannelname, changevoicechannelname, emojiadd, lock, lockdown, unlock, unlockdown, hide, show, open, close", inline = False)
     em.add_field(name = "Fun", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     # em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, kiss, cry, pat, blush, smile, happy, dance, wink, wave, nom, bite, slap, kick, cringe", inline = False)
@@ -894,6 +894,28 @@ async def unlockdown(interaction: Interaction):
         await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has unlocked the server", send_messages = True)
     
     em = nextcord.Embed(title = "Server Unlocked", description = f"{interaction.user.mention} has unlocked the server", color = nextcord.Color.green())
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "hide", description = "Hide a channel")
+@application_checks.has_permissions(manage_channels = True)
+async def hide(interaction: Interaction, channel: nextcord.TextChannel):
+    await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has locked {channel.name}", send_messages = False, view_channel = True)
+    
+    em = nextcord.Embed(title = "Channel Hide", description = f"{interaction.user.mention} has hid {channel.name}", color = nextcord.Color.red())
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "show", description = "Unhide a channel")
+@application_checks.has_permissions(manage_channels = True)
+async def show(interaction: Interaction, channel: nextcord.TextChannel):
+    await channel.set_permissions(interaction.guild.default_role, reason = f"{interaction.user.name} has locked {channel.name}", send_messages = True, view_channel = True)
+    
+    em = nextcord.Embed(title = "Channel Unhide", description = f"{interaction.user.mention} has unhide {channel.name}", color = nextcord.Color.green())
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
