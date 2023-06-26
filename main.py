@@ -6,7 +6,7 @@ import os
 import json
 import traceback
 import asyncio
-import randomf 
+import random
 import requests
 import datetime
 import time
@@ -21,7 +21,7 @@ import openai
 from traceback import format_exception
 from bs4 import BeautifulSoup
 from youtubesearchpython import VideosSearch
-from youtubesearchpython import ChannelsSearchf
+from youtubesearchpython import ChannelsSearch
 from async_timeout import timeout
 from io import BytesIO
 from cooldowns import CallableOnCooldown
@@ -656,7 +656,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubevideo, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, chatgpt, fact, joke, ud", inline = False)
+    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -924,13 +924,13 @@ async def show(interaction: Interaction, channel: nextcord.TextChannel):
 @bot.slash_command(name = "open", description = "Open all hidden channels")
 @application_checks.has_permissions(administrator = True)
 async def open(interaction):
-    guild = ctx.guild
+    guild = interaction.guild
     
     for channel in guild.channels:
         if isinstance(channel, nextcord.TextChannel):
             await channel.set_permissions(guild.default_role, view_channel = True)
             
-            em = nextcord.Embed(title = "Server Opened", description = f"{ctx.author.mention} has opened the server", color = nextcord.Color.green())
+            em = nextcord.Embed(title = "Server Opened", description = f"{interaction.user.mention} has opened the server", color = nextcord.Color.green())
             em.timestamp = datetime.datetime.utcnow()
             
             await interaction.send(embed = em)
@@ -945,7 +945,7 @@ async def close(interaction: Interaction):
         if isinstance(channel, nextcord.TextChannel):
             await channel.set_permissions(guild.default_role, view_channel = False)
             
-            em = nextcord.Embed(title = "Server Closed", description = f"{ctx.author.mention} has closed the server", color = nextcord.Color.red())
+            em = nextcord.Embed(title = "Server Closed", description = f"{interaction.user.mention} has closed the server", color = nextcord.Color.red())
             em.timestamp = datetime.datetime.utcnow()
             
             await interaction.send(embed = em)
@@ -2208,7 +2208,7 @@ async def channelinfo(ctx: commands.Context, channel: nextcord.TextChannel = Non
 
 
 @bot.slash_command(name = "channelinfo", description = "Shows text channel informations")
-@cooldowns.cooldown(1, 3, bufcket = cooldowns.SlashBucket.author)
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def channelinfo(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel")):
     em = nextcord.Embed(title = f"Channel Info - {channel}")
     em.add_field(name = "ID", description = channel.id, inline = False)
@@ -2228,7 +2228,7 @@ async def channelinfo(interaction: Interaction, channel: GuildChannel = SlashOpt
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def userinfo(interaction: Interaction, member: nextcord.Member = None):
     if member == None:
-        member = interaction.user
+        member = interaction.user.name
 
     members = sorted(interaction.guild.members, key = lambda m: m.joined_at)
     roles = [role for role in member.roles[1:9]]
@@ -2398,6 +2398,7 @@ async def github(interaction: Interaction, *, username):
         await interaction.send(f"Error: {res.status_code} - User Not Found")
 
 
+"""
 @bot.slash_command(name = "chatgpt", description = "Ask anything to ChatGPT")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def chatgpt(interaction: Interaction, *, prompt: str):
@@ -2421,6 +2422,7 @@ async def chatgpt(interaction: Interaction, *, prompt: str):
             em.timestamp = datetime.datetime.utcnow()
             
             await interaction.send(embed = em)
+"""
 
 
 @bot.slash_command(name = "fact", description = "Get some random facts")
@@ -2549,7 +2551,7 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 # Owner Command
 @bot.command(aliases = [">"])
 @commands.is_owner()
-async def help(ctx: commands.Context):
+async def owner(ctx: commands.Context):
     em = nextcord.Embed(title = "Owner Commands (>)")
     em.add_field(name = "Commands", value = "eval, msg, msg2, dm, sc")
     em.timestamp = ctx.message.created_at
@@ -2640,28 +2642,6 @@ async def sc(ctx, id: int):
         
         else:
             await channel.send(f"{author} : {message.content}")
-
-
-@bot.command()
-@commands.is_owner()
-async def hide(ctx: commands.Context):
-    guild = ctx.guild
-    
-    for channel in guild.channels:
-        if isinstance(channel, nextcord.TextChannel):
-            await channel.set_permissions(guild.default_role, view_channel = False)
-            print("Success")
-
-
-@bot.command()
-@commands.is_owner()
-async def unhide(ctx: commands.Context):
-    guild = ctx.guild
-    
-    for channel in guild.channels:
-        if isinstance(channel, nextcord.TextChannel):
-            await channel.set_permissions(guild.default_role, view_channel = True)
-            print("Success")
 
 
 bot.run(os.environ['TOKEN'])
