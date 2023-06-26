@@ -500,6 +500,7 @@ async def on_message(message):
             
             await user.send(f"{message.author} : {content}")
     
+    """
     # 2nd Event
     owner_id = "550588846706786305"
     server_id = "593297247467470858"
@@ -508,12 +509,12 @@ async def on_message(message):
         await message.author.send(f"Note : Message an owner ONLY ONCE about an issue. Please DO NOT ping the owner if you don't have any issue to report. If you have an issue, DM <@!877493442954006599> to report your issues (spamming ping can cause you get muted).")
         
         bot_owner = await bot.fetch_user(owner_id)
-        await bot_owner.send(f"Notice : {message.author} pinged you in {message.guild.name}")
+        await bot_owner.send(f"Notice : {message.author.name} pinged you in {message.guild.name}")
         
         await message.add_reaction("<:dev:1000605337088438272>")
+    """
     
     await bot.process_commands(message)
-
 
 """
 @bot.event
