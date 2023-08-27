@@ -1904,7 +1904,7 @@ async def youtubechannels(interaction: Interaction, *, query):
 # Miscellaneous Command
 @bot.slash_command(name = "stats", description = "Shows dino; bot statistics")
 async def stats(interaction: Interaction):
-    em = nextcord.Embed(title = "dino; Stats")
+    em = nextcord.Embed(title = "Riot Stats")
     em.add_field(name = "CPU Usage", value = f"{psutil.cpu_percent()}%")
     em.add_field(name = "RAM Usage", value = f"{psutil.virtual_memory().percent}%")
     em.add_field(name = "Disk Usage", value = f"{psutil.disk_usage('/').percent}%")
