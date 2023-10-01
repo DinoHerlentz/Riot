@@ -29,8 +29,8 @@
         "https://tenor.com/view/cat-catur-mitokman-gif-20843952",
         "https://tenor.com/view/puppy-love-teddy-bear-fetch-play-gif-14923320",
         "https://tenor.com/view/dog-boop-trick-fur-baby-animal-gif-18101271",
-        "https://tenor.com/search/drums-gifs",
         "https://tenor.com/view/dog-play-gif-10762136",
+        "https://tenor.com/search/dog-catching-frisbee-gifs",
         "https://tenor.com/view/misti-german-shepherd-alsatian-dog-hungry-dog-gif-17711962",
         "https://tenor.com/view/funny-animals-dogs-eating-dinner-formal-dinner-gif-10400593",
         "https://tenor.com/view/nom-dog-dog-food-eating-gif-3315865",
@@ -48,9 +48,9 @@
         "https://tenor.com/view/dog-eat-eating-food-danjfilms-gif-18188161",
         "https://tenor.com/view/feeding-dog-dog-treat-there-you-go-feeding-dog-gif-14573443",
         "https://tenor.com/view/golden-retriever-sleep-yawn-dog-puppy-gif-16433231",
-	"https://tenor.com/view/hiding-under-covers-tired-sleepy-hiding-under-blanket-good-night-gif-13568050",
-	"https://tenor.com/view/dog-tired-sad-depressed-exhausted-gif-18089551",
-	"https://tenor.com/view/read-book-sleepy-boring-sleep-gif-13660152",
+		"https://tenor.com/view/hiding-under-covers-tired-sleepy-hiding-under-blanket-good-night-gif-13568050",
+		"https://tenor.com/view/dog-tired-sad-depressed-exhausted-gif-18089551",
+		"https://tenor.com/view/read-book-sleepy-boring-sleep-gif-13660152",
         "https://tenor.com/view/dog-tired-sad-depressed-exhausted-gif-18089551",
         "https://tenor.com/view/sleeping-dog-comfy-spot-deep-sleep-dog-doggo-gif-15014077",
         "https://tenor.com/view/touching-hug-embrace-cute-love-gif-16325487",
@@ -76,7 +76,8 @@
         "https://tenor.com/view/puppy-love-teddy-bear-fetch-play-gif-14923320",
         "https://tenor.com/view/dog-boop-trick-fur-baby-animal-gif-18101271",
         "https://tenor.com/search/drums-gifs",
-        "https://tenor.com/view/dog-play-gif-10762136"
+        "https://tenor.com/view/dog-play-gif-10762136",
+        "https://tenor.com/search/dog-catching-frisbee-gifs"
     ],
     "eat": [
         "https://tenor.com/view/misti-german-shepherd-alsatian-dog-hungry-dog-gif-17711962",
@@ -97,10 +98,10 @@
         "https://tenor.com/view/feeding-dog-dog-treat-there-you-go-feeding-dog-gif-14573443"
     ],
 	"sleep": [
-	"https://tenor.com/view/golden-retriever-sleep-yawn-dog-puppy-gif-16433231",
-	"https://tenor.com/view/hiding-under-covers-tired-sleepy-hiding-under-blanket-good-night-gif-13568050",
-	"https://tenor.com/view/dog-tired-sad-depressed-exhausted-gif-18089551",
-	"https://tenor.com/view/read-book-sleepy-boring-sleep-gif-13660152",
+		"https://tenor.com/view/golden-retriever-sleep-yawn-dog-puppy-gif-16433231",
+		"https://tenor.com/view/hiding-under-covers-tired-sleepy-hiding-under-blanket-good-night-gif-13568050",
+		"https://tenor.com/view/dog-tired-sad-depressed-exhausted-gif-18089551",
+		"https://tenor.com/view/read-book-sleepy-boring-sleep-gif-13660152",
         "https://tenor.com/view/dog-tired-sad-depressed-exhausted-gif-18089551",
         "https://tenor.com/view/sleeping-dog-comfy-spot-deep-sleep-dog-doggo-gif-15014077",
         "https://tenor.com/view/touching-hug-embrace-cute-love-gif-16325487",
