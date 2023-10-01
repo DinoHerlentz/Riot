@@ -36,15 +36,15 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
 bot.remove_command("help")
-dogs = json.load(open("dog_gifs.json"))
-cats = json.load(open("cat_gifs.json"))
+dogs = json.load(open("E:/Riot/venv/dog_gifs.json"))
+cats = json.load(open("E:/Riot/venv/cat_gifs.json"))
 server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
 cavaliere = 593297247467470858
 nks2d = 884452356111101982
-openai.api_key = os.environ['OPENAI']
-API_KEY = os.environ['OPENAI']
+openai.api_key = "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"
+API_KEY = "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"
 
 
 # Function
@@ -516,6 +516,7 @@ async def on_message(message):
     
     await bot.process_commands(message)
 
+
 """
 @bot.event
 async def on_wavelink_node_ready(node: wavelink.Node):
@@ -524,7 +525,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = "os.environ['SECRET']"))
 
 
 @bot.event
@@ -655,7 +656,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, kiss, cry, pat, blush, smile, happy, dance, wink, wave, nom, bite, slap, kick, cringe", inline = False)
     em.add_field(name = "Images", value = "image, apod, dog, cat, capybara", inline = False)
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
-    em.add_field(name = "YouTube", value = "youtube, youtubevideo, youtubechannel", inline = False)
+    em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
     em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud", inline = False)
 
@@ -806,7 +807,7 @@ async def nick(interaction: Interaction, member: nextcord.Member, *, nickname):
 
 
 @bot.slash_command(name = "changetextchannelname", description = "Change the specified text channel name")
-#@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
+# @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_channels = True)
 async def changetextchannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.text], description = "Select text channel"), *, name):
     await channel.edit(name = name)
@@ -816,7 +817,7 @@ async def changetextchannelname(interaction: Interaction, channel: GuildChannel 
 
 
 @bot.slash_command(name = "changevoicechannelname", description = "Change the specified voice channel name")
-#@cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
+# @cooldowns.cooldown(1, 5, bucket = cooldowns.SlashBucket.author)
 @application_checks.has_permissions(manage_channels = True)
 async def changevoicechannelname(interaction: Interaction, channel: GuildChannel = SlashOption(channel_types = [ChannelType.voice], description = "Select voice channel"), *, name):
     await channel.edit(name = name)
@@ -1642,8 +1643,8 @@ async def cringe(ctx: commands.Context):
 # Image Command
 @bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
 async def image(interaction: Interaction, *, query):
-    image_api = os.environ['IMAGE']
-    cx = os.environ['CX']
+    image_api = "AIzaSyA3JgcdWtGnYAwS0CrllsVeaWOHOzylYMU"
+    cx = "21d6e818eed364bce"
     url = f"https://www.googleapis.com/customsearch/v1?key={image_api}&cx={cx}&q={query}&searchType=image&num=1"
     res = requests.get(url).json()
     
@@ -1686,8 +1687,8 @@ async def gif(interaction: Interaction):
 @dogslash.subcommand(name = "facts", description = "Get some random fact about dogs")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def facts(interaction: Interaction):
-    res = requests.get("https://some-random-api.ml/facts/dog")
-    fact = res.json()['fact']
+    res = requests.get("http://dog-api.kinduff.com/api/facts")
+    fact = res.json()['facts']
     
     await interaction.send(fact)
 
@@ -1698,6 +1699,15 @@ async def image(interaction: Interaction):
     res = requests.get("https://aws.random.cat/meow")
     image_link = res.json()["file"]
     await interaction.send(image_link)
+
+
+@catslash.subcommand(name = "facts", description = "Get some random fact about cats")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def facts(interaction: Interaction):
+    res = requests.get("https://catfact.ninja/fact")
+    fact = res.json()['fact']
+    
+    await interaction.send(fact)
 
 
 @catslash.subcommand(name = "gif", description = "Get some random cute cat GIFs")
