@@ -656,7 +656,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, stars, inflation, url", inline = False)
+    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2478,13 +2478,41 @@ async def ud(interaction: Interaction, *, word):
     await interaction.send(embed = em)
 
 
-@bot.slash_command(name = "stars", description = "Get some informations about a star")
+@bot.slash_command(name = "planet", description = "Get some informations about a planet")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def stars(interaction: Interaction, *, star):
+async def planet(interaction: Interaction, *, planet):
+    api_url = 'https://api.api-ninjas.com/v1/stars?name={}'.format(planet)
+    response = requests.get(api_url, headers={'X-Api-Key': 'Yhl7iIvZsSp+Z1wgz7IClw==elM4rnguiSPIrIRI'})
+    
+    if response.status_code == requests.codes.ok:
+        data = json.loads(response.text)
+        
+        for item in data:
+            em = nextcord.Embed(title = "Planet Information")
+            em.add_field(name = "Name", value = item['name'], inline = False)
+            em.add_field(name = "Mass", value = item['mass'], inline = False)
+            em.add_field(name = "Radius", value = item['radius'], inline = False)
+            em.add_field(name = "Period", value = item['period'], inline = False)
+            em.add_field(name = "Semi Major Axis", value = item['semi_major_axis'], inline = False)
+            em.add_field(name = "Temperature", value = item['temperature'], inline = False)
+            em.add_field(name = "Distance (Light Year)", value = item['distance_light_year'], inline = False)
+            em.add_field(name = "Host Star Mass", value = item['host_star_mass'], inline = False)
+            em.add_field(name = "Host Star Temperature", value = item['host_star_temperature'], inline = False)
+            em.timestamp = datetime.datetime.utcnoe()
+            
+            await interaction.send(embed = em)
+    
+    else:
+        await interaction.send("Error : ", response.status_code, response.text)
+
+
+@bot.slash_command(name = "star", description = "Get some informations about a star")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def star(interaction: Interaction, *, star):
     api_url = 'https://api.api-ninjas.com/v1/stars?name={}'.format(star)
     response = requests.get(api_url, headers={'X-Api-Key': os.environ['NINJA']})
     
-    if response.status_code == requests.code.ok:
+    if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
         
         for item in data:
