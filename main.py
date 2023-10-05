@@ -2498,7 +2498,7 @@ async def planet(interaction: Interaction, *, planet):
             em.add_field(name = "Distance (Light Year)", value = item['distance_light_year'], inline = False)
             em.add_field(name = "Host Star Mass", value = item['host_star_mass'], inline = False)
             em.add_field(name = "Host Star Temperature", value = item['host_star_temperature'], inline = False)
-            em.timestamp = datetime.datetime.utcnoe()
+            em.timestamp = datetime.datetime.utcnow()
             
             await interaction.send(embed = em)
     
