@@ -2481,7 +2481,7 @@ async def ud(interaction: Interaction, *, word):
 @bot.slash_command(name = "planet", description = "Get some informations about a planet")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def planet(interaction: Interaction, *, planet):
-    api_url = 'https://api.api-ninjas.com/v1/stars?name={}'.format(planet)
+    api_url = 'https://api.api-ninjas.com/v1/planets?name={}'.format(planet)
     response = requests.get(api_url, headers={'X-Api-Key': 'Yhl7iIvZsSp+Z1wgz7IClw==elM4rnguiSPIrIRI'})
     
     if response.status_code == requests.codes.ok:
