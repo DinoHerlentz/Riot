@@ -43,8 +43,6 @@ snipe_message_content = None
 snipe_message_author = None
 cavaliere = 593297247467470858
 nks2d = 884452356111101982
-openai.api_key = "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"
-API_KEY = "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"
 
 
 # Function
@@ -525,7 +523,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
 
 
 @bot.event
@@ -1965,7 +1963,7 @@ async def weather(interaction: Interaction, *, city):
     url = "https://api.weatherapi.com/v1/current.json"
     
     params = {
-        "key": "73602374fbea4e7fbeb135655231903",
+        "key": os.environ['WEATHER'],
         "q": city,
         
     }
@@ -2760,4 +2758,4 @@ async def sc(ctx, id: int):
             await channel.send(f"{author} : {message.content}")
 
 
-bot.run("ODc3NDkzNDQyOTU0MDA2NTk5.G1OGTA.K8UOVTkvb5qM5it5BAY1DCPqd2Kf-PyYOZbKbY")
+bot.run(os.environ['TOKEN'])
