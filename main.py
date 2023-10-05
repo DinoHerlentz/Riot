@@ -2482,7 +2482,7 @@ async def ud(interaction: Interaction, *, word):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def planet(interaction: Interaction, *, planet):
     api_url = 'https://api.api-ninjas.com/v1/planets?name={}'.format(planet)
-    response = requests.get(api_url, headers={'X-Api-Key': 'Yhl7iIvZsSp+Z1wgz7IClw==elM4rnguiSPIrIRI'})
+    response = requests.get(api_url, headers={'X-Api-Key': os.environ['NINJA']})
     
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
@@ -2560,7 +2560,7 @@ async def inflation(interaction: Interaction, *, country):
 @bot.slash_command(name = "url", description = "URL lookup")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def url(interaction: Interaction, *, url):
-    api_url = "https://api.api-ninjas.com/v1/inflation?country={}".format(url)
+    api_url = 'https://api.api-ninjas.com/v1/urllookup?url={}'.format(url)
     response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
     
     if response.status_code == requests.codes.ok:
