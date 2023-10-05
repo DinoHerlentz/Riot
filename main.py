@@ -43,8 +43,8 @@ snipe_message_content = None
 snipe_message_author = None
 cavaliere = 593297247467470858
 nks2d = 884452356111101982
-openai.api_key = os.environ['OPENAI']
-API_KEY = os.environ['OPENAI']
+openai.api_key = "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"
+API_KEY = "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"
 
 
 # Function
@@ -525,7 +525,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = "os.environ['SECRET']"))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
 
 
 @bot.event
@@ -658,7 +658,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud", inline = False)
+    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, stars, inflation, url", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1965,7 +1965,7 @@ async def weather(interaction: Interaction, *, city):
     url = "https://api.weatherapi.com/v1/current.json"
     
     params = {
-        "key": os.environ['WEATHER'],
+        "key": "73602374fbea4e7fbeb135655231903",
         "q": city,
         
     }
@@ -2435,22 +2435,20 @@ async def chatgpt(interaction: Interaction, *, prompt: str):
             await interaction.send(embed = em)
 """
 
-
 @bot.slash_command(name = "fact", description = "Get some random facts")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
-async def fact(interaction: Interaction, category = None):
-    url = "https://api.chucknorris.io/jokes/random"
+async def fact(interaction: Interaction):
+    api_url = "https://api.api-ninjas.com/v1/facts?limit=1"
+    response = requests.get(api_url, headers={'X-Api-Key': os.environ['NINJA']})
     
-    if category:
-        url += f"?category={category}"
+    if response.status_code == requests.codes.ok:
+        data = json.loads(response.text)
+        
+        for item in data:
+            await interaction.send(item['fact'])
     
-    res = requests.get(url).json()
-    fact = res['value']
-    
-    em = nextcord.Embed(title = "Random Fact Generator", description = f"{fact}")
-    em.timestamp = datetime.datetime.utcnow()
-    
-    await interaction.send(embed = em)
+    else:
+        await interaction.send("Error : ", response.status_code, response.text)
 
 
 @bot.slash_command(name = "joke", description = "Get some random jokes")
@@ -2480,6 +2478,87 @@ async def ud(interaction: Interaction, *, word):
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "stars", description = "Get some informations about a star")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def stars(interaction: Interaction, *, star):
+    api_url = 'https://api.api-ninjas.com/v1/stars?name={}'.format(star)
+    response = requests.get(api_url, headers={'X-Api-Key': os.environ['NINJA']})
+    
+    if response.status_code == requests.code.ok:
+        data = json.loads(response.text)
+        
+        for item in data:
+            em = nextcord.Embed(title = "Star Information")
+            em.add_field(name = "Name", value = item['name'], inline = False)
+            em.add_field(name = "Constellation", value = item['constellation'], inline = False)
+            em.add_field(name = "Right Ascension", value = item['right_ascension'], inline = False)
+            em.add_field(name = "Declination", value = item['declination'], inline = False)
+            em.add_field(name = "Apparent Magnitude", value = item['apparent_magnitude'], inline = False)
+            em.add_field(name = "Absolute Magnitude", value = item['absolute_magnitude'], inline = False)
+            em.add_field(name = "Distance (Light Year)", value = item['distance_light_year'], inline = False)
+            em.add_field(name = "Spectral Class", value = item['spectral_class'], inline = False)
+            em.timestamp = datetime.datetime.utcnow()
+            
+            await interaction.send(embed = em)
+    
+    else:
+        await interaction.send("Error : ", response.status_code, response.text)
+
+
+@bot.slash_command(name = "inflation", description = "Get current monthly and annual inflation percentages")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def inflation(interaction: Interaction, *, country):
+    api_url = "https://api.api-ninjas.com/v1/inflation?country={}".format(country)
+    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
+    
+    if response.status_code == requests.codes.ok:
+        data = json.loads(response.text)
+        
+        for item in data:
+            em = nextcord.Embed(title = "Inflation Information")
+            em.add_field(name = "Country", value = item['country'], inline = False)
+            em.add_field(name = "Type", value = item['type'], inline = False)
+            em.add_field(name = "Period", value = item['period'], inline = False)
+            em.add_field(name = "Monthly Rate (%)", value = item['monthly_rate_pct'], inline = False)
+            em.add_field(name = "Yearly Rate (%)", value = item['yearly_rate_pct'], inline = False)
+            em.timestamp = datetime.datetime.utcnow()
+            
+            await interaction.send(embed = em)
+    
+    else:
+        await interaction.send("Error : ", response.status_code, response.text)
+
+
+@bot.slash_command(name = "url", description = "URL lookup")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def url(interaction: Interaction, *, url):
+    api_url = "https://api.api-ninjas.com/v1/inflation?country={}".format(url)
+    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
+    
+    if response.status_code == requests.codes.ok:
+        data = json.loads(response.text)
+        
+        em = nextcord.Embed(title = "URL Lookup")
+        em.add_field(name = "URL", value = data['url'], inline = False)
+        em.add_field(name = "Validation", value = data['is_valid'], inline = False)
+        em.add_field(name = "Country", value = data['country'], inline = False)
+        em.add_field(name = "Country Code", value = data['country_code'], inline = False)
+        em.add_field(name = "Region", value = data['region'], inline = False)
+        em.add_field(name = "Region Code", value = data['region_code'], inline = False)
+        em.add_field(name = "City", value = data['city'], inline = False)
+        em.add_field(name = "Zip", value = data['zip'], inline = False)
+        em.add_field(name = "Latitude", value = data['lat'], inline = False)
+        em.add_field(name = "Longitude", value = data['lon'], inline = False)
+        em.add_field(name = "Timezone", value = data['timezone'], inline = False)
+        em.add_field(name = "ISP", value = data['isp'], inline = False)
+        em.timestamp = datetime.datetime.utcnow()
+        
+        await interaction.send(embed = em)
+    
+    else:
+        await interaction.send("Error : ", response.status_code, response.text)
 
 
 """
@@ -2564,10 +2643,36 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 @commands.is_owner()
 async def owner(ctx: commands.Context):
     em = nextcord.Embed(title = "Owner Commands (>)")
-    em.add_field(name = "Commands", value = "eval, msg, msg2, dm, sc")
+    em.add_field(name = "Commands", value = "ip, eval, msg, msg2, dm, sc")
     em.timestamp = ctx.message.created_at
     
     await ctx.send(embed = em)
+
+
+@bot.command()
+@commands.is_owner()
+async def ip(ctx: commands.Context, ip):
+    api_url = "https://api.api-ninjas.com/v1/iplookup?address={}".format(ip)
+    response = requests.get(api_url, headers={"X-Api-Key": os.environ['NINJA']})
+
+    if response.status_code == requests.codes.ok:
+        data = json.loads(response.text)
+        if data['is_valid']:
+            em = nextcord.Embed(title = "IP Lookup")
+            em.add_field(name = "IP Address", value = data['address'], inline = False)
+            em.add_field(name = "Country", value = data['country'], inline = False)
+            em.add_field(name = "Country Code", value = data['country_code'], inline = False)
+            em.add_field(name = "Region", value = data['region'], inline = False)
+            em.add_field(name = "Region", value = data['region_code'], inline = False)
+            em.add_field(name = "City", value = data['city'], inline = False)
+            em.add_field(name = "Zip", value = data['zip'], inline = False)
+            em.add_field(name = "Latitude", value = data['lat'], inline = False)
+            em.add_field(name = "Longitude", value = data['lon'], inline = False)
+            em.add_field(name = "Timezone", value = data['timezone'], inline = False)
+            em.add_field(name = "ISP", value = data['isp'], inline = False)
+            em.timestamp = datetime.datetime.utcnow()
+
+            await ctx.send(embed = em)
 
 
 @bot.command(aliases = ["e"])
@@ -2655,4 +2760,4 @@ async def sc(ctx, id: int):
             await channel.send(f"{author} : {message.content}")
 
 
-bot.run(os.environ['TOKEN'])
+bot.run("ODc3NDkzNDQyOTU0MDA2NTk5.G1OGTA.K8UOVTkvb5qM5it5BAY1DCPqd2Kf-PyYOZbKbY")
