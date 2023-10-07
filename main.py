@@ -656,7 +656,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "stats, embed, memes, ping, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url", inline = False)
+    em.add_field(name = "Miscellaneous", value = "ping, stats, embed, memes, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1920,6 +1920,11 @@ async def youtubechannels(interaction: Interaction, *, query):
 
 
 # Miscellaneous Command
+@bot.slash_command(name = "ping", description = "Shows the bot latency")
+async def ping(interaction: Interaction):
+    await interaction.response.send_message(f"{round(bot.latency * 1000)}ms")
+
+
 @bot.slash_command(name = "stats", description = "Shows dino; bot statistics")
 async def stats(interaction: Interaction):
     em = nextcord.Embed(title = "Riot Stats")
@@ -1960,11 +1965,6 @@ async def memes(interaction: Interaction):
 
             msg = await interaction.send(embed = em)
             await msg.add_reaction("<:verycool:976411226055778305>")
-
-
-@bot.slash_command(name = "ping", description = "Shows the bot latency")
-async def ping(interaction: Interaction):
-    await interaction.response.send_message(f"{round(bot.latency * 1000)}ms")
 
 
 @bot.slash_command(name = "weather", description = "Shows weather information of a city")
