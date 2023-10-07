@@ -1682,7 +1682,7 @@ async def gif(interaction: Interaction):
     await interaction.send("Here's some of the dog GIFs.", view = view)
 
 
-@dogslash.subcommand(name = "facts", description = "Get some random fact about dogs")
+@dogslash.subcommand(name = "facts", description = "Get some random facts about dogs")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def facts(interaction: Interaction):
     res = requests.get("http://dog-api.kinduff.com/api/facts")
@@ -1699,7 +1699,7 @@ async def image(interaction: Interaction):
     await interaction.send(image_link)
 
 
-@catslash.subcommand(name = "facts", description = "Get some random fact about cats")
+@catslash.subcommand(name = "facts", description = "Get some random facts about cats")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def facts(interaction: Interaction):
     res = requests.get("https://catfact.ninja/fact")
@@ -1734,6 +1734,16 @@ async def image(interaction: Interaction):
     res = requests.get("https://api.capy.lol/v1/capybara?json=true")
     image_link = res.json()["data"]["url"]
     await interaction.send(image_link)
+
+
+@capybaraslash.subcommand(name = "facts", description = "Get some random facts about capybara")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def facts(interaction: Interaction):
+    res = requests.get("https://api.capy.lol/v1/fact")
+    
+    if res.status_code == requests.codes.ok:
+        data = json.loads(res.text)
+        await interaction.send(data['data']['fact'])
 
 
 """
