@@ -656,7 +656,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "ping, stats, embed, memes, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url", inline = False)
+    em.add_field(name = "Miscellaneous", value = "ping, stats, embed, memes, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url, spellcheck", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2595,6 +2595,45 @@ async def url(interaction: Interaction, *, url):
     
     else:
         await interaction.send("Error : ", response.status_code, response.text)
+
+
+@bot.slash_command(name = "spellcheck", description = "Check the misspelled word")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def spellcheck(interaction: Interaction, *, text):
+    spell = SpellChecker()
+    words = text.split()
+    corrected_words = []
+    
+    for word in words:
+        if spell.unknown([word]):
+            if word.istitle():
+                corrected_word = spell.correction(word).title()
+            
+            elif word.isupper():
+                corrected_word = spell.correction(word).upper()
+            
+            else:
+                corrected_word = spell.correction(word)
+            
+            corrected_words.append(corrected_word)
+        
+        else:
+            corrected_words.append(word)
+    
+    corrected_text = " ".join(corrected_words)
+    
+    em = nextcord.Embed(title = "Spell Checker")
+    
+    if text == corrected_words:
+        em.description = "All words are spelled correctly"
+        
+        await interaction.send(embed = em)
+    
+    else:
+        em.add_field(name = "Original Text : ", value = f"{text}", inline = False)
+        em.add_field(name = "Corrected Text : ", value = f"{corrected_text}", inline = False)
+        
+        await interaction.send(embed = em)
 
 
 """
