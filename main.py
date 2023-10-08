@@ -981,7 +981,7 @@ async def pokemon(interaction: Interaction, name: str):
 async def dadjoke(interaction: Interaction):
     url = "https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes"
 
-    async with aiohttp.request("GET", url, headers={}) as res:
+    async with aiohttp.request("GET", url, headers = {}) as res:
         if res.status == 200:
             data = await res.json()
             await interaction.send(f"{data['setup']}\n\n||{data['punchline']}||")
@@ -2447,7 +2447,7 @@ async def chatgpt(interaction: Interaction, *, prompt: str):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def fact(interaction: Interaction):
     api_url = "https://api.api-ninjas.com/v1/facts?limit=1"
-    response = requests.get(api_url, headers={'X-Api-Key': os.environ['NINJA']})
+    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
     
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
@@ -2492,7 +2492,7 @@ async def ud(interaction: Interaction, *, word):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def planet(interaction: Interaction, *, planet):
     api_url = 'https://api.api-ninjas.com/v1/planets?name={}'.format(planet)
-    response = requests.get(api_url, headers={'X-Api-Key': os.environ['NINJA']})
+    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
     
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
@@ -2520,7 +2520,7 @@ async def planet(interaction: Interaction, *, planet):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def star(interaction: Interaction, *, star):
     api_url = 'https://api.api-ninjas.com/v1/stars?name={}'.format(star)
-    response = requests.get(api_url, headers={'X-Api-Key': os.environ['NINJA']})
+    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
     
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
@@ -2689,7 +2689,7 @@ async def owner(ctx: commands.Context):
 @commands.is_owner()
 async def ip(ctx: commands.Context, ip):
     api_url = "https://api.api-ninjas.com/v1/iplookup?address={}".format(ip)
-    response = requests.get(api_url, headers={"X-Api-Key": os.environ['NINJA']})
+    response = requests.get(api_url, headers = {"X-Api-Key": os.environ['NINJA']})
 
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
