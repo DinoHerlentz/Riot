@@ -652,7 +652,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "Fun", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     # em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, kiss, cry, pat, blush, smile, happy, dance, wink, wave, nom, bite, slap, kick, cringe", inline = False)
-    em.add_field(name = "Images", value = "image, apod, dog, cat, capybara", inline = False)
+    em.add_field(name = "Images", value = "image, dog, cat, capybara", inline = False)
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
