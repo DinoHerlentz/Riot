@@ -1641,8 +1641,8 @@ async def cringe(ctx: commands.Context):
 # Image Command
 @bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
 async def image(interaction: Interaction, *, query):
-    image_api = "AIzaSyA3JgcdWtGnYAwS0CrllsVeaWOHOzylYMU"
-    cx = "21d6e818eed364bce"
+    image_api = os.environ['IMAGE']
+    cx = os.environ['CX']
     url = f"https://www.googleapis.com/customsearch/v1?key={image_api}&cx={cx}&q={query}&searchType=image&num=1"
     res = requests.get(url).json()
     
