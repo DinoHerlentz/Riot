@@ -20,6 +20,7 @@ import twitch
 import openai
 from traceback import format_exception
 from bs4 import BeautifulSoup
+from spellchecker import SpellChecker
 from youtubesearchpython import VideosSearch
 from youtubesearchpython import ChannelsSearch
 from async_timeout import timeout
@@ -656,7 +657,7 @@ async def help(interaction: Interaction):
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
     em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "ping, stats, embed, memes, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url, spellcheck", inline = False)
+    em.add_field(name = "Miscellaneous", value = "ping, stats, embed, memes, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url, spellcheck, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -2636,7 +2637,6 @@ async def spellcheck(interaction: Interaction, *, text):
         await interaction.send(embed = em)
 
 
-"""
 @bot.slash_command(name = "math", description = "Evaluate any math expressions")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def math(interaction: Interaction, *, expression: str):
@@ -2656,7 +2656,6 @@ async def math(interaction: Interaction, *, expression: str):
     
     except:
         await interaction.send("Invalid mathematical expression.", ephemeral = True)
-"""
 
 
 """
@@ -2750,9 +2749,9 @@ async def ip(ctx: commands.Context, ip):
             await ctx.send(embed = em)
 
 
-@bot.command(aliases = ["e"])
+@bot.command()
 @commands.is_owner()
-async def eval(ctx: commands.Context, *, code):
+async def e(ctx: commands.Context, *, code):
     code = clean_code(code)
     str_obj = io.StringIO()
 
