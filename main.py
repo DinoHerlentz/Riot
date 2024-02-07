@@ -18,6 +18,8 @@ import psutil
 import platform
 import twitch
 import openai
+import html
+from pyfiglet import Figlet
 from traceback import format_exception
 from bs4 import BeautifulSoup
 from spellchecker import SpellChecker
@@ -37,8 +39,8 @@ from nextcord.ext.commands import CommandNotFound, BadArgument, MissingPermissio
 intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix = ">", intents = intents, case_insensitive = True)
 bot.remove_command("help")
-dogs = json.load(open("E:/Riot/venv/dog_gifs.json"))
-cats = json.load(open("E:/Riot/venv/cat_gifs.json"))
+dogs = json.load(open("dog_gifs.json"))
+cats = json.load(open("cat_gifs.json"))
 server_id = 593297247467470858
 snipe_message_content = None
 snipe_message_author = None
@@ -524,7 +526,7 @@ async def on_wavelink_node_ready(node: wavelink.Node):
 
 async def node_connect():
     await bot.wait_until_ready()
-    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = os.environ['ID'], client_secret = os.environ['SECRET']))
+    await wavelink.NodePool.create_node(bot = bot, host = "lavalink.mariliun.ml", port = 443, password = "lavaliun", https = True, spotify_client = spotify.SpotifyClient(client_id = "975981c3179a436883021b5ac45f352f", client_secret = "8aa73f51cebf4c1e924303e3558ea6fa"))
 
 
 @bot.event
@@ -653,11 +655,10 @@ async def help(interaction: Interaction):
     em.add_field(name = "Fun", value = "pokemon, 8ball, covidtest, temperature, dice, coinflip, rps, rate, slap, hug, kiss, bite, kill, say, emojify, handsome, beautiful", inline = False)
     # em.add_field(name = "Activities", value = "sketch, fishington, chess, checkers, betrayal, spellcast, poker, blazing, letterleague, wordsnacks", inline = False)
     em.add_field(name = "Anime", value = "news, search, character, memes, waifu, kiss, cry, pat, blush, smile, happy, dance, wink, wave, nom, bite, slap, kick, cringe", inline = False)
-    em.add_field(name = "Images", value = "image, dog, cat, capybara", inline = False)
+    em.add_field(name = "Images", value = "image, cute, dog, cat, capybara", inline = False)
     em.add_field(name = "NASA", value = "nasa, apod", inline = False)
-    em.add_field(name = "YouTube", value = "youtube, youtubesearch, youtubechannel", inline = False)
     # em.add_field(name = "Music", value = "panel, play, splay, pause, resume, stop, disconnect, loop, queue, volume, nowplaying, lyrics", inline = False)
-    em.add_field(name = "Miscellaneous", value = "ping, stats, embed, memes, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, announce, servericon, id, membercount, channelinfo, github, fact, joke, ud, planet, star, inflation, url, spellcheck, math", inline = False)
+    em.add_field(name = "Miscellaneous", value = "ping, stats, ascii, trivia, embed, memes, weather, snipe, quote, cleardm, suggest, report, avatar, userinfo, serverinfo, itunes, announce, servericon, id, membercount, channelinfo, github, fact, joke, punchlinejoke, webscraper, ud, planet, star, inflation, url, spellcheck, math", inline = False)
 
     await interaction.send(embed = em, view = view)
     await view.wait()
@@ -1642,7 +1643,7 @@ async def cringe(ctx: commands.Context):
 # Image Command
 @bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
 async def image(interaction: Interaction, *, query):
-    image_api = os.environ['IMAGE']
+    image_api = "AIzaSyA3JgcdWtGnYAwS0CrllsVeaWOHOzylYMU"
     cx = os.environ['CX']
     url = f"https://www.googleapis.com/customsearch/v1?key={image_api}&cx={cx}&q={query}&searchType=image&num=1"
     res = requests.get(url).json()
@@ -1653,6 +1654,20 @@ async def image(interaction: Interaction, *, query):
     else:
         image_url = res['items'][0]['link']
         await interaction.send(image_url)
+
+
+@bot.slash_command(name = "cute", description = "Sends a random picture of a cute animal")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def cute(interaction: Interaction):
+    response = requests.get('https://api.thecatapi.com/v1/images/search?category_ids=15&limit=1')
+    data = response.json()
+    
+    if data:
+        image_url = data[0]['url']
+        await interaction.send(f"{image_url}")
+    
+    else:
+        await interaction.send("Failed to fetch a cute animal picture.", ephemeral = True)
 
 
 @dogslash.subcommand(name = "image", description = "Get some random cute dog pictures")
@@ -1936,6 +1951,62 @@ async def stats(interaction: Interaction):
     em.add_field(name = "Uptime", value = get_uptime())
     em.timestamp = datetime.datetime.utcnow()
     await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "ascii", description = "Converts text into ASCII art and displays it")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def ascii(interaction: Interaction, *, text):
+    ascii_text = Figlet().renderText(text)
+    await interaction.send(f"```\n{ascii_text}\n```")
+
+
+@bot.slash_command(name = "trivia", description = "Answer a questions about interesting facts in many subjects")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def trivia(interaction: Interaction):
+    response = requests.get("https://opentdb.com/api.php?amount=1&type=multiple")
+    question_data = response.json()['results'][0]
+
+    decoded_question = html.unescape(question_data['question'])
+
+    choices = [html.unescape(choice) for choice in question_data['incorrect_answers']] + [html.unescape(question_data['correct_answer'])]
+    random.shuffle(choices)
+
+    em = nextcord.Embed(title = "Trivia Question", description = decoded_question)
+
+    for index, choice in enumerate(choices):
+        em.add_field(name = f"Option {index + 1}", value = choice, inline = False)
+    
+    await interaction.send(embed = em)
+
+    def check(message):
+        return message.author == interaction.user and message.channel == interaction.channel
+    
+    try:
+        answer_message = await bot.wait_for("message", check = check, timeout = 30)
+        user_answer = int(answer_message.content)
+    
+    except (nextcord.errors.TimeoutError, ValueError):
+        await interaction.send("Time is up or an invalid answer was provided.")
+        return
+    
+    correct_answer_index = choices.index(html.unescape(question_data['correct_answer'])) + 1
+
+    if user_answer == correct_answer_index:
+        await interaction.send("Correct answer!")
+
+    else:
+        await interaction.send(f"Incorrect answer. The correct answer is {correct_answer_index}")
+
+
+"""
+@bot.slash_command(name = "google", description = "Perform a Google search and provide a link to the search results")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def google(interaction: Interaction, *, args):
+    query = " ".join(args)
+    encoded = quote(query)
+    url = f"https://www.google.com/search?q={encoded}"
+    await interaction.send(url)
+"""
 
 
 @bot.slash_command(name = "embed", description = "Create an embed")
@@ -2294,6 +2365,37 @@ async def serverinfo(interaction: Interaction):
     await interaction.send(embed = em)
 
 
+@bot.slash_command(name = "itunes", description = "Get a song information")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def itunes(interaction: Interaction, *, query):
+    params = {'term': query, 'entity': 'musicTrack', 'limit': 1}
+    response = requests.get("https://itunes.apple.com/search", params = params)
+    data = response.json()
+
+    if 'results' in data and data['results']:
+        result = data['results'][0]
+
+        album_image = result['artworkUrl100']
+        title = result['trackName']
+        artist = result['artistName']
+        album = result['collectionName']
+        genre = result['primaryGenreName']
+
+        title_link = f'[{title}](https://music.apple.com/us/album/{album.replace(" ", "-")}/1635602821?i=1635602823&uo=4)'
+        artist_link = f'[{artist}](https://music.apple.com/us/artist/{artist.replace(" ", "-")}/{result["artistId"]}?uo=4)'
+        album_link = f'[{album}](https://music.apple.com/us/album/{album.replace(" ", "-")}/{result["collectionId"]}?i={result["trackId"]}&uo=4)'
+
+        em = nextcord.Embed(title = "Song Info", description = title_link)
+        em.set_thumbnail(url = album_image)
+        em.set_author(name = title, icon_url = album_image)
+        em.add_field(name = 'Artist', value = artist_link, inline = False)
+        em.add_field(name = 'Album', value = album_link, inline = False)
+        em.set_footer(text = f"Genre : {genre}")
+        em.timestamp = datetime.datetime.utcnow()
+
+        await interaction.send(embed = em)
+
+
 """
 @bot.slash_command(name = "timer", description = "Set a timer")
 @cooldowns.cooldown(1, 10, bucket = cooldowns.SlashBucket.author)
@@ -2419,6 +2521,24 @@ async def github(interaction: Interaction, *, username):
 
 
 """
+@bot.slash_command(name = "repository", description = "Get user repository information")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def repository(ctx: commands.Context, user, repo):
+    api_url = f"https://api.github.com/repos/{user}/{repo}"
+    res = requests.get(api_url)
+    data = res.json()
+
+    if res.status_code == 200:
+        repo_name = data['full_name']
+        repo_url = data['html_url']
+        repo_description = data['description']
+        await ctx.send(f"GitHub Repository: {repo_name}\nDescription: {repo_description}\nURL: {repo_url}")
+    else:
+        await ctx.send("Error fetching GitHub repository information.")
+"""
+
+
+"""
 @bot.slash_command(name = "chatgpt", description = "Ask anything to ChatGPT")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def chatgpt(interaction: Interaction, *, prompt: str):
@@ -2460,9 +2580,22 @@ async def fact(interaction: Interaction):
         await interaction.send("Error : ", response.status_code, response.text)
 
 
-@bot.slash_command(name = "joke", description = "Get some random jokes")
+@bot.slash_command(name = "joke", description = "Get some random jokes.")
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def joke(interaction: Interaction):
+    api_url = 'https://api.api-ninjas.com/v1/jokes?limit=1'
+    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
+    
+    if response.status_code == requests.codes.ok:
+        data = json.loads(response.text)
+        
+        for item in data:
+            await interaction.send(item['joke'])
+
+
+@bot.slash_command(name = "punchlinejoke", description = "Get some random jokes with punchline")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def punchlinejoke(interaction: Interaction):
     res = requests.get("https://official-joke-api.appspot.com/random_joke")
     joke = res.json()
     
@@ -2472,6 +2605,16 @@ async def joke(interaction: Interaction):
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
+
+
+@bot.slash_command(name = "webscraper", description = "Retrieve HTML and plaintext data from any website URL (Max Data = 2 MB)")
+@cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
+async def webscraper(interaction: Interaction, *, url):
+    api_url = f'https://api.api-ninjas.com/v1/webscraper?url={url}'
+    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
+    
+    if response.status_code == requests.codes.ok:
+        await interaction.send(f"```\n{response.text}\n```")
 
 
 @bot.slash_command(name = "ud", description = "Get the definition of a word from Urban Dictionary")
@@ -2572,7 +2715,7 @@ async def inflation(interaction: Interaction, *, country):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def url(interaction: Interaction, *, url):
     api_url = 'https://api.api-ninjas.com/v1/urllookup?url={}'.format(url)
-    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
+    response = requests.get(api_url, headers = {'X-Api-Key': 'Yhl7iIvZsSp+Z1wgz7IClw==elM4rnguiSPIrIRI'})
     
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
@@ -2644,7 +2787,7 @@ async def math(interaction: Interaction, *, expression: str):
     
     try:
         result = float(eval(expression))
-        expression = expression.replace("", " ")
+        # expression = expression.replace("", " ")
         
         em = nextcord.Embed(title = "Math Expression", description = f"{expression} = {result}")
         em.timestamp = datetime.datetime.utcnow()
@@ -2727,7 +2870,7 @@ async def owner(ctx: commands.Context):
 @commands.is_owner()
 async def ip(ctx: commands.Context, ip):
     api_url = "https://api.api-ninjas.com/v1/iplookup?address={}".format(ip)
-    response = requests.get(api_url, headers = {"X-Api-Key": os.environ['NINJA']})
+    response = requests.get(api_url, headers = {"X-Api-Key": "Yhl7iIvZsSp+Z1wgz7IClw==elM4rnguiSPIrIRI"})
 
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
