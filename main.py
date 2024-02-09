@@ -492,6 +492,8 @@ async def on_message(message):
         if not message.author.bot and message.author.id != 550588846706786305:
             user_id = 550588846706786305
             user = await bot.fetch_user(user_id)
+            guild = bot.get_guild(593297247467470858)
+            channel = guild.get_channel(1105487991704662119)
             
             content = message.content
             
@@ -499,7 +501,8 @@ async def on_message(message):
                 attachment_urls = [attachment.url for attachment in message.attachments]
                 content += "\n" + "\n".join(attachment_urls)
             
-            await user.send(f"{message.author} : {content}")
+            # await user.send(f"{message.author} : {content}")
+            await channel.send(f"{message.author} : {content}")
     
     """
     # 2nd Event
