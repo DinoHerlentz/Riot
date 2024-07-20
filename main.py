@@ -1704,7 +1704,7 @@ async def gif(interaction: Interaction):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def facts(interaction: Interaction):
     res = requests.get("http://dog-api.kinduff.com/api/facts")
-    fact = res.json()['facts']
+    fact = res.json()['facts'][0]
     
     await interaction.send(fact)
 
