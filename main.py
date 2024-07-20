@@ -17,7 +17,6 @@ import aiohttp
 import psutil
 import platform
 import twitch
-import openai
 import html
 from pyfiglet import Figlet
 from traceback import format_exception
@@ -1646,7 +1645,7 @@ async def cringe(ctx: commands.Context):
 # Image Command
 @bot.slash_command(name = "image", description = "Search for images using the Google Custom Search API")
 async def image(interaction: Interaction, *, query):
-    image_api = "AIzaSyA3JgcdWtGnYAwS0CrllsVeaWOHOzylYMU"
+    image_api = os.environ['IMAGE_API']
     cx = os.environ['CX']
     url = f"https://www.googleapis.com/customsearch/v1?key={image_api}&cx={cx}&q={query}&searchType=image&num=1"
     res = requests.get(url).json()
@@ -2571,7 +2570,7 @@ async def chatgpt(interaction: Interaction, *, prompt: str):
 @cooldowns.cooldown(1, 3, bucket = cooldowns.SlashBucket.author)
 async def fact(interaction: Interaction):
     api_url = "https://api.api-ninjas.com/v1/facts?limit=1"
-    response = requests.get(api_url, headers = {'X-Api-Key': os.environ['NINJA']})
+    response = requests.get(api_url, headers = {'X-Api-Key': 'Yhl7iIvZsSp+Z1wgz7IClw==elM4rnguiSPIrIRI'})
     
     if response.status_code == requests.codes.ok:
         data = json.loads(response.text)
