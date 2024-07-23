@@ -1248,7 +1248,7 @@ async def beautiful(interaction: Interaction, member: nextcord.User = None):
 async def ai(interaction: Interaction, *, prompt: str):
     response = model.generate_content(prompt)
     
-    em = nextcord.Embed(title = "AI", description = f"{prompt}")
+    em = nextcord.Embed(title = "AI", description = f"{response.text}")
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
