@@ -1248,7 +1248,7 @@ async def beautiful(interaction: Interaction, member: nextcord.User = None):
 async def ai(interaction: Interaction, *, prompt: str):
     response = model.generate_content(prompt)
     
-    em = nextcord.Embed(title = "AI", description = f"{response.text}")
+    em = nextcord.Embed(title = "Gemini AI", description = f"{response.text}")
     em.timestamp = datetime.datetime.utcnow()
     
     await interaction.send(embed = em)
@@ -2794,7 +2794,7 @@ async def emojiinfo(ctx: commands.Context, emoji: nextcord.Emoji = None):
 @commands.is_owner()
 async def owner(ctx: commands.Context):
     em = nextcord.Embed(title = "Owner Commands (>)")
-    em.add_field(name = "Commands", value = "ip, eval, msg, msg2, dm, sc")
+    em.add_field(name = "Commands", value = "ip, eval, msg, msg2, dm, sc, ai")
     em.timestamp = ctx.message.created_at
     
     await ctx.send(embed = em)
@@ -2909,6 +2909,17 @@ async def sc(ctx, id: int):
         
         else:
             await channel.send(f"{author} : {message.content}")
+
+
+@bot.command()
+@commands.is_owner()
+async def ai(ctx: commands.Context, *, prompt: str):
+    response = model.generate_content(prompt)
+    
+    em = nextcord.Embed(title = "Gemini AI", description = f"{response.text}")
+    em.timestamp = datetime.datetime.utcnow()
+    
+    await ctx.send(embed = em)
 
 
 bot.run(os.environ['TOKEN'])
